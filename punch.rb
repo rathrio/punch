@@ -249,6 +249,10 @@ if __FILE__ == $0
     puts File.read "#{this_folder}help.txt"
     exit
   end
+  if option == '-u' || option == '--update'
+    puts `cd #{this_folder} && git pull origin master`
+    exit
+  end
   now = Time.now
   month_nr = now.month
   month_nr -= 1 if now.day < 21

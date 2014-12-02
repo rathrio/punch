@@ -20,3 +20,7 @@ $ punch -h (--help)
 $ punch -h (--hack)
 
     Edit this script.
+
+$ punch -u (--update)
+
+    Update this script. (Given you installed it via git-clone)

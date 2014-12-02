@@ -50,8 +50,9 @@ module Totals
   end
 
   def total_str
-    hours   = total / 3600
-    rest    = total - (hours * 3600)
+    t       = total
+    hours   = t / 3600
+    rest    = t - (hours * 3600)
     minutes = rest / 60
     "#{pad hours}:#{pad minutes}"
   end

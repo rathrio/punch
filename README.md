@@ -21,4 +21,4 @@ Recommended Installation
 ========================
 
 1. `git clone git@github.com:rathrio/punch.git`
-2. Add a bash alias `alias punch='ruby ~/git/rb/punch/punch.rb'`
+2. Add a bash alias `alias punch='ruby ~/path/to/punch/punch.rb'`

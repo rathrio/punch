@@ -35,6 +35,10 @@ $ punch -r, --raw
 
     Print current BRF file without fancy highlighting and auto-formatting.
 
+$ punch -t, --test
+
+    Run tests.
+
 $ punch -u, --update
 
     Update this script. (Given you installed it via git-clone)

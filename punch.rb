@@ -138,9 +138,17 @@ class Day
     "#{pad day}.#{pad month}.#{year}"
   end
 
-  def to_s(color = false)
+  def to_s(options = {})
     blocks.sort!
-    str = "#{date}   #{blocks.join('   ')}   Total: #{total_str}"
+    color = options.fetch :color, false
+    blocks_str = blocks.join('   ')
+    max_block_count = options.fetch :max_block_count, 0
+    if block_count < max_block_count
+      (max_block_count - block_count).times do
+        blocks_str << '              '
+      end
+    end
+    str = "#{date}   #{blocks_str}   Total: #{total_str}"
     if color
       return str.green if highlight?
       return str.blue if today?
@@ -150,6 +158,10 @@ class Day
 
   def blocks
     @blocks ||= []
+  end
+
+  def block_count
+    blocks.count
   end
 
   def add(*blocks)
@@ -245,18 +257,24 @@ class Month
     @name = name
   end
 
-  def to_s(color = false)
+  def to_s(options = {})
+    color = options.fetch :color, false
     days.sort!
+    b_count = max_block_count
     "#{name}\n\n#{days.map { |d|
-      d.to_s(color) }.join("\n")}\n\nTotal: #{total_str}"
+      d.to_s(:color => color, :max_block_count => b_count) }.join("\n")}\n\nTotal: #{total_str}"
   end
 
   def colored
-    to_s true
+    to_s :color => true
   end
 
   def children
     days
+  end
+
+  def max_block_count
+    days.map(&:block_count).max
   end
 end
 
@@ -269,11 +287,15 @@ if __FILE__ == $0
     exit
   end
   if option == '-h' || option == '--help'
-    puts File.read "#{this_folder}help.txt"
+    puts `cat #{this_folder}help.txt`
     exit
   end
   if option == '-u' || option == '--update'
     puts `cd #{this_folder} && git pull origin master`
+    exit
+  end
+  if option == '-t' || option == '--test'
+    puts `ruby #{this_folder}punch_test.rb`
     exit
   end
   now = Time.now

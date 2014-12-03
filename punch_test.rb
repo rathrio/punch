@@ -3,7 +3,7 @@ require 'minitest/pride'
 
 require_relative 'punch'
 
-class MonthTest < MiniTest::Unit::TestCase
+class MonthTest < MiniTest::Test
   def test_total_align
     month = BRFParser.new.parse(<<-EOS)
       November 2014
@@ -17,15 +17,15 @@ class MonthTest < MiniTest::Unit::TestCase
     day1, day2 = month.days
     day2.add Block.new('14-16', day2)
 
-    assert_equal "28.11.14   18:00-19:00                 Total: 01:00",
-      day1.to_s
-
-    assert_equal "30.11.14   08:00-13:00   14:00-16:00   Total: 05:00",
-      day2.to_s
+    expected =
+      "November 2014\n\n" +
+      "28.11.14   18:00-19:00                 Total: 01:00\n" +
+      "30.11.14   08:00-13:00   14:00-16:00   Total: 05:00\n\n" +
+      "Total: 06:00"
   end
 end
 
-class DayTest < MiniTest::Unit::TestCase
+class DayTest < MiniTest::Test
   def test_initialize
     day = Day.new '27.11.14'
     assert_equal 27, day.day

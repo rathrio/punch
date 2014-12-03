@@ -9,10 +9,10 @@ $ punch HH:MM-HH:MM HH:MM-HH:MM ...
 
     Add blocks to today. Minutes are optional. e.g. punch 8-12 12:30-18
 
-$ punch -d, --day DD.MM.YYYY
+$ punch -d, --day DD.MM.YY
 
     Pass a date to add blocks for that day. Defaults to today.
-    e.g. punch -d 03.12.2014 22-23
+    e.g. punch -d 03.12.14 22-23
 
 $ punch -e, --edit
 

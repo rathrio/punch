@@ -5,9 +5,9 @@ $ punch
     Print current month. Today is highlighted in blue, the last updated day in
     green.
 
-$ punch <start>-<end>*
+$ punch HH:MM-HH:MM HH:MM-HH:MM ...
 
-    Add blocks to today. e.g. punch 8-12 12:30-18
+    Add blocks to today. Minutes are optional. e.g. punch 8-12 12:30-18
 
 $ punch -d, --day DD.MM.YYYY
 

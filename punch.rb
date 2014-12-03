@@ -96,6 +96,9 @@ class Block
 
     @start  = Time.new(day.long_year, day.month, day.day, *start_ary)
     @finish = Time.new(day.long_year, day.month, day.day, *finish_ary)
+    if @finish < @start
+      @finish = @finish + 86400
+    end
   end
 
   def to_s

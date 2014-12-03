@@ -41,6 +41,13 @@ class DayTest < MiniTest::Unit::TestCase
     assert_equal '09:00', day.total_str
   end
 
+  def test_total_over_midnight
+    day = Day.new '24.09.90'
+    day.add Block.new('23-02', day)
+    day.add Block.new('14-16', day)
+    assert_equal '05:00', day.total_str
+  end
+
   def test_total_with_minutes
     day = Day.new '08.04.91'
     day.add Block.new("12:30-19:15", day)

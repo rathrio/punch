@@ -20,7 +20,8 @@ $ punch -e, --edit
 
 $ punch -f, --format
 
-    Reformat current BRF file. This will normalize whitespace.
+    Reformat current BRF file. This will normalize whitespace and recalculate
+    totals.
 
 $ punch -h , --help
 

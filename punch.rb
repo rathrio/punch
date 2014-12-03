@@ -275,7 +275,7 @@ if __FILE__ == $0
   end
   now = Time.now
   month_nr = now.month
-  month_nr -= 1 if now.day < 21
+  month_nr += 1 if now.day > 21
   month_name = Month.name(month_nr)
   year = now.year
   filepath = "#{hours_folder}#{month_name}_#{year}.txt"

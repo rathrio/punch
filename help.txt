@@ -7,20 +7,25 @@ $ punch
 
 $ punch <start>-<end>*
 
-    Add blocks to today. E.g.: punch 8-12 12:30-18
+    Add blocks to today. e.g. punch 8-12 12:30-18
 
-$ punch -e (--edit)
+$ punch -d, --day DD.MM.YYYY
+
+    Pass a date to add blocks for that day. Defaults to today.
+    e.g. punch -d 03.12.2014 22-23
+
+$ punch -e, --edit
 
     Edit current BRF file with your default text editor.
 
-$ punch -h (--help)
+$ punch -h , --help
 
     Print this message.
 
-$ punch -h (--hack)
+$ punch -h, --hack
 
     Edit this script.
 
-$ punch -u (--update)
+$ punch -u, --update
 
     Update this script. (Given you installed it via git-clone)

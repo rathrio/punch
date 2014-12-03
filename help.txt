@@ -18,6 +18,10 @@ $ punch -e, --edit
 
     Edit current BRF file with your default text editor.
 
+$ punch -f, --format
+
+    Reformat current BRF file. This will normalize whitespace.
+
 $ punch -h , --help
 
     Print this message.
@@ -25,6 +29,10 @@ $ punch -h , --help
 $ punch -h, --hack
 
     Edit this script.
+
+$ punch -r, --raw
+
+    Print current BRF file without fancy highlighting and auto-formatting.
 
 $ punch -u, --update
 

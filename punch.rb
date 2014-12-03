@@ -286,8 +286,18 @@ if __FILE__ == $0
     `open #{filepath}`
     exit
   end
+  if option == '-r' || option == '--raw'
+    puts `cat #{filepath}`
+    exit
+  end
   File.open filepath, 'r+' do |file|
     month = BRFParser.new.parse(file.read)
+    if option == '-f' || option == '--format'
+      file.seek 0, IO::SEEK_SET
+      file.truncate 0
+      file.write month
+      exit
+    end
     unless ARGV.empty?
       if option == '-d' || option == '--day'
         ARGV.shift
@@ -306,6 +316,7 @@ if __FILE__ == $0
       blocks = ARGV.map { |block_str| Block.new block_str, day }
       day.add *blocks
       file.seek 0, IO::SEEK_SET
+      file.truncate 0
       file.write month
     end
     puts month.colored

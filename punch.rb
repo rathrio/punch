@@ -261,8 +261,8 @@ class Month
     color = options.fetch :color, false
     days.sort!
     b_count = max_block_count
-    "#{name}\n\n#{days.map { |d|
-      d.to_s(:color => color, :max_block_count => b_count) }.join("\n")}\n\nTotal: #{total_str}"
+    "#{name}\r\n\r\n#{days.map { |d|
+      d.to_s(:color => color, :max_block_count => b_count) }.join("\r\n")}\r\n\r\nTotal: #{total_str}"
   end
 
   def colored

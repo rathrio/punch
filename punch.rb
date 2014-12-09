@@ -309,6 +309,13 @@ if __FILE__ == $0
   unless File.exists? filepath
     File.open(filepath, "w") { |f| f.write "#{month_name.capitalize} #{year}" }
   end
+  if option == '-b' || option == '--backup'
+    ARGV.shift
+    path = ARGV.shift
+    error = `cp #{filepath} #{path}`
+    puts error unless error.empty?
+    exit
+  end
   if option == '-e' || option == '--edit'
     `open #{filepath}`
     exit

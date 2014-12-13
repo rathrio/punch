@@ -28,6 +28,7 @@ class Time
   end
 end
 
+# https://stackoverflow.com/questions/1489183/colorized-ruby-output
 class String
   def colorize(color_code)
     "\e[#{color_code}m#{self}\e[0m"
@@ -43,6 +44,10 @@ class String
 
   def pink
     colorize 35
+  end
+
+  def yellow
+    colorize 33
   end
 end
 
@@ -93,6 +98,10 @@ class Block
   def initialize(str, day)
     start_str, finish_str = str.split '-'
 
+    if start_str.empty? || finish_str.empty?
+      raise ArgumentError, "\"#{str}\" is not valid Block"
+    end
+
     start_ary  = start_str.split(':')
     finish_ary = finish_str.split(':')
 
@@ -100,6 +109,7 @@ class Block
     @finish = Time.new(day.long_year, day.month, day.day, *finish_ary)
     if @finish < @start
       @finish = @finish + 86400
+      day.unhealthy!
     end
   end
 
@@ -229,6 +239,14 @@ class Day
   def highlight?
     @highlight
   end
+
+  def unhealthy!
+    @unhealthy = true
+  end
+
+  def unhealthy?
+    @unhealthy
+  end
 end
 
 class Month
@@ -279,6 +297,19 @@ class Month
     days.map(&:block_count).max
   end
 end
+
+MIDNIGHT_MADNESS_NOTES = [
+  "Get some sleep!",
+  "Don't you have any hobbies?",
+  "Get some rest, (wo)man...",
+  "You should go to bed.",
+  "That can't be healthy.",
+  "You might need therapy.",
+  "All work and no play makes Jack a dull boy.",
+  "You need to get your priorities straight.",
+  "Work-life balance. Ever heard of it?",
+  "Did you know that the average adult needs 7-8 hours or sleep?"
+]
 
 if __FILE__ == $0
   option = ARGV.first
@@ -332,6 +363,12 @@ if __FILE__ == $0
       file.write month
       exit
     end
+    if option == '-s' || option == '--stats'
+      ARGV.shift
+      hourly_pay = ARGV.shift.to_i
+      puts (hourly_pay / 3600.0 * month.total).round 2
+      exit
+    end
     unless ARGV.empty?
       if option == '-d' || option == '--day'
         ARGV.shift
@@ -349,6 +386,10 @@ if __FILE__ == $0
       end
       blocks = ARGV.map { |block_str| Block.new block_str, day }
       day.add *blocks
+      if day.unhealthy?
+        puts MIDNIGHT_MADNESS_NOTES.sample.pink
+        puts
+      end
       file.seek 0, IO::SEEK_SET
       file.truncate 0
       file.write month

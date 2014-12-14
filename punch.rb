@@ -22,8 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-NEWLINE = "\r\n"
-
 class Time
   def short_year
     strftime('%y').to_i
@@ -265,6 +263,8 @@ end
 
 class Month
   include Totals
+
+  NEWLINE = "\r\n"
 
   NAMES = {
     1  => 'januar',

@@ -174,7 +174,7 @@ class Day
     end
     str = "#{date}   #{blocks_str}   Total: #{total_str}"
     if color
-      return str.green if highlight?
+      return str.pink if highlight?
       return str.blue if today?
     end
     str

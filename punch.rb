@@ -22,6 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+NEWLINE = "\r\n"
+
 class Time
   def short_year
     strftime('%y').to_i
@@ -92,10 +94,12 @@ module Totals
 end
 
 class Block
+  include Totals
   include Comparable
-  attr_accessor :start, :finish
+  attr_accessor :start, :finish, :day
 
   def initialize(str, day)
+    @day = day
     start_str, finish_str = str.split '-'
 
     if start_str.empty? || finish_str.empty?
@@ -110,6 +114,7 @@ class Block
     if @finish < @start
       @finish = @finish + 86400
       day.unhealthy!
+      over_midnight!
     end
   end
 
@@ -127,6 +132,14 @@ class Block
 
   def include?(time)
     (start <= time) && (finish >= time)
+  end
+
+  def over_midnight?
+    @over_midnight
+  end
+
+  def over_midnight!
+    @over_midnight = true
   end
 
   private
@@ -157,6 +170,7 @@ class Day
     max_block_count = options.fetch :max_block_count, 0
     if block_count < max_block_count
       (max_block_count - block_count).times do
+        # Padding before "Total:"
         blocks_str << '              '
       end
     end
@@ -281,8 +295,11 @@ class Month
     color = options.fetch :color, false
     days.sort!
     b_count = max_block_count
-    "#{name}\r\n\r\n#{days.map { |d|
-      d.to_s(:color => color, :max_block_count => b_count) }.join("\r\n")}\r\n\r\nTotal: #{total_str}"
+    "#{name}#{NEWLINE * 2}#{
+      days.map { |d|
+        d.to_s(:color => color, :max_block_count => b_count)
+      }.join(NEWLINE)
+    }#{NEWLINE * 2}Total: #{total_str}"
   end
 
   def colored
@@ -293,8 +310,70 @@ class Month
     days
   end
 
+  def blocks
+    days.flat_map &:blocks
+  end
+
   def max_block_count
     days.map(&:block_count).max
+  end
+end
+
+class Stats
+  attr_accessor :month, :hourly_pay
+
+  def initialize(month, hourly_pay = 0)
+    @month = month
+    @hourly_pay = hourly_pay
+  end
+
+  def longest_day
+    longest_of days
+  end
+
+  def longest_block
+    block = longest_of blocks
+    "#{block.day.date}   #{block}   Total: #{block.total_str}"
+  end
+
+  def total_money_made
+    "#{money_made month.total} CHF"
+  end
+
+  def days
+    @days ||= month.days
+  end
+
+  def blocks
+    @blocks ||= month.blocks
+  end
+
+  def late_nights
+    blocks.count &:over_midnight?
+  end
+
+  def to_s
+    <<-EOS
+#{label "Hours worked"}#{month.total_str}
+#{label "Money made"}#{total_money_made}
+#{label "Longest day"}#{longest_day}
+#{label "Longest block"}#{longest_block}
+#{label "Late nights"}#{late_nights}
+    EOS
+  end
+
+  private
+
+  def money_made(seconds)
+    (hourly_pay / 3600.0 * seconds).round 2
+  end
+
+  def longest_of(objects_with_totals)
+    objects_with_totals.max { |a, b| a.total <=> b.total }
+  end
+
+  def label(str)
+    "#{str}:".ljust(20).blue
   end
 end
 
@@ -308,7 +387,7 @@ MIDNIGHT_MADNESS_NOTES = [
   "All work and no play makes Jack a dull boy.",
   "You need to get your priorities straight.",
   "Work-life balance. Ever heard of it?",
-  "Did you know that the average adult needs 7-8 hours or sleep?"
+  "Did you know that the average adult needs 7-8 hours of sleep?"
 ]
 
 if __FILE__ == $0
@@ -365,8 +444,7 @@ if __FILE__ == $0
     end
     if option == '-s' || option == '--stats'
       ARGV.shift
-      hourly_pay = ARGV.shift.to_i
-      puts (hourly_pay / 3600.0 * month.total).round 2
+      puts Stats.new(month, ARGV.shift.to_i)
       exit
     end
     unless ARGV.empty?

@@ -22,6 +22,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+class Module
+  def flag(*names)
+    names.each do |name|
+      define_method "#{name}!" do
+        instance_variable_set "@#{name}", true
+      end
+      define_method "#{name}?" do
+        instance_variable_get "@#{name}"
+      end
+    end
+  end
+end
+
 class Time
   def short_year
     strftime('%y').to_i
@@ -95,6 +108,7 @@ class Block
   include Totals
   include Comparable
   attr_accessor :start, :finish, :day
+  flag :over_midnight
 
   def initialize(str, day)
     @day = day
@@ -132,14 +146,6 @@ class Block
     (start <= time) && (finish >= time)
   end
 
-  def over_midnight?
-    @over_midnight
-  end
-
-  def over_midnight!
-    @over_midnight = true
-  end
-
   private
 
   def format(time)
@@ -152,6 +158,7 @@ class Day
   include Comparable
 
   attr_accessor :day, :month, :year, :blocks
+  flag :highlight, :unhealthy
 
   def initialize(date = '')
     @day, @month, @year = date.split('.').map &:to_i
@@ -242,22 +249,6 @@ class Day
     @day   = time.day
     @month = time.month
     @year  = time.short_year
-  end
-
-  def highlight!
-    @highlight = true
-  end
-
-  def highlight?
-    @highlight
-  end
-
-  def unhealthy!
-    @unhealthy = true
-  end
-
-  def unhealthy?
-    @unhealthy
   end
 end
 

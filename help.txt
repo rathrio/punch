@@ -9,6 +9,11 @@ $ punch HH:MM-HH:MM HH:MM-HH:MM ...
 
     Add blocks to today. Minutes are optional. e.g. punch 8-12 12:30-18
 
+$ punch -b, --backup path/to/backup/dir
+
+    Copy the current month's BRF file to given directory.
+    e.g. punch -b ~/Desktop
+
 $ punch -d, --day DD.MM.YY
 
     Pass a date to add blocks for that day. Defaults to today.
@@ -34,6 +39,11 @@ $ punch -H, --hack
 $ punch -r, --raw
 
     Print current BRF file without fancy highlighting and auto-formatting.
+
+$ punch -s, --stats pay
+
+    Print some stats. Optionally pass your hourly pay to see how much money you
+    made this month. e.g. punch -s 99
 
 $ punch -t, --test
 

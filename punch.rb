@@ -290,7 +290,7 @@ class Month
       days.map { |d|
         d.to_s(:color => color, :max_block_count => b_count)
       }.join(NEWLINE)
-    }#{NEWLINE * 2}Total: #{total_str}"
+    }#{NEWLINE * 2}Total: #{total_str}#{NEWLINE}"
   end
 
   def colored
@@ -331,14 +331,6 @@ class Stats
     "#{money_made month.total} CHF"
   end
 
-  def days
-    @days ||= month.days
-  end
-
-  def blocks
-    @blocks ||= month.blocks
-  end
-
   def late_nights
     blocks.count &:over_midnight?
   end
@@ -354,6 +346,14 @@ class Stats
   end
 
   private
+
+  def days
+    @days ||= month.days
+  end
+
+  def blocks
+    @blocks ||= month.blocks
+  end
 
   def money_made(seconds)
     (hourly_pay / 3600.0 * seconds).round 2

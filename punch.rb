@@ -319,12 +319,15 @@ class Stats
   end
 
   def longest_day
-    longest_of days
+    days.max { |a, b| a.total <=> b.total }.total_str
   end
 
   def longest_block
-    block = longest_of blocks
-    "#{block.day.date}   #{block}   Total: #{block.total_str}"
+    blocks.max { |a, b| a.total <=> b.total }.total_str
+  end
+
+  def most_blocks
+    days.map(&:block_count).max
   end
 
   def total_money_made
@@ -341,6 +344,7 @@ class Stats
 #{label "Money made"}#{total_money_made}
 #{label "Longest day"}#{longest_day}
 #{label "Longest block"}#{longest_block}
+#{label "Most blocks in day"}#{most_blocks}
 #{label "Late nights"}#{late_nights}
     EOS
   end
@@ -359,12 +363,8 @@ class Stats
     (hourly_pay / 3600.0 * seconds).round 2
   end
 
-  def longest_of(objects_with_totals)
-    objects_with_totals.max { |a, b| a.total <=> b.total }
-  end
-
   def label(str)
-    "#{str}:".ljust(20).blue
+    "#{str}:".ljust(23).blue
   end
 end
 

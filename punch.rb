@@ -381,6 +381,8 @@ MIDNIGHT_MADNESS_NOTES = [
   "Did you know that the average adult needs 7-8 hours of sleep?"
 ]
 
+HAND_IN_DATE = 17
+
 if __FILE__ == $0
   option = ARGV.first
   this_folder = __FILE__[/\/.+\//]
@@ -403,9 +405,9 @@ if __FILE__ == $0
   end
   now = Time.now
   month_nr = now.month
-  month_nr += 1 if now.day > 21
+  month_nr = (month_nr + 1) % 12 if now.day > HAND_IN_DATE
   month_name = Month.name(month_nr)
-  year = now.year
+  year = (month_nr < now.month) ? now.year + 1 : now.year
   filepath = "#{hours_folder}#{month_name}_#{year}.txt"
   unless File.exists? filepath
     File.open(filepath, "w") { |f| f.write "#{month_name.capitalize} #{year}" }

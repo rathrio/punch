@@ -381,7 +381,7 @@ MIDNIGHT_MADNESS_NOTES = [
   "Did you know that the average adult needs 7-8 hours of sleep?"
 ]
 
-HAND_IN_DATE = 17
+HAND_IN_DATE = 20
 
 if __FILE__ == $0
   option = ARGV.first
@@ -406,8 +406,19 @@ if __FILE__ == $0
   now = Time.now
   month_nr = now.month
   month_nr = (month_nr + 1) % 12 if now.day > HAND_IN_DATE
-  month_name = Month.name(month_nr)
+  if option == '-n' || option == '--next'
+    ARGV.shift
+    month_nr = (month_nr + 1) % 12
+    option = ARGV.first
+  end
   year = (month_nr < now.month) ? now.year + 1 : now.year
+  if option == '-p' || option == '--previous'
+    ARGV.shift
+    month_nr -= 1
+    year = (month_nr > now.month) ? now.year - 1 : now.year
+    option = ARGV.first
+  end
+  month_name = Month.name(month_nr)
   filepath = "#{hours_folder}#{month_name}_#{year}.txt"
   unless File.exists? filepath
     File.open(filepath, "w") { |f| f.write "#{month_name.capitalize} #{year}" }

@@ -90,17 +90,20 @@ module Totals
   end
 
   def total_str
-    t       = total
-    hours   = t / 3600
-    rest    = t - (hours * 3600)
-    minutes = rest / 60
-    "#{pad hours}:#{pad minutes}"
+    Totals.format total
   end
 
-  private
+  module_function
 
   def pad(number)
     number.to_i.to_s.rjust 2, '0'
+  end
+
+  def format(seconds)
+    hours   = seconds / 3600
+    rest    = seconds - (hours * 3600)
+    minutes = rest / 60
+    "#{pad hours}:#{pad minutes}"
   end
 end
 
@@ -319,11 +322,11 @@ class Stats
   end
 
   def longest_day
-    days.max { |a, b| a.total <=> b.total }.total_str
+    Totals.format days.map(&:total).max
   end
 
   def longest_block
-    blocks.max { |a, b| a.total <=> b.total }.total_str
+    Totals.format blocks.map(&:total).max
   end
 
   def most_blocks
@@ -338,14 +341,34 @@ class Stats
     blocks.count &:over_midnight?
   end
 
+  def early_mornings
+    blocks.count { |b| b.start < eight_am(b.day) }
+  end
+
+  def total_days
+    days.count
+  end
+
+  def total_blocks
+    blocks.count
+  end
+
+  def average_hours_per_day
+    Totals.format(month.total / total_days)
+  end
+
   def to_s
     <<-EOS
-#{label "Hours worked"}#{month.total_str}
+#{label "Total hours"}#{month.total_str}
 #{label "Money made"}#{total_money_made}
+#{label "Total days"}#{total_days}
+#{label "Avg hours per day"}#{average_hours_per_day}
+#{label "Total blocks"}#{total_blocks}
 #{label "Longest day"}#{longest_day}
 #{label "Longest block"}#{longest_block}
 #{label "Most blocks in day"}#{most_blocks}
 #{label "Late nights"}#{late_nights}
+#{label "Early mornings"}#{early_mornings}
     EOS
   end
 
@@ -365,6 +388,10 @@ class Stats
 
   def label(str)
     "#{str}:".ljust(23).blue
+  end
+
+  def eight_am(day)
+    Time.new(day.long_year, day.month, day.day, 8)
   end
 end
 

@@ -285,15 +285,19 @@ class Month
     @name = name
   end
 
+  def newline
+    NEWLINE
+  end
+
   def to_s(options = {})
     color = options.fetch :color, false
     days.sort!
     b_count = max_block_count
-    "#{name}#{NEWLINE * 2}#{
+    "#{name}#{newline * 2}#{
       days.map { |d|
         d.to_s(:color => color, :max_block_count => b_count)
-      }.join(NEWLINE)
-    }#{NEWLINE * 2}Total: #{total_str}#{NEWLINE}"
+      }.join(newline)
+    }#{newline * 2}Total: #{total_str}#{newline}"
   end
 
   def colored
@@ -395,114 +399,157 @@ class Stats
   end
 end
 
-MIDNIGHT_MADNESS_NOTES = [
-  "Get some sleep!",
-  "Don't you have any hobbies?",
-  "Get some rest, (wo)man...",
-  "You should go to bed.",
-  "That can't be healthy.",
-  "You might need therapy.",
-  "All work and no play makes Jack a dull boy.",
-  "You need to get your priorities straight.",
-  "Work-life balance. Ever heard of it?",
-  "Did you know that the average adult needs 7-8 hours of sleep?"
-]
 
-HAND_IN_DATE = 20
 
-if __FILE__ == $0
-  option = ARGV.first
-  this_folder = __FILE__[/\/.+\//]
-  hours_folder = this_folder + 'hours/'
-  if option == '-H' || option == '--hack'
-    `open #{__FILE__}`
-    exit
+class PunchClock
+  HAND_IN_DATE = 20
+
+  MIDNIGHT_MADNESS_NOTES = [
+    "Get some sleep!",
+    "Don't you have any hobbies?",
+    "Get some rest, (wo)man...",
+    "You should go to bed.",
+    "That can't be healthy.",
+    "You might need therapy.",
+    "All work and no play makes Jack a dull boy.",
+    "You need to get your priorities straight.",
+    "Work-life balance. Ever heard of it?",
+    "Did you know that the average adult needs 7-8 hours of sleep?"
+  ]
+
+  attr_accessor :args, :path_to_punch, :month
+
+  def initialize(args, path_to_punch = __FILE__)
+    @args = args
+    @path_to_punch = path_to_punch
   end
-  if option == '-h' || option == '--help'
-    puts `cat #{this_folder}help.txt`
-    exit
+
+  def punch_folder
+    @punch_folder ||= path_to_punch[/\/.+\//]
   end
-  if option == '-u' || option == '--update'
-    puts `cd #{this_folder} && git pull origin master`
-    exit
+
+  def hours_folder
+    @hours_folder ||= "#{punch_folder}hours/"
   end
-  if option == '-t' || option == '--test'
-    puts `ruby #{this_folder}punch_test.rb`
-    exit
+
+  def help_file
+    "#{punch_folder}help.txt"
   end
-  now = Time.now
-  month_nr = now.month
-  month_nr = (month_nr + 1) % 12 if now.day > HAND_IN_DATE
-  if option == '-n' || option == '--next'
-    ARGV.shift
-    month_nr = (month_nr + 1) % 12
-    option = ARGV.first
+
+  def test_file
+    "#{punch_folder}punch_test.rb"
   end
-  year = (month_nr < now.month) ? now.year + 1 : now.year
-  if option == '-p' || option == '--previous'
-    ARGV.shift
-    month_nr -= 1
-    year = (month_nr > now.month) ? now.year - 1 : now.year
-    option = ARGV.first
+
+  def write!(file)
+    file.seek 0, IO::SEEK_SET
+    file.truncate 0
+    file.write month
   end
-  month_name = Month.name(month_nr)
-  filepath = "#{hours_folder}#{month_name}_#{year}.txt"
-  unless File.exists? filepath
-    File.open(filepath, "w") { |f| f.write "#{month_name.capitalize} #{year}" }
+
+  def hand_in_date
+    HAND_IN_DATE
   end
-  if option == '-b' || option == '--backup'
-    ARGV.shift
-    path = ARGV.shift
-    error = `cp #{filepath} #{path}`
-    puts error unless error.empty?
-    exit
+
+  def midnight_madness_notes
+    MIDNIGHT_MADNESS_NOTES
   end
-  if option == '-e' || option == '--edit'
-    `open #{filepath}`
-    exit
-  end
-  if option == '-r' || option == '--raw'
-    puts `cat #{filepath}`
-    exit
-  end
-  File.open filepath, 'r+' do |file|
-    month = BRFParser.new.parse(file.read)
-    if option == '-f' || option == '--format'
-      file.seek 0, IO::SEEK_SET
-      file.truncate 0
-      file.write month
+
+  def punch
+    option = @args.first
+    if option == '-H' || option == '--hack'
+      `open #{__FILE__}`
       exit
     end
-    if option == '-s' || option == '--stats'
-      ARGV.shift
-      puts Stats.new(month, ARGV.shift.to_i)
+    if option == '-h' || option == '--help'
+      puts File.readlines(help_file).map { |l| l.start_with?('$') ? l.blue : l }
       exit
     end
-    unless ARGV.empty?
-      if option == '-d' || option == '--day'
-        ARGV.shift
-        date = ARGV.shift
-        unless (day = month.days.find { |d| d.date == date })
-          day = Day.new date
-          month.days << day
-        end
-      else
-        unless (day = month.days.find { |d| d.at? now })
-          day = Day.new
-          day.set now
-          month.days << day
-        end
-      end
-      blocks = ARGV.map { |block_str| Block.new block_str, day }
-      day.add *blocks
-      if day.unhealthy?
-        puts MIDNIGHT_MADNESS_NOTES.sample.pink
-        puts
-      end
-      file.seek 0, IO::SEEK_SET
-      file.truncate 0
-      file.write month
+    if option == '-u' || option == '--update'
+      puts `cd #{punch_folder} && git pull origin master`
+      exit
     end
-    puts month.colored
+    if option == '-t' || option == '--test'
+      puts `ruby #{test_file}`
+      exit
+    end
+    now = Time.now
+    month_nr = now.month
+    month_nr = (month_nr + 1) % 12 if now.day > hand_in_date
+    if option == '-n' || option == '--next'
+      @args.shift
+      month_nr = (month_nr + 1) % 12
+      option = @args.first
+    end
+    year = (month_nr < now.month) ? now.year + 1 : now.year
+    if option == '-p' || option == '--previous'
+      @args.shift
+      month_nr -= 1
+      year = (month_nr > now.month) ? now.year - 1 : now.year
+      option = @args.first
+    end
+    month_name = Month.name month_nr
+    filepath = brf_file_path month_name, year
+    unless File.exists? filepath
+      File.open(filepath, "w") { |f|
+        f.write "#{month_name.capitalize} #{year}" }
+    end
+    if option == '-b' || option == '--backup'
+      @args.shift
+      path = @args.shift
+      error = `cp #{filepath} #{path}`
+      puts error unless error.empty?
+      exit
+    end
+    if option == '-e' || option == '--edit'
+      `open #{filepath}`
+      exit
+    end
+    if option == '-r' || option == '--raw'
+      puts `cat #{filepath}`
+      exit
+    end
+    File.open filepath, 'r+' do |file|
+      @month = BRFParser.new.parse(file.read)
+      if option == '-f' || option == '--format'
+        write! file
+        exit
+      end
+      if option == '-s' || option == '--stats'
+        @args.shift
+        puts Stats.new(month, @args.shift.to_i)
+        exit
+      end
+      unless @args.empty?
+        if option == '-d' || option == '--day'
+          @args.shift
+          date = @args.shift
+          unless (day = month.days.find { |d| d.date == date })
+            day = Day.new date
+            month.days << day
+          end
+        else
+          unless (day = month.days.find { |d| d.at? now })
+            day = Day.new
+            day.set now
+            month.days << day
+          end
+        end
+        blocks = @args.map { |block_str| Block.new block_str, day }
+        day.add *blocks
+        if day.unhealthy?
+          puts "#{midnight_madness_notes.sample.pink}\n"
+        end
+        write! file
+      end
+      puts month.colored
+    end
+  end
+
+  private
+
+  def brf_file_path(month_name, year)
+    "#{hours_folder}#{month_name}_#{year}.txt"
   end
 end
+
+PunchClock.new(ARGV).punch if __FILE__ == $0

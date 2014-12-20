@@ -1,5 +1,3 @@
-Usage
-
 $ punch
     Print current month. Today is highlighted in blue, the last updated day in
     pink.

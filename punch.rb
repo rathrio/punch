@@ -39,6 +39,10 @@ class Time
   def short_year
     strftime('%y').to_i
   end
+
+  def next_day
+    self + 86400
+  end
 end
 
 # https://stackoverflow.com/questions/1489183/colorized-ruby-output
@@ -100,6 +104,7 @@ module Totals
   end
 
   def format(seconds)
+    seconds = seconds.to_i
     hours   = seconds / 3600
     rest    = seconds - (hours * 3600)
     minutes = rest / 60
@@ -127,7 +132,7 @@ class Block
     @start  = Time.new(day.long_year, day.month, day.day, *start_ary)
     @finish = Time.new(day.long_year, day.month, day.day, *finish_ary)
     if @finish < @start
-      @finish = @finish + 86400
+      @finish = @finish.next_day
       day.unhealthy!
       over_midnight!
     end
@@ -169,6 +174,14 @@ class Day
 
   def date
     "#{pad day}.#{pad month}.#{year}"
+  end
+
+  def to_time
+    Time.new long_year, month, day
+  end
+
+  def time_on_next_day
+    to_time.next_day
   end
 
   def to_s(options = {})
@@ -233,10 +246,14 @@ class Day
   end
 
   def <=>(other)
-    if month == other.month
-      day <=> other.day
+    if year == other.year
+      if month == other.month
+        day <=> other.day
+      else
+        month <=> other.month
+      end
     else
-      month <=> other.month
+      year <=> other.year
     end
   end
 
@@ -334,7 +351,7 @@ class Stats
   end
 
   def most_blocks
-    days.map(&:block_count).max
+    days.map(&:block_count).max || 0
   end
 
   def total_money_made
@@ -346,7 +363,10 @@ class Stats
   end
 
   def early_mornings
-    blocks.count { |b| b.start < eight_am(b.day) }
+    blocks.count do |b|
+      eight = eight_am b.day
+      b.start <= eight && b.finish > eight
+    end
   end
 
   def total_days
@@ -358,7 +378,18 @@ class Stats
   end
 
   def average_hours_per_day
+    return 0 if days.empty?
     Totals.format(month.total / total_days)
+  end
+
+  def consecutive_days
+    max = 0
+    days[0..days.size - 2].each do |d|
+      i = 1
+      i += 1 while d = next_day(d)
+      max = i if i > max
+    end
+    max
   end
 
   def to_s
@@ -373,10 +404,15 @@ class Stats
 #{label "Most blocks in day"}#{most_blocks}
 #{label "Late nights"}#{late_nights}
 #{label "Early mornings"}#{early_mornings}
+#{label "Consecutive days"}#{consecutive_days}
     EOS
   end
 
   private
+
+  def next_day(day)
+    days.find { |d| d.at? day.time_on_next_day }
+  end
 
   def days
     @days ||= month.days
@@ -398,8 +434,6 @@ class Stats
     Time.new(day.long_year, day.month, day.day, 8)
   end
 end
-
-
 
 class PunchClock
   HAND_IN_DATE = 20
@@ -513,6 +547,10 @@ class PunchClock
       @month = BRFParser.new.parse(file.read)
       if option == '-f' || option == '--format'
         write! file
+        exit
+      end
+      if option == '-c' || option == '--console'
+        require 'pry'; binding.pry
         exit
       end
       if option == '-s' || option == '--stats'

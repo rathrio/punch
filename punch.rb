@@ -483,7 +483,8 @@ class PunchClock
     year = (month_nr < now.month) ? now.year + 1 : now.year
     if option == '-p' || option == '--previous'
       @args.shift
-      month_nr -= 1
+      month_nr = (month_nr - 1) % 12
+      month_nr = 12 if month_nr.zero?
       year = (month_nr > now.month) ? now.year - 1 : now.year
       option = @args.first
     end

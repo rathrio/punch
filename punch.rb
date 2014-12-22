@@ -382,6 +382,11 @@ class Stats
     Totals.format(month.total / total_days)
   end
 
+  def average_hours_per_block
+    return 0 if blocks.empty?
+    Totals.format(month.total / total_blocks)
+  end
+
   def consecutive_days
     max = 0
     days[0..days.size - 2].each do |d|
@@ -397,8 +402,9 @@ class Stats
 #{label "Total hours"}#{month.total_str}
 #{label "Money made"}#{total_money_made}
 #{label "Total days"}#{total_days}
-#{label "Avg hours per day"}#{average_hours_per_day}
 #{label "Total blocks"}#{total_blocks}
+#{label "Avg hours per day"}#{average_hours_per_day}
+#{label "Avg hours per block"}#{average_hours_per_block}
 #{label "Longest day"}#{longest_day}
 #{label "Longest block"}#{longest_block}
 #{label "Most blocks in day"}#{most_blocks}

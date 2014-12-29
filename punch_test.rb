@@ -3,6 +3,14 @@ require 'minitest/pride'
 
 require_relative 'punch'
 
+class PunchClockTest < MiniTest::Test
+  def test_folders
+    clock = PunchClock.new [], "/path/to/punch/punch.rb"
+    assert_equal "/path/to/punch/", clock.punch_folder
+    assert_equal "/path/to/punch/hours/", clock.hours_folder
+  end
+end
+
 class MonthTest < MiniTest::Test
   def test_total_align
     month = BRFParser.new.parse(<<-EOS)

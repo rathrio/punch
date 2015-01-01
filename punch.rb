@@ -40,6 +40,10 @@ class Time
     strftime('%y').to_i
   end
 
+  def previous_day
+    self - 86400
+  end
+
   def next_day
     self + 86400
   end
@@ -573,9 +577,15 @@ class PunchClock
             month.days << day
           end
         else
-          unless (day = month.days.find { |d| d.at? now })
+          time_to_edit = if (option == '-y' || option == '--yesterday')
+            @args.shift
+            now.previous_day
+          else
+            now
+          end
+          unless (day = month.days.find { |d| d.at? time_to_edit })
             day = Day.new
-            day.set now
+            day.set time_to_edit
             month.days << day
           end
         end

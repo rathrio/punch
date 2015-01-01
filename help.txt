@@ -44,3 +44,8 @@ $ punch -t, --test
 
 $ punch -u, --update
     Update this script. (Given you installed it via git-clone)
+
+$ punch -y, --yesterday
+    Add blocks to yesterday.
+    e.g. punch -y 12-13
+

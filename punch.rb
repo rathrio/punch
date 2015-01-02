@@ -476,6 +476,14 @@ class PunchClock
     @hours_folder ||= "#{punch_folder}hours/"
   end
 
+  def version
+    @version ||= `cd #{punch_folder} && git rev-parse --short HEAD`.chomp
+  end
+
+  def last_release
+    @last_release ||= `cd #{punch_folder} && git log -1 --format=%cr HEAD`.chomp
+  end
+
   def help_file
     "#{punch_folder}help.txt"
   end
@@ -514,6 +522,10 @@ class PunchClock
     end
     if option == '-t' || option == '--test'
       puts `ruby #{test_file}`
+      exit
+    end
+    if option == '-v' || option == '--version'
+      puts "#{version.blue} released #{last_release}"
       exit
     end
     now = Time.now

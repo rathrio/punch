@@ -49,6 +49,5 @@ $ punch -v, --version
     Print commit hash of the current version.
 
 $ punch -y, --yesterday
-    Add blocks to yesterday.
-    e.g. punch -y 12-13
+    Add blocks to yesterday. e.g. punch -y 12-13
 

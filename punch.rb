@@ -513,15 +513,24 @@ class PunchClock
       exit
     end
     if option == '-h' || option == '--help'
-      puts File.readlines(help_file).map { |l| l.start_with?('$') ? l.blue : l }
-      exit
+      begin
+        require 'tempfile'
+        f = Tempfile.new 'help'
+        f.write File.readlines(help_file).map { |l|
+          l.start_with?('$') ? l.blue : l }.join
+        f.seek 0, IO::SEEK_SET
+        system "less -R #{f.path}"
+      ensure
+        f.close
+        exit
+      end
     end
     if option == '-u' || option == '--update'
-      puts `cd #{punch_folder} && git pull origin master`
+      system "cd #{punch_folder} && git pull origin master"
       exit
     end
     if option == '-t' || option == '--test'
-      puts `ruby #{test_file}`
+      system "ruby #{test_file}"
       exit
     end
     if option == '-v' || option == '--version'
@@ -553,8 +562,7 @@ class PunchClock
     if option == '-b' || option == '--backup'
       @args.shift
       path = @args.shift
-      error = `cp #{filepath} #{path}`
-      puts error unless error.empty?
+      system "cp #{filepath} #{path}"
       exit
     end
     if option == '-e' || option == '--edit'
@@ -562,7 +570,7 @@ class PunchClock
       exit
     end
     if option == '-r' || option == '--raw'
-      puts `cat #{filepath}`
+      system "cat #{filepath}"
       exit
     end
     File.open filepath, 'r+' do |file|

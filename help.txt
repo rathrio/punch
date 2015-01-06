@@ -26,6 +26,9 @@ $ punch -h , --help
 $ punch -H, --hack
     Edit this script.
 
+$ punch -i, --interactive
+    Start an interactive punch session. Quit it with 'q'.
+
 $ punch -n, --next
     Punch next month.
 

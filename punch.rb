@@ -340,6 +340,24 @@ class Month
   end
 end
 
+# Insecurely loads ~/.punchrc and provides settings as module accessors.
+module Punch
+  class << self
+    attr_writer :hours_folder
+    def hours_folder
+      if @hours_folder.nil? || @hours_folder.end_with?('/')
+        return @hours_folder
+      end
+      "#{@hours_folder}/"
+    end
+  end
+  module_function
+  def configure; yield self; end
+  def load(config_file = "#{Dir.home}/.punchrc")
+    eval File.read(config_file)
+  end
+end
+
 class PunchClock
   HAND_IN_DATE = 20
 
@@ -368,7 +386,7 @@ class PunchClock
   end
 
   def hours_folder
-    @hours_folder ||= "#{punch_folder}hours/"
+    @hours_folder ||= Punch.hours_folder || "#{punch_folder}hours/"
   end
 
   def version
@@ -528,4 +546,7 @@ class PunchClock
   end
 end
 
-PunchClock.new(ARGV).punch if __FILE__ == $0
+if __FILE__ == $0
+  Punch.load # load ~/.punchrc
+  PunchClock.new(ARGV).punch
+end

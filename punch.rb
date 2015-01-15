@@ -450,7 +450,7 @@ class PunchClock
     end
     month_name = Month.name month_nr
     filepath = brf_file_path month_name, year
-    unless File.exists? filepath
+    unless File.exist? filepath
       File.open(filepath, "w") { |f|
         f.write "#{month_name.capitalize} #{year}" }
     end

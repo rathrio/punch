@@ -1,3 +1,6 @@
+Usage
+=====
+
 $ punch
     Print current month. Today is highlighted in blue, the last updated day in
     pink.
@@ -54,3 +57,15 @@ $ punch -v, --version
 $ punch -y, --yesterday
     Add blocks to yesterday. e.g. punch -y 12-13
 
+
+Configuration
+=============
+
+Add a .punchrc file to your home directory and punch will automatically load
+it. You can currently only set the path to the hours folder where punch will
+look for BRF files. By default, it's the hours folder in the punch directory.
+
+  # in ~/.punchrc
+  Punch.configure do |config|
+    config.hours_folder = '/Users/radi/Dropbox/hours'
+  end

@@ -24,6 +24,8 @@
 
 $LOAD_PATH.unshift "#{File.dirname(__FILE__)}/lib"
 
+require 'config'
+
 class Module
   def flag(*names)
     names.each do |name|
@@ -340,24 +342,6 @@ class Month
   end
 end
 
-# Insecurely loads ~/.punchrc and provides settings as module accessors.
-module Punch
-  class << self
-    attr_writer :hours_folder
-    def hours_folder
-      if @hours_folder.nil? || @hours_folder.end_with?('/')
-        return @hours_folder
-      end
-      "#{@hours_folder}/"
-    end
-  end
-  module_function
-  def configure; yield self; end
-  def load(config_file = "#{Dir.home}/.punchrc")
-    eval File.read(config_file)
-  end
-end
-
 class PunchClock
   HAND_IN_DATE = 20
 
@@ -386,7 +370,7 @@ class PunchClock
   end
 
   def hours_folder
-    @hours_folder ||= Punch.hours_folder || "#{punch_folder}hours/"
+    @hours_folder ||= config.hours_folder || "#{punch_folder}hours/"
   end
 
   def version
@@ -402,7 +386,7 @@ class PunchClock
   end
 
   def test_file
-    "#{punch_folder}punch_test.rb"
+    "#{punch_folder}test/punch_test.rb"
   end
 
   def write!(file)
@@ -422,7 +406,7 @@ class PunchClock
   def punch
     option = @args.first
     if option == '-H' || option == '--hack'
-      `open #{__FILE__}`
+      open __FILE__
       exit
     end
     if option == '-h' || option == '--help'
@@ -479,7 +463,7 @@ class PunchClock
       exit
     end
     if option == '-e' || option == '--edit'
-      `open #{filepath}`
+      open filepath
       exit
     end
     if option == '-r' || option == '--raw'
@@ -492,7 +476,11 @@ class PunchClock
         write! file
         exit
       end
-      if option == '-c' || option == '--console'
+      if option == '-c' || option == '--config'
+        open config.config_file
+        exit
+      end
+      if option == '-C' || option == '--console'
         require 'pry'; binding.pry
         exit
       end
@@ -504,7 +492,8 @@ class PunchClock
       if option == '-s' || option == '--stats'
         @args.shift
         require 'stats'
-        puts Stats.new(month, @args.shift.to_i)
+        hourly_pay = (@args.shift || config.hourly_pay).to_i
+        puts Stats.new(month, hourly_pay)
         exit
       end
       unless @args.empty?
@@ -541,12 +530,20 @@ class PunchClock
 
   private
 
+  def config
+    @config ||= Punch.instance
+  end
+
+  def open(file)
+    system "#{config.text_editor} #{file}"
+  end
+
   def brf_file_path(month_name, year)
     "#{hours_folder}#{month_name}_#{year}.txt"
   end
 end
 
 if __FILE__ == $0
-  Punch.load # load ~/.punchrc
+  Punch.load
   PunchClock.new(ARGV).punch
 end

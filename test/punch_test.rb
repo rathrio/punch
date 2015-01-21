@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 
-require_relative 'punch'
+require_relative '../punch'
 
 class PunchClockTest < MiniTest::Test
   def test_folders

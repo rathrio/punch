@@ -20,7 +20,7 @@ class Punch
     def configure; yield instance; end
 
     def load(config_file = instance.config_file)
-      eval File.read(config_file)
+      eval File.read(config_file) if File.exist?(config_file)
     end
   end
 

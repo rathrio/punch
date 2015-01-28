@@ -268,6 +268,7 @@ class Day
   def at?(time)
     (day == time.day) && (month == time.month) && (year == time.short_year)
   end
+  alias_method :include?, :at?
 
   def today?
     at? Time.now
@@ -366,11 +367,11 @@ class PunchClock
   end
 
   def punch_folder
-    @punch_folder ||= path_to_punch[/\/.+\//]
+    @punch_folder ||= File.dirname(path_to_punch)
   end
 
   def hours_folder
-    @hours_folder ||= config.hours_folder || "#{punch_folder}hours/"
+    @hours_folder ||= config.hours_folder
   end
 
   def version
@@ -382,11 +383,11 @@ class PunchClock
   end
 
   def help_file
-    "#{punch_folder}help.txt"
+    "#{punch_folder}/help.txt"
   end
 
   def test_file
-    "#{punch_folder}test/punch_test.rb"
+    "#{punch_folder}/test/punch_test.rb"
   end
 
   def write!(file)
@@ -477,7 +478,7 @@ class PunchClock
         exit
       end
       if option == '-c' || option == '--config'
-        open config.config_file
+        open_or_generate_config_file
         exit
       end
       if option == '-C' || option == '--console'
@@ -530,8 +531,21 @@ class PunchClock
 
   private
 
+  def open_or_generate_config_file
+    if File.exist? config.config_file
+      open config.config_file
+    else
+      puts "The ~/.punchrc file does not exist. Generate it? (y|n)"
+      answer = STDIN.gets.chomp
+      if answer == 'y'
+        config.generate_config_file
+        open config.config_file
+      end
+    end
+  end
+
   def config
-    @config ||= Punch.instance
+    @config ||= Punch.new
   end
 
   def open(file)
@@ -539,11 +553,10 @@ class PunchClock
   end
 
   def brf_file_path(month_name, year)
-    "#{hours_folder}#{month_name}_#{year}.txt"
+    "#{hours_folder}/#{month_name}_#{year}.txt"
   end
 end
 
 if __FILE__ == $0
-  Punch.load
   PunchClock.new(ARGV).punch
 end

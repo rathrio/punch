@@ -12,6 +12,9 @@ $ punch -b, --backup path/to/backup/dir
     Copy the current month's BRF file to given directory.
     e.g. punch -b ~/Desktop
 
+$ punch -c, --config
+    Edit ~/.punchrc.
+
 $ punch -d, --day DD.MM.YY
     Pass a date to add blocks for that day. Defaults to today.
     e.g. punch -d 03.12.14 22-23
@@ -56,16 +59,3 @@ $ punch -v, --version
 
 $ punch -y, --yesterday
     Add blocks to yesterday. e.g. punch -y 12-13
-
-
-Configuration
-=============
-
-Add a .punchrc file to your home directory and punch will automatically load
-it. You can currently only set the path to the hours folder where punch will
-look for BRF files. By default, it's the hours folder in the punch directory.
-
-  # in ~/.punchrc
-  Punch.configure do |config|
-    config.hours_folder = '/Users/radi/Dropbox/hours'
-  end

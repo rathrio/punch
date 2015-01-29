@@ -22,7 +22,7 @@ class Punch
   end
 
   option :hours_folder,
-    "Where to look for the BRF files. Defaults to the hours folder in the punch directory.",
+    "Where to look for the BRF files.",
     File.expand_path('../hours', File.dirname(__FILE__))
 
   option :name,

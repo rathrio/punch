@@ -6,18 +6,36 @@ $ punch
     pink.
 
 $ punch HH:MM-HH:MM HH:MM-HH:MM ...
-    Add blocks to today. Minutes are optional. e.g. punch 8-12 12:30-18
+    Add blocks to today. Minutes are optional.
+
+    punch 8-12 12:30-18
 
 $ punch -b, --backup path/to/backup/dir
     Copy the current month's BRF file to given directory.
-    e.g. punch -b ~/Desktop
+
+    punch -b ~/Desktop
 
 $ punch -c, --config
     Edit ~/.punchrc.
 
+$ punch --config-reset
+    Reset ~/.punchrc.
+
+$ punch --config-regenerate
+    Regenerate ~/.punchrc. Doesn't reset to default settings. This is useful
+    when new settings are available.
+
+$ punch -C, --console
+    Start pry session after internal Month instance has been initialized.
+    Depends on pry gem.
+
 $ punch -d, --day DD.MM.YY
     Pass a date to add blocks for that day. Defaults to today.
-    e.g. punch -d 03.12.14 22-23
+
+    punch -d 03.12.14 22-23
+
+$ punch -D, --doc
+    Generate and view docs in default browser. Depends on yard gem.
 
 $ punch -e, --edit
     Edit current BRF file with your default text editor.
@@ -46,10 +64,12 @@ $ punch -r, --raw
 
 $ punch -s, --stats pay
     Print some stats. Optionally pass your hourly pay to see how much money you
-    made this month. e.g. punch -s 99
+    made this month.
+
+    punch -s 99
 
 $ punch -t, --test
-    Run tests.
+    Run tests. Depends on timecop gem.
 
 $ punch -u, --update
     Update this script. (Given you installed it via git-clone)
@@ -58,4 +78,6 @@ $ punch -v, --version
     Print commit hash of the current version.
 
 $ punch -y, --yesterday
-    Add blocks to yesterday. e.g. punch -y 12-13
+    Add blocks to yesterday.
+
+    punch -y 12-13

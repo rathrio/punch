@@ -33,8 +33,6 @@ require 'day'
 require 'month'
 
 class PunchClock
-  HAND_IN_DATE = 20
-
   MIDNIGHT_MADNESS_NOTES = [
     "Get some sleep!",
     "Don't you have any hobbies?",
@@ -86,7 +84,7 @@ class PunchClock
   end
 
   def hand_in_date
-    HAND_IN_DATE
+    config.hand_in_date
   end
 
   def midnight_madness_notes
@@ -112,12 +110,16 @@ class PunchClock
         exit
       end
     end
+    if option == '-D' || option == '--doc'
+      system "cd #{punch_folder} && yard && open doc/index.html"
+      exit
+    end
     if option == '-u' || option == '--update'
       system "cd #{punch_folder} && git pull origin master"
       exit
     end
     if option == '-t' || option == '--test'
-      system "ruby #{test_file}"
+      system "#{config.system_ruby} #{test_file}"
       exit
     end
     if option == '-v' || option == '--version'
@@ -168,6 +170,18 @@ class PunchClock
       end
       if option == '-c' || option == '--config'
         open_or_generate_config_file
+        exit
+      end
+      if option == '--config-reset'
+        puts "Are you sure you want to reset ~/.punchrc? (y|n)"
+        if STDIN.gets.chomp == 'y'
+          config.reset!
+          generate_and_open_config_file
+        end
+        exit
+      end
+      if option == '--config-regenerate'
+        generate_and_open_config_file
         exit
       end
       if option == '-C' || option == '--console'
@@ -225,12 +239,13 @@ class PunchClock
       open config.config_file
     else
       puts "The ~/.punchrc file does not exist. Generate it? (y|n)"
-      answer = STDIN.gets.chomp
-      if answer == 'y'
-        config.generate_config_file
-        open config.config_file
-      end
+      generate_and_open_config_file if STDIN.gets.chomp == 'y'
     end
+  end
+
+  def generate_and_open_config_file
+    config.generate_config_file
+    open config.config_file
   end
 
   def config

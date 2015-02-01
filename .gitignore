@@ -1,1 +1,4 @@
 hours/*.txt
+.ruby-gemset
+.yardoc
+doc

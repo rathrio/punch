@@ -37,6 +37,14 @@ class Punch
     "Which terminal application to use to open files (i.e. for \"punch -e\" or \"punch -c\")",
     "open"
 
+  option :hand_in_date,
+    "After which day punch should generate the next month's BRF file.",
+    20
+
+  option :system_ruby,
+    "Which ruby command to use to execute subcommands.",
+    "ruby"
+
   def initialize
     raise "Config already initialized" unless self.class.instance.nil?
     self.class.instance = self
@@ -44,6 +52,10 @@ class Punch
     if File.exist?(config_file)
       eval File.read(config_file)
     end
+  end
+
+  def reset!
+    options.each { |option| send("#{option.name}=", nil) }
   end
 
   def config_file
@@ -64,10 +76,6 @@ class Punch
     str = options.map do |o|
       "  # #{o.description}\n  config.#{o.name} = #{send(o.name).inspect}"
     end.join("\n\n")
-    <<-EOF
-Punch.configure do |config|
-#{str}
-end
-    EOF
+    "Punch.configure do |config|\n#{str}\nend"
   end
 end

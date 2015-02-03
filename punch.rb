@@ -46,7 +46,7 @@ class PunchClock
     "Did you know that the average adult needs 7-8 hours of sleep?"
   ]
 
-  attr_accessor :args, :path_to_punch, :month
+  attr_accessor :args, :path_to_punch, :month, :brf_filepath
 
   def initialize(args, path_to_punch)
     @args = args
@@ -143,27 +143,26 @@ class PunchClock
       option = @args.first
     end
     month_name = Month.name month_nr
-    filepath = brf_file_path month_name, year
-    unless File.exist? filepath
-      File.open(filepath, "w") { |f|
+    @brf_filepath = brf_file_path month_name, year
+    unless File.exist? brf_filepath
+      File.open(brf_filepath, "w") { |f|
         f.write "#{month_name.capitalize} #{year}" }
     end
     if option == '-b' || option == '--backup'
       @args.shift
       path = @args.shift
-      system "cp #{filepath} #{path}"
+      system "cp #{brf_filepath} #{path}"
       exit
     end
-    if option == '-e' || option == '--edit'
-      open filepath
-      exit
-    end
+    edit_brf if option == '-e' || option == '--edit'
     if option == '-r' || option == '--raw'
-      system "cat #{filepath}"
+      system "cat #{brf_filepath}"
       exit
     end
-    File.open filepath, 'r+' do |file|
+    File.open brf_filepath, 'r+' do |file|
       @month = BRFParser.new.parse(file.read)
+      @month.number = month_nr
+      @month.year   = year
       if option == '-f' || option == '--format'
         write! file
         exit
@@ -190,7 +189,7 @@ class PunchClock
       end
       if option == '-i' || option == '--interactive'
         @args.shift
-        require 'editor'; Editor.new(month).run
+        require 'editor'; Editor.new(self).run
         write! file
       end
       if option == '-s' || option == '--stats'
@@ -232,6 +231,15 @@ class PunchClock
     end
   end
 
+  def config
+    @config ||= Punch.new
+  end
+
+  def edit_brf
+    open brf_filepath
+    exit
+  end
+
   private
 
   def open_or_generate_config_file
@@ -246,10 +254,6 @@ class PunchClock
   def generate_and_open_config_file
     config.generate_config_file
     open config.config_file
-  end
-
-  def config
-    @config ||= Punch.new
   end
 
   def open(file)

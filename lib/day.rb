@@ -40,6 +40,10 @@ class Day
     str
   end
 
+  def empty?
+    blocks.empty?
+  end
+
   def blocks
     @blocks ||= []
   end

@@ -18,7 +18,7 @@ class Month
     12 => 'dezember',
   }
 
-  attr_accessor :name, :days
+  attr_accessor :name, :days, :number, :year
 
   def self.name(month_nr)
     NAMES[month_nr]
@@ -57,5 +57,9 @@ class Month
 
   def max_block_count
     days.map(&:block_count).max
+  end
+
+  def short_year
+    year - 2000
   end
 end

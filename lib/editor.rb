@@ -9,8 +9,8 @@ class Editor
   end
 
   def run
+    fill_month
     loop do
-      fill_month
       print_month
       input = prompt
       exit if %w(q quit exit).include? input
@@ -44,14 +44,49 @@ class Editor
   end
 
   def fill_month
+    current_month_nr = month.number
+    current_year     = month.short_year
+
+    if (prev_month_nr = current_month_nr - 1).zero?
+      prev_month_nr = 12
+      prev_year = current_year - 1
+    else
+      prev_year = current_year
+    end
+
+    current_month_days =
+      month.days.select { |d| d.month == current_month_nr }.map &:day
+
+    prev_month_days =
+      month.days.select { |d| d.month == prev_month_nr }.map &:day
+
+    ((1..20).to_a - current_month_days).each do |d|
+      day = Day.new
+      day.day = d
+      day.month = current_month_nr
+      day.year = current_year
+      month.days << day
+    end
+
+    (((config.hand_in_date + 1)..days_in_month(prev_year, prev_month_nr)).
+      to_a - prev_month_days).each do |d|
+
+      day = Day.new
+      day.day = d
+      day.month = prev_month_nr
+      day.year = prev_year
+      month.days << day
+    end
+
+    month.days.sort!
   end
 
   def purge_empty_days
     month.days.reject! &:empty?
   end
 
-  def days_in_month
-    Date.new(month.year, month.number, -1).day
+  def days_in_month(year, month_nr)
+    Date.new(year, month_nr, -1).day
   end
 
   def title
@@ -86,7 +121,8 @@ class Editor
       index = i + 1
       index_str = "{#{index}}".rjust(4)
       index_str = index_str.pink unless days_picked?
-      str = index_str + "  #{d.to_s(:padding => max_block_count)}"
+      day_str   = d.to_s(:padding => max_block_count, :totals => d.blocks.any?)
+      str = index_str + "  #{day_str}"
       if days_picked.include?(index)
         buffer << "\n#{str.pink}"
       else
@@ -95,6 +131,8 @@ class Editor
     end
 
     buffer << "\n"
+
+    buffer << "\nTotal: #{month.total_str}\n"
 
     buffer << legend('x', 'Save and quit')
     buffer << legend('q', 'Quit without saving')

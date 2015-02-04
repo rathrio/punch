@@ -94,7 +94,7 @@ class PunchClock
   def punch
     option = @args.first
     if option == '-H' || option == '--hack'
-      open __FILE__
+      system "cd #{punch_folder} && #{config.text_editor} ."
       exit
     end
     if option == '-h' || option == '--help'

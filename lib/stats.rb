@@ -1,3 +1,22 @@
+# Aggregates super useless stats given an instance of Month.
+#
+#   Stats.new(month).to_s
+#
+# might return something like this:
+#
+#   Total hours:           35:30
+#   Money made:            0
+#   Total days:            7
+#   Total blocks:          12
+#   Avg hours per day:     05:04
+#   Avg hours per block:   02:57
+#   Longest day:           11:00
+#   Longest block:         09:00
+#   Most blocks in day:    3
+#   Late nights:           0
+#   Early mornings:        0
+#   Consecutive days:      3
+#
 class Stats
   attr_accessor :month, :hourly_pay
 
@@ -22,10 +41,12 @@ class Stats
     "#{money_made month.total} CHF"
   end
 
+  # Number of blocks where #start and #finish are on different days.
   def late_nights
     blocks.count &:over_midnight?
   end
 
+  # Number of blocks where the #start is before 8 am and #finish is after it.
   def early_mornings
     blocks.count do |b|
       eight = eight_am b.day
@@ -51,6 +72,7 @@ class Stats
     Totals.format(month.total / total_blocks)
   end
 
+  # Work days streak.
   def consecutive_days
     max = 0
     days[0..days.size - 2].each do |d|

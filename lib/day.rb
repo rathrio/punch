@@ -32,7 +32,7 @@ class Day
       end
     end
     str = "#{date}   #{blocks_str}   "
-    str << "Total: #{total_str}" if options.fetch :totals, true
+    str << "Total: #{total_str}" if blocks.any?
     if options.fetch :color, false
       return str.pink if highlight?
       return str.blue if today?

@@ -46,7 +46,8 @@ class Punch
     "ruby"
 
   def initialize
-    raise "Config already initialized" unless self.class.instance.nil?
+    return self.class.instance unless self.class.instance.nil?
+
     self.class.instance = self
 
     if File.exist?(config_file)

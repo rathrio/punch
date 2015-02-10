@@ -41,6 +41,15 @@ class DayTest < MiniTest::Test
     assert today.at?(now), 'today was not today'
   end
 
+  def test_today?
+    Timecop.freeze(Time.new(2014, 12, 20)) do
+      now = Time.now
+      today = Day.new
+      today.set now
+      assert today.today?, 'today was not today'
+    end
+  end
+
   def test_merge
     day = Day.new '26.03.89'
     day.add Block.new("13:15-17:00", day)

@@ -143,7 +143,7 @@ class PunchClock
       option = @args.first
     end
     month_name = Month.name month_nr
-    @brf_filepath = brf_file_path month_name, year
+    @brf_filepath = generate_brf_filepath month_name, year
     unless File.exist? brf_filepath
       File.open(brf_filepath, "w") { |f|
         f.write "#{month_name.capitalize} #{year}" }
@@ -227,6 +227,12 @@ class PunchClock
         end
         write! file
       end
+      # Add today if necessary
+      if month.days.none? { |d| d.at? now }
+        today = Day.new
+        today.set now
+        month.days << today
+      end
       puts month.colored
     end
   end
@@ -264,7 +270,7 @@ class PunchClock
     system "#{config.text_editor} #{file}"
   end
 
-  def brf_file_path(month_name, year)
+  def generate_brf_filepath(month_name, year)
     "#{hours_folder}/#{month_name}_#{year}.txt"
   end
 end

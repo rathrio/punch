@@ -1,5 +1,11 @@
-Usage
-=====
+$$$$$$$\                                $$\
+$$  __$$\                               $$ |
+$$ |  $$ |$$\   $$\ $$$$$$$\   $$$$$$$\ $$$$$$$\
+$$$$$$$  |$$ |  $$ |$$  __$$\ $$  _____|$$  __$$\
+$$  ____/ $$ |  $$ |$$ |  $$ |$$ /      $$ |  $$ |
+$$ |      $$ |  $$ |$$ |  $$ |$$ |      $$ |  $$ |
+$$ |      \$$$$$$  |$$ |  $$ |\$$$$$$$\ $$ |  $$ |
+\__|       \______/ \__|  \__| \_______|\__|  \__|
 
 $ punch
     Print current month. Today is highlighted in blue, the last updated day in
@@ -25,17 +31,10 @@ $ punch --config-regenerate
     Regenerate ~/.punchrc. Doesn't reset to default settings. This is useful
     when new settings are available.
 
-$ punch -C, --console
-    Start pry session after internal Month instance has been initialized.
-    Depends on pry gem.
-
 $ punch -d, --day DD.MM.YY
     Pass a date to add blocks for that day. Defaults to today.
 
     punch -d 03.12.14 22-23
-
-$ punch -D, --doc
-    Generate and view docs in default browser. Depends on yard gem.
 
 $ punch -e, --edit
     Edit current BRF file with your default text editor.
@@ -46,9 +45,6 @@ $ punch -f, --format
 
 $ punch -h , --help
     Print this message.
-
-$ punch -H, --hack
-    Edit this script.
 
 $ punch -i, --interactive
     Start an interactive punch session. Quit it with 'q'.
@@ -68,9 +64,6 @@ $ punch -s, --stats pay
 
     punch -s 99
 
-$ punch -t, --test
-    Run tests. Depends on timecop gem.
-
 $ punch -u, --update
     Update this script. (Given you installed it via git-clone)
 
@@ -81,3 +74,18 @@ $ punch -y, --yesterday
     Add blocks to yesterday.
 
     punch -y 12-13
+
+================================================================================
+
+$ punch -C, --console
+    Start pry session after internal Month instance has been initialized.
+    Depends on pry gem.
+
+$ punch -D, --doc
+    Generate and view docs in default browser. Depends on yard gem.
+
+$ punch -H, --hack
+    Edit this script.
+
+$ punch -t, --test
+    Run tests. Depends on timecop gem.

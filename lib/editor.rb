@@ -121,7 +121,7 @@ class Editor
       index = i + 1
       index_str = "{#{index}}".rjust(4)
       index_str = index_str.pink unless days_picked?
-      day_str   = d.to_s(:padding => max_block_count, :totals => d.blocks.any?)
+      day_str   = d.to_s(:padding => max_block_count)
       str = index_str + "  #{day_str}"
       if days_picked.include?(index)
         buffer << "\n#{str.pink}"

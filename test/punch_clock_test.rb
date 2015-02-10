@@ -47,6 +47,36 @@ class PunchClockTest < MiniTest::Test
     assert_includes brf_content, '27.01.15   11:00-13:00   Total: 02:00'
   end
 
+  def test_format_switch_normalizes_whitespace
+    brf_write %{
+      Februar 2015
+
+        01.02.15 08:00-09:00  12:00-13:30                       Total: 02:30
+
+      Total: 01:30
+    }
+
+    punch '-f'
+
+    assert_includes brf_content,
+      '01.02.15   08:00-09:00   12:00-13:30   Total: 02:30'
+  end
+
+  def test_format_switch_recalculates_totals
+    brf_write %{
+      Februar 2015
+
+      01.02.15   08:00-09:00   12:00-13:30   Total: 22:00
+
+      Total: 00:00
+    }
+
+    punch '-f'
+
+    assert_includes brf_content,
+      '01.02.15   08:00-09:00   12:00-13:30   Total: 02:30'
+  end
+
   def teardown
     clear_hours_folder
   end

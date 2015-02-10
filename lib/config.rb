@@ -45,6 +45,10 @@ class Punch
     "Which ruby command to use to execute subcommands.",
     "ruby"
 
+  option :monthly_goal,
+    "How many hours you want to work per month.",
+    68
+
   def initialize
     return self.class.instance unless self.class.instance.nil?
 

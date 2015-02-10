@@ -81,6 +81,7 @@ class PunchClock
     file.seek 0, IO::SEEK_SET
     file.truncate 0
     file.write month
+    file.seek 0, IO::SEEK_SET
   end
 
   def hand_in_date
@@ -156,7 +157,7 @@ class PunchClock
     end
     edit_brf if option == '-e' || option == '--edit'
     if option == '-r' || option == '--raw'
-      system "cat #{brf_filepath}"
+      puts raw_brf
       exit
     end
     File.open brf_filepath, 'r+' do |file|
@@ -164,7 +165,12 @@ class PunchClock
       @month.number = month_nr
       @month.year   = year
       if option == '-f' || option == '--format'
+        @args.shift
+        puts "Before formatting:\n".blue
+        puts raw_brf
         write! file
+        puts "\nAfter formatting:\n".blue
+        puts raw_brf
         exit
       end
       if option == '-c' || option == '--config'
@@ -244,6 +250,10 @@ class PunchClock
   def edit_brf
     open brf_filepath
     exit
+  end
+
+  def raw_brf
+    `cat #{brf_filepath}`
   end
 
   private

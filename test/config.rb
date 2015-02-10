@@ -39,6 +39,9 @@ end
 def punch(args = "")
   @clock = PunchClock.new(args.split)
   @clock.punch
+rescue SystemExit
+  # Do nothing and move on like a baws. We don't wanna exit the test suite when
+  # punch calls Kernel#exit.
 end
 
 # Delete all BRF files in test hours folder.
@@ -53,7 +56,23 @@ end
 
 # Content of current BRF file.
 def brf_content
-  `cat #{@clock.brf_filepath}`
+  clock.raw_brf
+end
+
+# Current BRF file path.
+def brf_file
+  clock.brf_filepath
+end
+
+# Write str to current BRF file.
+def brf_write(str)
+  File.open(brf_file, 'w') { |f| f.write str }
+end
+
+# Most recently created punch clock instance.
+def clock
+  punch if @clock.nil?
+  @clock
 end
 
 MiniTest.after_run { clear_hours_folder }

@@ -83,10 +83,18 @@ class Stats
     max
   end
 
+  def monthly_goal
+    goal      = config.monthly_goal * 3600
+    actual    = month.total
+    remaining = Totals.format(goal - actual)
+    "#{Totals.format actual}/#{config.monthly_goal} Diff: #{remaining}"
+  end
+
   def to_s
     <<-EOS
 #{label "Total hours"}#{month.total_str}
 #{label "Money made"}#{total_money_made}
+#{label "Monthly goal"}#{monthly_goal}
 #{label "Total days"}#{total_days}
 #{label "Total blocks"}#{total_blocks}
 #{label "Avg hours per day"}#{average_hours_per_day}
@@ -101,6 +109,10 @@ class Stats
   end
 
   private
+
+  def config
+    Punch.instance
+  end
 
   def next_day(day)
     days.find { |d| d.at? day.time_on_next_day }

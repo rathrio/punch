@@ -66,6 +66,10 @@ class Punch
     File.open(config_file, "w") { |f| f.write config_string }
   end
 
+  def out
+    STDOUT
+  end
+
   private
 
   def options

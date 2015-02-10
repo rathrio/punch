@@ -48,7 +48,7 @@ class PunchClock
 
   attr_accessor :args, :path_to_punch, :month, :brf_filepath
 
-  def initialize(args, path_to_punch)
+  def initialize(args, path_to_punch = __FILE__)
     @args = args
     @path_to_punch = path_to_punch
   end
@@ -242,6 +242,10 @@ class PunchClock
 
   private
 
+  def puts(str)
+    config.out.puts str
+  end
+
   def open_or_generate_config_file
     if File.exist? config.config_file
       open config.config_file
@@ -266,5 +270,5 @@ class PunchClock
 end
 
 if __FILE__ == $0
-  PunchClock.new(ARGV, __FILE__).punch
+  PunchClock.new(ARGV).punch
 end

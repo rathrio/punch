@@ -1,8 +1,13 @@
-class PunchClockTest < MiniTest::Test
+class PunchClockTest < PunchTest
 
   # Travel to 28.01.2015. So the current BRF month is February.
   def setup
     Timecop.freeze(Time.new(2015, 01, 28))
+  end
+
+  def test_nice_hint_when_being_dumb
+    punch 'i am so dumb'
+    assert_includes output, 'punch -h'
   end
 
   def test_without_args_prints_month
@@ -75,6 +80,18 @@ class PunchClockTest < MiniTest::Test
 
     assert_includes brf_content,
       '01.02.15   08:00-09:00   12:00-13:30   Total: 02:30'
+  end
+
+  def test_punch_previous_month_with_previous_switch
+    punch "-p 2-3"
+
+    assert_includes brf_content, "Januar 2015"
+  end
+
+  def test_punch_next_month_with_next_switch
+    punch "-n 2-3"
+
+    assert_includes brf_content, "Maerz 2015"
   end
 
   def teardown

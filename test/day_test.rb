@@ -1,4 +1,4 @@
-class DayTest < MiniTest::Test
+class DayTest < PunchTest
   def test_initialize
     day = Day.new '27.11.14'
     assert_equal 27, day.day

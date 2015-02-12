@@ -1,4 +1,4 @@
-class MonthTest < MiniTest::Test
+class MonthTest < PunchTest
   def test_total_align
     month = BRFParser.new.parse(<<-EOS)
       November 2014

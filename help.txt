@@ -21,6 +21,9 @@ $ punch -b, --backup path/to/backup/dir
 
     punch -b ~/Desktop
 
+$ punch --brf
+    Open hours folder.
+
 $ punch -c, --config
     Edit ~/.punchrc.
 

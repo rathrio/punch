@@ -94,6 +94,10 @@ class PunchClock
 
   def punch
     option = @args.first
+    if option == '--brf'
+      system "open #{hours_folder}"
+      exit
+    end
     if option == '-H' || option == '--hack'
       system "cd #{punch_folder} && #{config.text_editor} ."
       exit
@@ -241,6 +245,8 @@ class PunchClock
       end
       puts month.colored
     end
+  rescue
+    puts %{That's not a valid argument dummy.\nRun #{"punch -h".blue} for help.}
   end
 
   def config

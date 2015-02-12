@@ -26,53 +26,60 @@ class Punch
   end
 end
 
-# Test helper methods
+# Provides some helper methods.
+class PunchTest < MiniTest::Test
 
-# Path to test hours folder.
-def hours_folder
-  TEST_HOURS_FOLDER
+  # Delete all BRF files in test hours folder.
+  def self.clear_hours_folder
+    system "rm #{TEST_HOURS_FOLDER}/*" unless `ls #{TEST_HOURS_FOLDER}`.empty?
+  end
+
+  def clear_hours_folder
+    self.class.clear_hours_folder
+  end
+
+  # Path to test hours folder.
+  def hours_folder
+    TEST_HOURS_FOLDER
+  end
+
+  # Run punch clock. Mimics CLI.
+  #
+  #   punch "-d 20.01.2015 18:30-19"
+  def punch(args = "")
+    @clock = PunchClock.new(args.split)
+    @clock.punch
+  rescue SystemExit
+    # Do nothing and move on like a baws. We don't wanna exit the test suite when
+    # punch calls Kernel#exit.
+  end
+
+  # Recent test output.
+  def output
+    TestOut.output
+  end
+
+  # Content of current BRF file.
+  def brf_content
+    clock.raw_brf
+  end
+
+  # Current BRF file path.
+  def brf_file
+    clock.brf_filepath
+  end
+
+  # Write str to current BRF file.
+  def brf_write(str)
+    File.open(brf_file, 'w') { |f| f.write str }
+  end
+
+  # Most recently created punch clock instance.
+  def clock
+    punch if @clock.nil?
+    @clock
+  end
+
 end
 
-# Run punch clock. Mimics CLI.
-#
-#   punch "-d 20.01.2015 18:30-19"
-def punch(args = "")
-  @clock = PunchClock.new(args.split)
-  @clock.punch
-rescue SystemExit
-  # Do nothing and move on like a baws. We don't wanna exit the test suite when
-  # punch calls Kernel#exit.
-end
-
-# Delete all BRF files in test hours folder.
-def clear_hours_folder
-  system "rm #{hours_folder}/*" unless `ls #{hours_folder}`.empty?
-end
-
-# Recent test output.
-def output
-  TestOut.output
-end
-
-# Content of current BRF file.
-def brf_content
-  clock.raw_brf
-end
-
-# Current BRF file path.
-def brf_file
-  clock.brf_filepath
-end
-
-# Write str to current BRF file.
-def brf_write(str)
-  File.open(brf_file, 'w') { |f| f.write str }
-end
-
-# Most recently created punch clock instance.
-def clock
-  punch if @clock.nil?
-  @clock
-end
-
-MiniTest.after_run { clear_hours_folder }
+MiniTest.after_run { PunchTest.clear_hours_folder }

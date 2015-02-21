@@ -193,6 +193,14 @@ class PunchClock
         generate_and_open_config_file
         exit
       end
+      if option == '--trello'
+        system "open https://trello.com/b/xfN8alsq/punch"
+        exit
+      end
+      if option == '--github'
+        system "open https://github.com/rathrio/punch"
+        exit
+      end
       if option == '-C' || option == '--console'
         require 'pry'; binding.pry
         exit

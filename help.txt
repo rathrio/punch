@@ -14,12 +14,16 @@ $ punch
 $ punch HH:MM-HH:MM HH:MM-HH:MM ...
     Add blocks to today. Minutes are optional.
 
-    punch 8-12 12:30-18
+    $ punch 8-12 12:30-18
+
+    generates
+
+    15.02.15   08:00-12:00   12:30-18:00   Total: 09:30
 
 $ punch -b, --backup path/to/backup/dir
     Copy the current month's BRF file to given directory.
 
-    punch -b ~/Desktop
+    $ punch -b ~/Desktop
 
 $ punch --brf
     Open hours folder.
@@ -37,7 +41,7 @@ $ punch --config-regenerate
 $ punch -d, --day DD.MM.YY
     Pass a date to add blocks for that day. Defaults to today.
 
-    punch -d 03.12.14 22-23
+    $ punch -d 03.12.14 22-23
 
 $ punch -e, --edit
     Edit current BRF file with your default text editor.
@@ -65,7 +69,7 @@ $ punch -s, --stats pay
     Print some stats. Optionally pass your hourly pay to see how much money you
     made this month.
 
-    punch -s 99
+    $ punch -s 99
 
 $ punch -u, --update
     Update this script. (Given you installed it via git-clone)
@@ -76,7 +80,7 @@ $ punch -v, --version
 $ punch -y, --yesterday
     Add blocks to yesterday.
 
-    punch -y 12-13
+    $ punch -y 12-13
 
 ================================================================================
 
@@ -87,8 +91,14 @@ $ punch -C, --console
 $ punch -D, --doc
     Generate and view docs in default browser. Depends on yard gem.
 
+$ punch --github
+    Open GitHub page.
+
 $ punch -H, --hack
     Edit this script.
 
 $ punch -t, --test
     Run tests. Depends on timecop gem.
+
+$ punch --trello
+    Open Trello board.

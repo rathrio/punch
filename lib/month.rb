@@ -32,6 +32,14 @@ class Month
     NEWLINE
   end
 
+  def name
+    if year.nil? || number.nil?
+      @number
+    else
+      "#{NAMES[number].capitalize} #{year} - #{Punch.instance.name}"
+    end
+  end
+
   def to_s(options = {})
     color = options.fetch :color, false
     days.sort!

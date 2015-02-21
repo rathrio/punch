@@ -19,7 +19,7 @@ class PunchClockTest < PunchTest
     assert_includes content, 'Total: 08:00'
   end
 
-  def test_today_is_always_listed_in_output
+  def test_today_is_always_listed_in_output_but_not_in_brf
     punch # empty month
     date = '28.01.15'
     refute_includes brf_content, date

@@ -131,6 +131,39 @@ class PunchClock
       puts "#{version.blue} released #{last_release}"
       exit
     end
+    if option == '-l' || option == '--log'
+      @args.shift
+      system "cd #{punch_folder} && #{log(@args.shift)}"
+      exit
+    end
+    if option == '--trello'
+      system "open https://trello.com/b/xfN8alsq/punch"
+      exit
+    end
+    if option == '--github'
+      system "open https://github.com/rathrio/punch"
+      exit
+    end
+    if option == '--whoami'
+      puts "You are the sunshine of my life, #{config.name}.".pink
+      exit
+    end
+    if option == '-c' || option == '--config'
+      open_or_generate_config_file
+      exit
+    end
+    if option == '--config-reset'
+      puts "Are you sure you want to reset ~/.punchrc? (y|n)"
+      if STDIN.gets.chomp == 'y'
+        config.reset!
+        generate_and_open_config_file
+      end
+      exit
+    end
+    if option == '--config-regenerate'
+      generate_and_open_config_file
+      exit
+    end
     now = Time.now
     month_nr = now.month
     month_nr = (month_nr + 1) % 12 if now.day > hand_in_date
@@ -175,30 +208,6 @@ class PunchClock
         write! file
         puts "\nAfter formatting:\n".blue
         puts raw_brf
-        exit
-      end
-      if option == '-c' || option == '--config'
-        open_or_generate_config_file
-        exit
-      end
-      if option == '--config-reset'
-        puts "Are you sure you want to reset ~/.punchrc? (y|n)"
-        if STDIN.gets.chomp == 'y'
-          config.reset!
-          generate_and_open_config_file
-        end
-        exit
-      end
-      if option == '--config-regenerate'
-        generate_and_open_config_file
-        exit
-      end
-      if option == '--trello'
-        system "open https://trello.com/b/xfN8alsq/punch"
-        exit
-      end
-      if option == '--github'
-        system "open https://github.com/rathrio/punch"
         exit
       end
       if option == '-C' || option == '--console'
@@ -253,7 +262,8 @@ class PunchClock
       end
       puts month.colored
     end
-  rescue
+  rescue => e
+    raise e if config.debug?
     puts %{That's not a valid argument dummy.\nRun #{"punch -h".blue} for help.}
   end
 
@@ -296,6 +306,14 @@ class PunchClock
 
   def generate_brf_filepath(month_name, year)
     "#{hours_folder}/#{month_name}_#{year}.txt"
+  end
+
+  def log(n = nil)
+    n = 10 if (n = n.to_i).zero?
+    "git log"\
+      " --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s'"\
+      " --date=short"\
+      " -n #{n}"
   end
 end
 

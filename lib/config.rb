@@ -34,7 +34,7 @@ class Punch
     0
 
   option :text_editor,
-    "Which terminal application to use to open files (i.e. for \"punch -e\" or \"punch -c\")",
+    "Which terminal application to use to edit files.",
     "open"
 
   option :hand_in_date,
@@ -49,13 +49,24 @@ class Punch
     "How many hours you want to work per month.",
     68
 
+  option :debug,
+    "Print stack trace instead of user friendly hint.",
+    false
+
   def initialize
     return self.class.instance unless self.class.instance.nil?
 
     self.class.instance = self
 
     if File.exist?(config_file)
-      eval File.read(config_file)
+      begin
+        eval File.read(config_file)
+      rescue => e
+        message = "Something went wrong while trying to load ~.punchrc:\n".pink
+        message << "\n#{e}\n\n"
+        message << "Proceeding with default settings.\n".pink
+        puts message
+      end
     end
   end
 
@@ -75,6 +86,10 @@ class Punch
     STDOUT
   end
 
+  def debug?
+    debug
+  end
+
   private
 
   def options
@@ -85,6 +100,24 @@ class Punch
     str = options.map do |o|
       "  # #{o.description}\n  config.#{o.name} = #{send(o.name).inspect}"
     end.join("\n\n")
+
+    "# Punch settings file. Use valid Ruby syntax or you shall be punished!\n"\
+    "#\n"\
+    "# To reset all settings run\n"\
+    "#\n"\
+    "#   $ punch --config-reset\n"\
+    "#\n"\
+    "# To regenerate this file while keeping your modifications and adding\n"\
+    "# new options that might have been made available with an update run\n"\
+    "#\n"\
+    "#   $ punch --config-regenerate\n"\
+    "#\n"\
+    "# If you messed up so badly that punch won't even start up because of\n"\
+    "# this config file and you don't know how to fix it, feel free to delete\n"\
+    "# it and generate a new one with\n"\
+    "#\n"\
+    "#   $ punch --config\n"\
+    "#\n"\
     "Punch.configure do |config|\n#{str}\nend"
   end
 end

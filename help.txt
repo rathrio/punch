@@ -56,6 +56,9 @@ $ punch -h , --help
 $ punch -i, --interactive
     Start an interactive punch session. Quit it with 'q'.
 
+$ punch -l, --log [entries]
+    List the last 10 commit messages. Optionally pass a number to list more.
+
 $ punch -n, --next
     Punch next month.
 
@@ -65,7 +68,7 @@ $ punch -p, --previous
 $ punch -r, --raw
     Print current BRF file without fancy highlighting and auto-formatting.
 
-$ punch -s, --stats pay
+$ punch -s, --stats [pay]
     Print some stats. Optionally pass your hourly pay to see how much money you
     made this month.
 

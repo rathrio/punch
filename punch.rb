@@ -262,9 +262,12 @@ class PunchClock
       end
       puts month.colored
     end
+  rescue BRFParser::ParserError => e
+    raise e if config.debug?
+    puts "Couldn't parse #{brf_filepath.blue}."
   rescue => e
     raise e if config.debug?
-    puts %{That's not a valid argument dummy.\nRun #{"punch -h".blue} for help.}
+    puts %{That's not a valid argument, dummy.\nRun #{"punch -h".blue} for help.}
   end
 
   def config

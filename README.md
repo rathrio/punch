@@ -1,12 +1,14 @@
 punch
 =====
 
-Every month, I send an excel file with my hours to Brigitte, the accountant of the company I work for. => $$$
+[![Build Status](https://travis-ci.org/rathrio/punch.svg?branch=master)](https://travis-ci.org/rathrio/punch)
 
-I find it rather annoying and tedious to edit that excel file, so I came up with a revolutionary format for Brigitte
-that both she and I can agree on: **BRF** (short for Brigitte-Readable-Format).
+Every month, I send an excel file with my hours to Brigitte, the accountant of the company I work for.
 
-A BRF file is a simple `.txt` file that looks like this:
+I find it pretty annoying and tedious to edit that excel file, so I came up with a revolutionary format for Brigitte
+that both she and I can agree on: **BRF** (**B**rigitte-**R**eadable-**F**ormat).
+
+A BRF file might look like this:
 
 ```
 November 2014

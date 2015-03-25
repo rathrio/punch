@@ -112,4 +112,8 @@ class Day
     @month = time.month
     @year  = time.short_year
   end
+
+  def cleanup!
+    blocks.reject!(&:empty?)
+  end
 end

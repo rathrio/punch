@@ -33,6 +33,8 @@ require 'day'
 require 'month'
 
 class PunchClock
+  VERSION_NAME = "Iron Mike"
+
   MIDNIGHT_MADNESS_NOTES = [
     "Get some sleep!",
     "Don't you have any hobbies?",
@@ -88,6 +90,10 @@ class PunchClock
     config.hand_in_date
   end
 
+  def version_name
+    VERSION_NAME
+  end
+
   def midnight_madness_notes
     MIDNIGHT_MADNESS_NOTES
   end
@@ -128,7 +134,11 @@ class PunchClock
       exit
     end
     if option == '-v' || option == '--version'
-      puts "#{version.blue} released #{last_release}"
+      puts "#{version_name.blue} #{version.blue} released #{last_release}"
+      exit
+    end
+    if option == '--engine'
+      puts "#{RUBY_ENGINE} #{RUBY_VERSION}"
       exit
     end
     if option == '-l' || option == '--log'
@@ -205,6 +215,7 @@ class PunchClock
         @args.shift
         puts "Before formatting:\n".blue
         puts raw_brf
+        @month.cleanup!
         write! file
         puts "\nAfter formatting:\n".blue
         puts raw_brf

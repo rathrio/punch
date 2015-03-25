@@ -70,4 +70,9 @@ class Month
   def short_year
     year - 2000
   end
+
+  def cleanup!
+    days.reject!(&:empty?)
+    days.each(&:cleanup!)
+  end
 end

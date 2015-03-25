@@ -82,6 +82,36 @@ class PunchClockTest < PunchTest
       '01.02.15   08:00-09:00   12:00-13:30   Total: 02:30'
   end
 
+  def test_format_gets_rid_of_empty_days
+    brf_write %{
+      Februar 2015 - Rathesan Iyadurai
+
+      22.01.15   15:00-15:30                 Total: 00:30
+      24.01.15
+      25.01.15   13:00-13:15   16:20-17:00   Total: 00:55
+
+      Total: 01:25
+    }
+
+    punch '-f'
+
+    refute_includes brf_content, '24.03.15'
+  end
+
+  def test_format_gets_rid_of_empty_blocks
+    brf_write %{
+      Februar 2015 - Rathesan Iyadurai
+
+      25.01.15   00:00-00:00   16:20-17:00   Total: 00:40
+
+      Total: 00:40
+    }
+
+    punch '-f'
+
+    refute_includes brf_content, '00:00-00:00'
+  end
+
   def test_punch_previous_month_with_previous_switch
     punch "-p 2-3"
 

@@ -28,6 +28,10 @@ class Block
     "#{format start}-#{format finish}"
   end
 
+  def empty?
+    total.zero?
+  end
+
   def total
     (finish - start).to_i
   end

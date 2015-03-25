@@ -33,7 +33,7 @@ class Editor
       end
     end
   ensure
-    purge_empty_days
+    month.cleanup!
     system 'clear'
   end
 
@@ -79,10 +79,6 @@ class Editor
     end
 
     month.days.sort!
-  end
-
-  def purge_empty_days
-    month.days.reject! &:empty?
   end
 
   def days_in_month(year, month_nr)

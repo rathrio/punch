@@ -8,7 +8,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     slop (3.6.0)
-    timecop (0.7.1)
+    timecop (0.7.3)
     yard (0.8.7.6)
 
 PLATFORMS

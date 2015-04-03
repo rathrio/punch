@@ -1,6 +1,8 @@
 # Insecurely loads ~/.punchrc on initialize and provides the settings as
 # accessors on Punch.instance.
 class Punch
+  attr_accessor :card
+
   Option = Struct.new(:name, :description)
 
   class << self
@@ -53,19 +55,38 @@ class Punch
     "Print stack trace instead of user friendly hint.",
     false
 
-  def initialize
+  option :cards,
+    "Register different punch cards.",
+    {}
+
+  def initialize(card = nil)
     return self.class.instance unless self.class.instance.nil?
 
     self.class.instance = self
 
+    # Load config file.
     if File.exist?(config_file)
       begin
         eval File.read(config_file)
-      rescue => e
-        message = "Something went wrong while trying to load ~.punchrc:\n".pink
+      rescue Exception => e
+        message = "Something went wrong while trying to load ~/.punchrc:\n".pink
         message << "\n#{e}\n\n"
-        message << "Proceeding with default settings.\n".pink
+        message << "Proceeding with whatever settings could be loaded.\n".pink
         puts message
+      end
+    end
+
+    # Load custom card configuration.
+    if card
+      card_config = cards.fetch(card.to_sym) do
+        puts "The card \"#{card}\" doesn't exist".pink
+        exit
+      end
+
+      self.card = card
+
+      card_config.each do |k, v|
+        send("#{k}=", v)
       end
     end
   end
@@ -96,9 +117,23 @@ class Punch
     self.class.options
   end
 
+  def literal_print(object, indent = "  ")
+    case object
+    when Hash
+      literal = "{\n"
+      object.each do |k, v|
+        literal << "#{indent + "  "}#{literal_print(k)} => #{literal_print(v, (indent + "  "))},\n"
+      end
+      literal << "#{indent}}"
+      literal
+    else
+      object.inspect
+    end
+  end
+
   def config_string
     str = options.map do |o|
-      "  # #{o.description}\n  config.#{o.name} = #{send(o.name).inspect}"
+      "  # #{o.description}\n  config.#{o.name} = #{literal_print(send(o.name))}"
     end.join("\n\n")
 
     "# Punch settings file. Use valid Ruby syntax or you shall be punished!\n"\

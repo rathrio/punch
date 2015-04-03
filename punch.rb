@@ -100,6 +100,12 @@ class PunchClock
 
   def punch
     option = @args.first
+    # First argument can be a card.
+    if option =~ /^([a-zA-Z]|_)+$/
+      config(option)
+      @args.shift
+      option = @args.first
+    end
     if option == '--brf'
       system "open #{hours_folder}"
       exit
@@ -281,8 +287,8 @@ class PunchClock
     puts %{That's not a valid argument, dummy.\nRun #{"punch -h".blue} for help.}
   end
 
-  def config
-    @config ||= Punch.new
+  def config(card = nil)
+    @config ||= Punch.new(card)
   end
 
   def edit_brf

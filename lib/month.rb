@@ -36,7 +36,9 @@ class Month
     if year.nil? || number.nil?
       @number
     else
-      "#{NAMES[number].capitalize} #{year} - #{Punch.instance.name}"
+      name = "#{NAMES[number].capitalize} #{year} - #{Punch.instance.name}"
+      name.prepend("#{Punch.instance.card.upcase} - ") if Punch.instance.card
+      name
     end
   end
 
@@ -72,7 +74,7 @@ class Month
   end
 
   def cleanup!
-    days.reject!(&:empty?)
     days.each(&:cleanup!)
+    days.reject!(&:empty?)
   end
 end

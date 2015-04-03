@@ -37,7 +37,9 @@ class Month
       @number
     else
       name = "#{NAMES[number].capitalize} #{year} - #{Punch.instance.name}"
-      name.prepend("#{Punch.instance.card.upcase} - ") if Punch.instance.card
+      unless Punch.instance.title.empty?
+        name.prepend("#{Punch.instance.title} - ")
+      end
       name
     end
   end

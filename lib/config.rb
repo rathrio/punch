@@ -1,8 +1,6 @@
 # Insecurely loads ~/.punchrc on initialize and provides the settings as
 # accessors on Punch.instance.
 class Punch
-  attr_accessor :card
-
   Option = Struct.new(:name, :description)
 
   class << self
@@ -30,6 +28,10 @@ class Punch
   option :name,
     "Your full name.",
     "Spongebob Schwammkopf"
+
+  option :title,
+    "Titles that appears in the BRF file.",
+    ""
 
   option :hourly_pay,
     "How much you earn per hour.",
@@ -82,8 +84,6 @@ class Punch
         puts "The card \"#{card}\" doesn't exist".pink
         exit
       end
-
-      self.card = card
 
       card_config.each do |k, v|
         send("#{k}=", v)

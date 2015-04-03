@@ -33,7 +33,7 @@ require 'day'
 require 'month'
 
 class PunchClock
-  VERSION_NAME = "Iron Mike"
+  VERSION_NAME = "Hydra Dynamite"
 
   MIDNIGHT_MADNESS_NOTES = [
     "Get some sleep!",

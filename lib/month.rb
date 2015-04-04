@@ -24,8 +24,16 @@ class Month
     NAMES[month_nr]
   end
 
+  def self.build(brf_str, month_nr, year)
+    month        = BRFParser.new.parse(brf_str)
+    month.number = month_nr
+    month.year   = year
+    month
+  end
+
   def initialize(name)
     @name = name
+    @days = []
   end
 
   def newline
@@ -34,13 +42,24 @@ class Month
 
   def name
     if year.nil? || number.nil?
-      @number
+      @name
     else
       name = "#{NAMES[number].capitalize} #{year} - #{Punch.instance.name}"
       unless Punch.instance.title.empty?
         name.prepend("#{Punch.instance.title} - ")
       end
       name
+    end
+  end
+
+  def add(*new_days)
+    new_days.each do |day|
+      if existing = days.find { |d| d.date == day.date }
+        new_blocks = day.blocks
+        existing.add *new_blocks
+      else
+        self.days << day
+      end
     end
   end
 

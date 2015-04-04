@@ -113,6 +113,10 @@ class Punch
 
   private
 
+  def puts(str)
+    out.puts str
+  end
+
   def options
     self.class.options
   end

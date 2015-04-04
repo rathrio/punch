@@ -48,7 +48,7 @@ class PunchClock
     "Did you know that the average adult needs 7-8 hours of sleep?"
   ]
 
-  attr_accessor :args, :path_to_punch, :month, :brf_filepath
+  attr_reader :args, :path_to_punch, :month, :month_name, :year, :brf_filepath
 
   def initialize(args, path_to_punch = __FILE__)
     @args = args
@@ -188,15 +188,21 @@ class PunchClock
       month_nr = (month_nr + 1) % 12
       option = @args.first
     end
-    year = (month_nr < now.month) ? now.year + 1 : now.year
+    @year = (month_nr < now.month) ? now.year + 1 : now.year
     if option == '-p' || option == '--previous'
       @args.shift
       month_nr = (month_nr - 1) % 12
       month_nr = 12 if month_nr.zero?
-      year = (month_nr > now.month) ? now.year - 1 : now.year
+      @year = (month_nr > now.month) ? now.year - 1 : now.year
       option = @args.first
     end
-    month_name = Month.name month_nr
+    @month_name = Month.name month_nr
+    if option == '-m' || option == '--merge'
+      require 'merger'
+      @args.shift
+      puts Merger.new(@args, month_nr, year).month
+      exit
+    end
     @brf_filepath = generate_brf_filepath month_name, year
     unless File.exist? brf_filepath
       File.open(brf_filepath, "w") { |f|
@@ -214,9 +220,8 @@ class PunchClock
       exit
     end
     File.open brf_filepath, 'r+' do |file|
-      @month = BRFParser.new.parse(file.read)
-      @month.number = month_nr
-      @month.year   = year
+      @month = Month.build(file.read, month_nr, year)
+
       if option == '-f' || option == '--format'
         @args.shift
         puts "Before formatting:\n".blue
@@ -249,7 +254,7 @@ class PunchClock
           date = @args.shift
           unless (day = month.days.find { |d| d.date == date })
             day = Day.new date
-            month.days << day
+            month.add day
           end
         else
           time_to_edit = if (option == '-y' || option == '--yesterday')
@@ -261,7 +266,7 @@ class PunchClock
           unless (day = month.days.find { |d| d.at? time_to_edit })
             day = Day.new
             day.set time_to_edit
-            month.days << day
+            month.add day
           end
         end
         blocks = @args.map { |block_str| Block.new block_str, day }
@@ -275,7 +280,7 @@ class PunchClock
       if month.days.none? { |d| d.at? now }
         today = Day.new
         today.set now
-        month.days << today
+        month.add today
       end
       puts month.colored
     end
@@ -302,6 +307,10 @@ class PunchClock
 
   private
 
+  def generate_brf_filepath(month_name, year)
+    "#{hours_folder}/#{month_name}_#{year}.txt"
+  end
+
   def puts(str)
     config.out.puts str
   end
@@ -322,10 +331,6 @@ class PunchClock
 
   def open(file)
     system "#{config.text_editor} #{file}"
-  end
-
-  def generate_brf_filepath(month_name, year)
-    "#{hours_folder}/#{month_name}_#{year}.txt"
   end
 
   def log(n = nil)

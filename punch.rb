@@ -48,6 +48,9 @@ class PunchClock
     "Did you know that the average adult needs 7-8 hours of sleep?"
   ]
 
+  # Card names are a restricted form of identifiers.
+  CARD_RGX = /^([a-z_][a-zA-Z0-9_]*)$/
+
   attr_reader :args, :path_to_punch, :month, :month_name, :year, :brf_filepath
 
   def initialize(args, path_to_punch = __FILE__)
@@ -98,13 +101,21 @@ class PunchClock
     MIDNIGHT_MADNESS_NOTES
   end
 
+  def card_rgx
+    CARD_RGX
+  end
+
   def punch
     option = @args.first
     # First argument can be a card.
-    if option =~ /^([a-zA-Z]|_)+$/
+    if option =~ card_rgx
       config(option)
       @args.shift
       option = @args.first
+    end
+    if option == '--cards'
+      puts "  #{literal(config.cards)}"
+      exit
     end
     if option == '--brf'
       system "open #{hours_folder}"
@@ -244,8 +255,7 @@ class PunchClock
       if option == '-s' || option == '--stats'
         @args.shift
         require 'stats'
-        hourly_pay = (@args.shift || config.hourly_pay).to_i
-        puts Stats.new(month, hourly_pay)
+        puts Stats.new(month)
         exit
       end
       unless @args.empty?

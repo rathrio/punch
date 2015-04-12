@@ -121,23 +121,9 @@ class Punch
     self.class.options
   end
 
-  def literal_print(object, indent = "  ")
-    case object
-    when Hash
-      literal = "{\n"
-      object.each do |k, v|
-        literal << "#{indent + "  "}#{literal_print(k)} => #{literal_print(v, (indent + "  "))},\n"
-      end
-      literal << "#{indent}}"
-      literal
-    else
-      object.inspect
-    end
-  end
-
   def config_string
     str = options.map do |o|
-      "  # #{o.description}\n  config.#{o.name} = #{literal_print(send(o.name))}"
+      "  # #{o.description}\n  config.#{o.name} = #{literal(send(o.name))}"
     end.join("\n\n")
 
     "# Punch settings file. Use valid Ruby syntax or you shall be punished!\n"\

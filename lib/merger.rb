@@ -2,6 +2,7 @@ class Merger
   attr_reader :cards, :month_nr, :month_name, :year
 
   def initialize(cards, month_nr, year)
+    raise ArgumentError, "cards must not be empty" if cards.empty?
     @cards = cards
     @month_nr = month_nr
     @month_name = Month.name(month_nr)

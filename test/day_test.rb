@@ -72,6 +72,13 @@ class DayTest < PunchTest
     assert_equal '12.04.95   13:00-17:00   Total: 04:00', day.to_s
   end
 
+  def test_start_merge2
+    day = Day.new '05.04.15'
+    day.add Block.new("17:50-19:00", day)
+    day.add Block.new("18:30-19:00", day)
+    assert_equal '05.04.15   17:50-19:00   Total: 01:10', day.to_s
+  end
+
   def test_end_merge
     day = Day.new '12.04.95'
     day.add Block.new("13:00-17:00", day)

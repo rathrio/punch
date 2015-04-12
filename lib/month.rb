@@ -55,8 +55,7 @@ class Month
   def add(*new_days)
     new_days.each do |day|
       if existing = days.find { |d| d.date == day.date }
-        new_blocks = day.blocks
-        existing.add *new_blocks
+        existing.add *day.blocks
       else
         self.days << day
       end

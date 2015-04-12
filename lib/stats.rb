@@ -18,11 +18,10 @@
 #   Consecutive days:      3
 #
 class Stats
-  attr_accessor :month, :hourly_pay
+  attr_accessor :month
 
-  def initialize(month, hourly_pay = 0)
+  def initialize(month)
     @month = month
-    @hourly_pay = hourly_pay
   end
 
   def longest_day
@@ -109,6 +108,10 @@ class Stats
   end
 
   private
+
+  def hourly_pay
+    @hourly_pay ||= config.hourly_pay
+  end
 
   def config
     Punch.instance

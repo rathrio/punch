@@ -1,4 +1,4 @@
-hours/*.txt
+hours/**
 .ruby-version
 .ruby-gemset
 .yardoc

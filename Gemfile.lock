@@ -1,12 +1,18 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    byebug (4.0.5)
+      columnize (= 0.9.0)
     coderay (1.1.0)
+    columnize (0.9.0)
     method_source (0.8.2)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.1.0)
+      byebug (~> 4.0)
+      pry (~> 0.10)
     slop (3.6.0)
     timecop (0.7.3)
     yard (0.8.7.6)
@@ -16,5 +22,6 @@ PLATFORMS
 
 DEPENDENCIES
   pry
+  pry-byebug
   timecop
   yard

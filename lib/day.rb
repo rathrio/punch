@@ -56,11 +56,13 @@ class Day
     highlight!
     blocks.each do |block|
 
+      # Get rid of old blocks with shorter spans than block's.
       self.blocks.reject! { |b|
-        b.start > block.start && b.finish < block.finish }
+        b.start >= block.start && b.finish <= block.finish }
 
+      # Ignore new block if an existing block covers the new block's span.
       if self.blocks.any? { |b|
-        b.start < block.start && b.finish > block.finish }
+        b.start <= block.start && b.finish >= block.finish }
         next
       end
 

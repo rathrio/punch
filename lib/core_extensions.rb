@@ -34,6 +34,23 @@ class Module
   end
 end
 
+module Kernel
+  def literal(object, indent = "  ")
+    case object
+    when Hash
+      return "{}" if object.empty?
+      literal = "{\n"
+      object.each do |k, v|
+        literal << "#{indent + "  "}#{literal(k)} => #{literal(v, (indent + "  "))},\n"
+      end
+      literal << "#{indent}}"
+      literal
+    else
+      object.inspect
+    end
+  end
+end
+
 class Time
   def short_year
     strftime('%y').to_i

@@ -6,7 +6,7 @@ class PunchClockTest < PunchTest
   end
 
   def test_nice_hint_when_being_dumb
-    punch 'i am so dumb'
+    punch "--i'm so dumb"
     assert_includes output, 'punch -h'
   end
 

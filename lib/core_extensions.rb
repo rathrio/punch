@@ -49,6 +49,19 @@ module Kernel
       object.inspect
     end
   end
+
+  def yes?(prompt)
+    puts "#{prompt} (y|n)"
+    STDIN.gets.chomp == 'y'
+  end
+
+  def no?(prompt)
+    !yes?(prompt)
+  end
+
+  def puts(str = "")
+    Punch.instance.out.puts str
+  end
 end
 
 class Time

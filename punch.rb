@@ -180,8 +180,7 @@ class PunchClock
       exit
     end
     if option == '--config-reset'
-      puts "Are you sure you want to reset ~/.punchrc? (y|n)"
-      if STDIN.gets.chomp == 'y'
+      if yes? "Are you sure you want to reset ~/.punchrc?"
         config.reset!
         generate_and_open_config_file
       end
@@ -218,8 +217,7 @@ class PunchClock
     unless File.exist? brf_filepath
       # Create hours folder if necessary.
       unless File.directory? hours_folder
-        puts "The directory #{hours_folder.pink} does not exist. Create it? (y|n)"
-        if STDIN.gets.chomp == 'y'
+        if yes? "The directory #{hours_folder.pink} does not exist. Create it?"
           require 'fileutils'
           FileUtils.mkdir_p(hours_folder)
         else
@@ -332,16 +330,13 @@ class PunchClock
     "#{hours_folder}/#{month_name}_#{year}.txt"
   end
 
-  def puts(str)
-    config.out.puts str
-  end
-
   def open_or_generate_config_file
     if File.exist? config.config_file
       open config.config_file
     else
-      puts "The ~/.punchrc file does not exist. Generate it? (y|n)"
-      generate_and_open_config_file if STDIN.gets.chomp == 'y'
+      if yes? "The ~/.punchrc file does not exist. Generate it?"
+        generate_and_open_config_file
+      end
     end
   end
 

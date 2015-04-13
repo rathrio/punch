@@ -113,7 +113,7 @@ class Punch
 
   private
 
-  def puts(str)
+  def puts(str = '')
     out.puts str
   end
 

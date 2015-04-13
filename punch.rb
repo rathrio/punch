@@ -216,6 +216,17 @@ class PunchClock
     end
     @brf_filepath = generate_brf_filepath month_name, year
     unless File.exist? brf_filepath
+      # Create hours folder if necessary.
+      unless File.directory? hours_folder
+        puts "The directory #{hours_folder.pink} does not exist. Create it? (y|n)"
+        if STDIN.gets.chomp == 'y'
+          require 'fileutils'
+          FileUtils.mkdir_p(hours_folder)
+        else
+          exit
+        end
+      end
+      # Create empty BRF file for this month.
       File.open(brf_filepath, "w") { |f|
         f.write "#{month_name.capitalize} #{year}" }
     end

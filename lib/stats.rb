@@ -114,7 +114,7 @@ class Stats
   end
 
   def config
-    Punch.instance
+    Punch.config
   end
 
   def next_day(day)

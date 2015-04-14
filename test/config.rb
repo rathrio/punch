@@ -24,6 +24,10 @@ class Punch
   def out
     TestOut
   end
+
+  def debug
+    false
+  end
 end
 
 # Provides some helper methods.

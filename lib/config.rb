@@ -1,13 +1,46 @@
-# Insecurely loads ~/.punchrc on initialize and provides the settings as
-# accessors on Punch.instance.
 class Punch
   Option = Struct.new(:name, :description)
 
   class << self
-    attr_accessor :options, :instance
+    attr_accessor :options
 
     def options
       @options ||= []
+    end
+
+    def config
+      load_from_config_file if @config.nil?
+      @config
+    end
+
+    def load_from_config_file
+      @config = new
+      # Load config file.
+      if File.exist?(config_file)
+        begin
+          eval File.read(config_file)
+        rescue Exception => e
+          message = "Something went wrong while trying to load ~/.punchrc:\n".pink
+          message << "\n#{e}\n\n"
+          message << "Proceeding with whatever settings could be loaded.\n".pink
+          puts message
+        end
+      end
+    end
+
+    def config_file
+      "#{Dir.home}/.punchrc"
+    end
+
+    def load_card(card)
+      card_config = config.cards.fetch(card.to_sym) do
+        puts "The card \"#{card}\" doesn't exist".pink
+        exit
+      end
+
+      card_config.each do |k, v|
+        config.send("#{k}=", v)
+      end
     end
 
     def option(opt, desc, default_value = nil)
@@ -18,7 +51,11 @@ class Punch
       end
     end
 
-    def configure; yield instance; end
+    def configure
+      yield config
+    end
+
+    private :new
   end
 
   option :hours_folder,
@@ -61,42 +98,12 @@ class Punch
     "Register different punch cards.",
     {}
 
-  def initialize(card = nil)
-    return self.class.instance unless self.class.instance.nil?
-
-    self.class.instance = self
-
-    # Load config file.
-    if File.exist?(config_file)
-      begin
-        eval File.read(config_file)
-      rescue Exception => e
-        message = "Something went wrong while trying to load ~/.punchrc:\n".pink
-        message << "\n#{e}\n\n"
-        message << "Proceeding with whatever settings could be loaded.\n".pink
-        puts message
-      end
-    end
-
-    # Load custom card configuration.
-    if card
-      card_config = cards.fetch(card.to_sym) do
-        puts "The card \"#{card}\" doesn't exist".pink
-        exit
-      end
-
-      card_config.each do |k, v|
-        send("#{k}=", v)
-      end
-    end
+  def config_file
+    self.class.config_file
   end
 
   def reset!
     options.each { |option| send("#{option.name}=", nil) }
-  end
-
-  def config_file
-    "#{Dir.home}/.punchrc"
   end
 
   def generate_config_file

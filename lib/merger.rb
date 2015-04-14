@@ -32,6 +32,6 @@ class Merger
   private
 
   def config
-    Punch.instance
+    Punch.config
   end
 end

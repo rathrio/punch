@@ -60,7 +60,7 @@ module Kernel
   end
 
   def puts(str = "")
-    Punch.instance.out.puts str
+    Punch.config.out.puts str
   end
 end
 

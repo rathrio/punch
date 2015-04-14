@@ -109,7 +109,7 @@ class PunchClock
     option = @args.first
     # First argument can be a card.
     if option =~ card_rgx
-      config(option)
+      Punch.load_card option
       @args.shift
       option = @args.first
     end
@@ -311,8 +311,8 @@ class PunchClock
     puts %{That's not a valid argument, dummy.\nRun #{"punch -h".blue} for help.}
   end
 
-  def config(card = nil)
-    @config ||= Punch.new(card)
+  def config
+    Punch.config
   end
 
   def edit_brf

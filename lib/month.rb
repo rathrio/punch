@@ -44,9 +44,9 @@ class Month
     if year.nil? || number.nil?
       @name
     else
-      name = "#{NAMES[number].capitalize} #{year} - #{Punch.instance.name}"
-      unless Punch.instance.title.empty?
-        name.prepend("#{Punch.instance.title} - ")
+      name = "#{NAMES[number].capitalize} #{year} - #{Punch.config.name}"
+      unless Punch.config.title.empty?
+        name.prepend("#{Punch.config.title} - ")
       end
       name
     end

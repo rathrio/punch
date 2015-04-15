@@ -45,9 +45,17 @@ class Punch
 
     def option(opt, desc, default_value = nil)
       options << Option.new(opt, desc)
+
       attr_writer opt
+
       define_method opt do
-        instance_variable_get("@#{opt}") || default_value
+        value = instance_variable_get("@#{opt}")
+        return value unless value.nil?
+        default_value
+      end
+
+      define_method "#{opt}?" do
+        !!send(opt)
       end
     end
 
@@ -67,7 +75,7 @@ class Punch
     "Spongebob Schwammkopf"
 
   option :title,
-    "Titles that appears in the BRF file.",
+    "Title that appears in the BRF file.",
     ""
 
   option :hourly_pay,
@@ -89,6 +97,10 @@ class Punch
   option :monthly_goal,
     "How many hours you want to work per month.",
     68
+
+  option :group_weeks_in_interactive_mode,
+    "Whether to add padding to group by week in the interactive editor.",
+    true
 
   option :debug,
     "Print stack trace instead of user friendly hint.",
@@ -112,10 +124,6 @@ class Punch
 
   def out
     STDOUT
-  end
-
-  def debug?
-    debug
   end
 
   private

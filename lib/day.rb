@@ -13,8 +13,16 @@ class Day
     "#{pad day}.#{pad month}.#{year}"
   end
 
+  def monday?
+    to_time.monday?
+  end
+
   def to_time
     Time.new long_year, month, day
+  end
+
+  def short_name
+    to_time.strftime('%a')
   end
 
   def time_on_next_day

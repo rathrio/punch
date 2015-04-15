@@ -60,7 +60,7 @@ class Editor
     prev_month_days =
       month.days.select { |d| d.month == prev_month_nr }.map &:day
 
-    ((1..20).to_a - current_month_days).each do |d|
+    ((1..config.hand_in_date).to_a - current_month_days).each do |d|
       day = Day.new
       day.day = d
       day.month = current_month_nr
@@ -117,8 +117,12 @@ class Editor
       index = i + 1
       index_str = "{#{index}}".rjust(4)
       index_str = index_str.pink unless days_picked?
-      day_str   = d.to_s(:padding => max_block_count)
-      str = index_str + "  #{day_str}"
+      day_str   = "#{d.short_name}  #{d.to_s(:padding => max_block_count)}"
+      day_str   = day_str.blue if d.today? && !days_picked?
+      str       = index_str + "  #{day_str}"
+      if config.group_weeks_in_interactive_mode? && d.monday? && !i.zero?
+        str.prepend("\n")
+      end
       if days_picked.include?(index)
         buffer << "\n#{str.pink}"
       else

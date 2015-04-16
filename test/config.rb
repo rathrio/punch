@@ -11,24 +11,25 @@ module TestOut
   end
 end
 
-# Stub some config
+# Stub config file
 class Punch
   def config_file
     TEST_CONFIG_FILE
   end
 
-  def hours_folder
-    TEST_HOURS_FOLDER
-  end
-
-  def out
-    TestOut
-  end
-
-  def debug
-    false
+  def cards
+    {
+      :test => {
+        :hours_folder => TEST_HOURS_FOLDER,
+        :out          => TestOut,
+        :debug        => false
+      }
+    }
   end
 end
+
+# Load test configurations.
+Punch.load_card :test
 
 # Provides some helper methods.
 class PunchTest < MiniTest::Test

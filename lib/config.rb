@@ -43,8 +43,8 @@ class Punch
       end
     end
 
-    def option(opt, desc, default_value = nil)
-      options << Option.new(opt, desc)
+    def option(opt, desc, default_value, args = {})
+      options << Option.new(opt, desc) unless args.fetch(:hidden, false)
 
       attr_writer opt
 
@@ -110,6 +110,11 @@ class Punch
     "Register different punch cards.",
     {}
 
+  option :out,
+    "Where to output stuff.",
+    STDOUT,
+    :hidden => true
+
   def config_file
     self.class.config_file
   end
@@ -120,10 +125,6 @@ class Punch
 
   def generate_config_file
     File.open(config_file, "w") { |f| f.write config_string }
-  end
-
-  def out
-    STDOUT
   end
 
   private

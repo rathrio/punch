@@ -102,6 +102,10 @@ class Punch
     "Whether to add padding to group by week in the interactive editor.",
     true
 
+  option :regenerate_punchrc_after_udpate,
+    "Whether to automatically regenerate ~/.punchrc with punch --update.",
+    false
+
   option :debug,
     "Print stack trace instead of user friendly hint.",
     false

@@ -144,6 +144,11 @@ class PunchClock
     end
     if option == '-u' || option == '--update'
       system "cd #{punch_folder} && git pull origin master"
+      if config.regenerate_punchrc_after_udpate? &&
+          File.exist?(config.config_file)
+        config.generate_config_file
+        puts "\nUpdated ~/.punchrc.".pink
+      end
       exit
     end
     if option == '-t' || option == '--test'

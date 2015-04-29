@@ -88,7 +88,7 @@ class Editor
   end
 
   def title
-    "Interactive Punch Beta - Edit #{month.name}\n"
+    "Interactive Punch - Edit #{month.name}\n"
   end
 
   def prompt

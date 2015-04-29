@@ -32,6 +32,8 @@ class Editor
         @days_picked = input.split(/,|\s+/).map!(&:to_i) unless input.empty?
       end
     end
+  rescue Interrupt, SystemExit
+    exit
   ensure
     month.cleanup!
     system 'clear'
@@ -86,7 +88,7 @@ class Editor
   end
 
   def title
-    "Interactive Punch Beta - Edit #{month.name}\n"
+    "Interactive Punch - Edit #{month.name}\n"
   end
 
   def prompt

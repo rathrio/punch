@@ -143,7 +143,9 @@ class PunchClock
       exit
     end
     if option == '-u' || option == '--update'
+      puts "Fetching master branch...".pink
       system "cd #{punch_folder} && git pull origin master"
+      print_version
       exit
     end
     if option == '-t' || option == '--test'
@@ -151,7 +153,7 @@ class PunchClock
       exit
     end
     if option == '-v' || option == '--version'
-      puts "#{version_name.blue} #{version.blue} released #{last_release}"
+      print_version
       exit
     end
     if option == '--engine'
@@ -318,6 +320,10 @@ class PunchClock
   def edit_brf
     open brf_filepath
     exit
+  end
+
+  def print_version
+    puts "#{version_name.blue} #{version.blue} released #{last_release}"
   end
 
   def raw_brf

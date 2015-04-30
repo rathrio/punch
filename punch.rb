@@ -313,6 +313,9 @@ class PunchClock
   rescue BRFParser::ParserError => e
     raise e if config.debug?
     puts "Couldn't parse #{brf_filepath.blue}."
+  rescue Interrupt
+    puts "\nExiting...".pink
+    exit
   rescue => e
     raise e if config.debug?
     puts %{That's not a valid argument, dummy.\nRun #{"punch -h".blue} for help.}

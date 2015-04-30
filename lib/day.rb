@@ -88,6 +88,11 @@ class Day
     end
   end
 
+  def remove(*blocks)
+    puts "REMOVING:"
+    puts blocks
+  end
+
   def children
     blocks
   end

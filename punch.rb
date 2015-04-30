@@ -347,8 +347,14 @@ class PunchClock
             month.add day
           end
         end
+        # Add or remove blocks.
+        action = :add
+        if @args.first == '--remove'
+          @args.shift
+          action = :remove
+        end
         blocks = @args.map { |block_str| Block.new block_str, day }
-        day.add *blocks
+        day.send action, *blocks
         if day.unhealthy?
           puts "#{midnight_madness_notes.sample.pink}\n"
         end

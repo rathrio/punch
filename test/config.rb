@@ -79,6 +79,21 @@ class PunchTest < MiniTest::Test
     File.open(brf_file, 'w') { |f| f.write str }
   end
 
+  # Assert that the brf file contains the str.
+  def assert_punched(str)
+    assert_includes brf_content, str
+  end
+
+  # Refute that the brf file contains the str.
+  def refute_punched(str)
+    refute_includes brf_content, str
+  end
+
+  # Assert that punch outputted the str.
+  def assert_outputted(str)
+    assert_includes output, str
+  end
+
   # Most recently created punch clock instance.
   def clock
     punch if @clock.nil?

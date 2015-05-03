@@ -1,8 +1,14 @@
+require_relative 'config'
+
 class PunchClockTest < PunchTest
 
   # Travel to 28.01.2015. So the current BRF month is February.
   def setup
     Timecop.freeze(Time.new(2015, 01, 28))
+  end
+
+  def teardown
+    clear_hours_folder
   end
 
   def test_nice_hint_when_being_dumb
@@ -134,10 +140,6 @@ class PunchClockTest < PunchTest
     punch "-n 2-3"
 
     assert_punched "Maerz 2015"
-  end
-
-  def teardown
-    clear_hours_folder
   end
 
 end

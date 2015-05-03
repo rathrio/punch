@@ -1,3 +1,8 @@
+require 'minitest/autorun'
+require 'minitest/pride'
+require 'timecop'
+require_relative '../punch'
+
 TEST_CONFIG_FILE  = File.expand_path('.punchrc', File.dirname(__FILE__))
 TEST_HOURS_FOLDER = File.expand_path('hours', File.dirname(__FILE__))
 

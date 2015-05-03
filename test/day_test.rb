@@ -1,3 +1,5 @@
+require_relative 'config'
+
 class DayTest < PunchTest
   def test_initialize
     day = Day.new '27.11.14'
@@ -50,7 +52,7 @@ class DayTest < PunchTest
     end
   end
 
-  def test_merge
+  def test_add_deletes_smaller_blocks
     day = Day.new '26.03.89'
     day.add Block.new("13:15-17:00", day)
     assert_equal '26.03.89   13:15-17:00   Total: 03:45', day.to_s
@@ -58,31 +60,59 @@ class DayTest < PunchTest
     assert_equal '26.03.89   13:00-18:00   Total: 05:00', day.to_s
   end
 
-  def test_add_ignore
+  def test_add_ignores_new_smaller_blocks
     day = Day.new '12.04.95'
     day.add Block.new("13:00-17:00", day)
     day.add Block.new("14:00-16:00", day)
     assert_equal '12.04.95   13:00-17:00   Total: 04:00', day.to_s
   end
 
-  def test_start_merge
+  def test_prepend_merge
     day = Day.new '12.04.95'
     day.add Block.new("13:15-17:00", day)
     day.add Block.new("13:00-17:00", day)
     assert_equal '12.04.95   13:00-17:00   Total: 04:00', day.to_s
   end
 
-  def test_start_merge2
+  def test_prepend_merge2
     day = Day.new '05.04.15'
     day.add Block.new("17:50-19:00", day)
     day.add Block.new("18:30-19:00", day)
     assert_equal '05.04.15   17:50-19:00   Total: 01:10', day.to_s
   end
 
-  def test_end_merge
+  def test_append_merge
     day = Day.new '12.04.95'
     day.add Block.new("13:00-17:00", day)
     day.add Block.new("16:00-18:00", day)
     assert_equal '12.04.95   13:00-18:00   Total: 05:00', day.to_s
+  end
+
+  def test_connect_merge
+    day = Day.new '03.05.15'
+    day.add Block.new("08:00-12:00", day)
+    day.add Block.new("16:00-18:00", day)
+    day.add Block.new("10:00-17:00", day)
+    assert_equal '03.05.15   08:00-18:00   Total: 10:00', day.to_s
+  end
+
+  def test_connect_merge2
+    day = Day.new '03.05.15'
+    day.add Block.new("08:00-12:00", day),
+      Block.new("16:00-18:00", day),
+      Block.new("13:00-14:00", day),
+      Block.new("22:00-23:00", day),
+      Block.new("10:00-17:00", day)
+    assert_equal '03.05.15   08:00-18:00   22:00-23:00   Total: 11:00',
+      day.to_s
+  end
+
+  def test_connect_merge3
+    day = Day.new '03.05.15'
+    day.add Block.new("08:00-12:00", day),
+      Block.new("16:00-18:00", day),
+      Block.new("12:00-16:00", day)
+    assert_equal '03.05.15   08:00-18:00   Total: 10:00',
+      day.to_s
   end
 end

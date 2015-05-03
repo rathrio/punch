@@ -1,3 +1,5 @@
+require_relative 'config'
+
 class MonthTest < PunchTest
   def test_total_align
     month = BRFParser.new.parse(<<-EOS)

@@ -1,3 +1,5 @@
+require_relative 'config'
+
 class ModuleTest < MiniTest::Test
   class Dog
     flag :hungry, :old

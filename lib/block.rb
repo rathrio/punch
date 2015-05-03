@@ -44,6 +44,10 @@ class Block
     (start <= time) && (finish >= time)
   end
 
+  def strict_include?(time)
+    (start < time) && (finish > time)
+  end
+
   private
 
   def format(time)

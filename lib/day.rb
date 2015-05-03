@@ -74,11 +74,25 @@ class Day
         next
       end
 
+      # Connecting.
+      if self.blocks.count > 1
+        if (start_overlap = self.blocks.find { |b| b.include?(block.start) })
+          if (finish_overlap = self.blocks.reverse.
+                find { |b| b.include?(block.finish) })
+            start_overlap.finish = finish_overlap.finish
+            self.blocks.delete(finish_overlap)
+            next
+          end
+        end
+      end
+
+      # Prepending.
       if (overlap = self.blocks.find { |b| b.include?(block.finish) })
         overlap.start = block.start
         next
       end
 
+      # Appending.
       if (overlap = self.blocks.find { |b| b.include?(block.start) })
         overlap.finish = block.finish
         next
@@ -89,8 +103,28 @@ class Day
   end
 
   def remove(*blocks)
-    puts "REMOVING:"
-    puts blocks
+    highlight!
+    blocks.each do |block|
+      # Get rid of old blocks with shorter spans than block's.
+      self.blocks.reject! { |b|
+        b.start >= block.start && b.finish <= block.finish }
+
+      # # Ignore new block if an existing block covers the new block's span.
+      # if self.blocks.any? { |b|
+      #   b.start <= block.start && b.finish >= block.finish }
+      #   next
+      # end
+
+      if (overlap = self.blocks.find { |b| b.include?(block.start) })
+        overlap.finish = block.start
+        next
+      end
+
+      if (overlap = self.blocks.find { |b| b.include?(block.finish) })
+        overlap.start = block.finish
+        next
+      end
+    end
   end
 
   def children

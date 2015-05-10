@@ -112,7 +112,13 @@ class DayTest < PunchTest
     day.add Block.new("08:00-12:00", day),
       Block.new("16:00-18:00", day),
       Block.new("12:00-16:00", day)
-    assert_equal '03.05.15   08:00-18:00   Total: 10:00',
-      day.to_s
+    assert_equal '03.05.15   08:00-18:00   Total: 10:00', day.to_s
+  end
+
+  def test_remove_at_end
+    day = Day.new '03.05.15'
+    day.add Block.new("08:00-12:00", day)
+    day.remove Block.new("11:00-13:00", day)
+    assert_equal '03.05.15   08:00-11:00   Total: 03:00', day.to_s
   end
 end

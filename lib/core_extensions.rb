@@ -76,4 +76,8 @@ class Time
   def next_day
     self + 86400
   end
+
+  # Act like a Block.
+  def start; self; end
+  def finish; self; end
 end

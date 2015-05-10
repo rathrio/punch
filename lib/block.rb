@@ -40,12 +40,14 @@ class Block
     start <=> other.start
   end
 
-  def include?(time)
-    (start <= time) && (finish >= time)
+  # @param t [#start, #finish]
+  def include?(t)
+    (start <= t.start) && (finish >= t.finish)
   end
 
-  def strict_include?(time)
-    (start < time) && (finish > time)
+  # @param t [#start, #finish]
+  def strict_include?(t)
+    (start < t.start) && (finish > t.finish)
   end
 
   private

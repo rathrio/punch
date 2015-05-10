@@ -109,20 +109,8 @@ class Day
       self.blocks.reject! { |b|
         b.start >= block.start && b.finish <= block.finish }
 
-      # # Ignore new block if an existing block covers the new block's span.
-      # if self.blocks.any? { |b|
-      #   b.start <= block.start && b.finish >= block.finish }
-      #   next
-      # end
-
-      if (overlap = self.blocks.find { |b| b.include?(block.start) })
-        overlap.finish = block.start
-        next
-      end
-
-      if (overlap = self.blocks.find { |b| b.include?(block.finish) })
-        overlap.start = block.finish
-        next
+      # Splitting up :(
+      if (to_split = self.blocks.find { |b| b.strict_include?(block) })
       end
     end
   end

@@ -3,4 +3,5 @@ install: gem install timecop
 rvm:
   - 2.2.0
   - 2.2.1
+  - 2.2.2
 script: ruby test/punch_test.rb

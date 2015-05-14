@@ -246,6 +246,11 @@ class PunchClock
       puts raw_brf
       exit
     end
+    if option == '--mail'
+      require 'brf_mailer'
+      BRFMailer.new(brf_filepath, month_name).deliver
+      exit
+    end
     File.open brf_filepath, 'r+' do |file|
       @month = Month.build(file.read, month_nr, year)
 

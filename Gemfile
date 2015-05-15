@@ -5,5 +5,3 @@ gem 'timecop'
 gem 'pry'
 gem 'pry-byebug'
 gem 'yard'
-
-gem 'mail', '~> 2.6.3'

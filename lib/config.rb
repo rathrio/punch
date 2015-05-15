@@ -110,25 +110,18 @@ class Punch
     "Print stack trace instead of user friendly hint.",
     false
 
-  option :smtp_server,
-    "Which SMTP server to use to send mails to Brigitte.",
-    "smtp.aarboard.ch"
-
-  option :smtp_port,
-    "Which SMTP port to use.",
-    465
-
-  option :smtp_user,
-    "Your email address. Will be read from $PUNCH_STMP_USER when this is empty.",
-    ''
-
-  option :smtp_pw,
-    "Your email password. Will be read from $PUNCH_SMPT_PW when this is empty.",
-    ''
-
-  option :brigitte_mail,
-    "Brigitte's email address.",
-    ''
+  option :mailer_config,
+    "BRFMailer configurations.",
+    {
+      :smtp_domain => "aarboard.ch",
+      :smtp_server => "smtp.aarboard.ch",
+      :smtp_port   => 465,
+      :smtp_user   => "",
+      :smtp_pw     => "",
+      :receiver    => "",
+      :cc          => "",
+      :bcc         => ""
+    }
 
   option :cards,
     "Register different punch cards.",

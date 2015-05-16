@@ -120,7 +120,8 @@ class Punch
       :smtp_pw     => "",
       :receiver    => "",
       :cc          => "",
-      :bcc         => ""
+      :bcc         => "",
+      :body        => ""
     }
 
   option :cards,

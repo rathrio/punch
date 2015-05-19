@@ -51,6 +51,40 @@ class PunchClock
   # Card names are a restricted form of identifiers.
   CARD_RGX = /^([a-z_][a-zA-Z0-9_]*)$/
 
+  # For easy bash completion export.
+  OPTIONS = %w(
+    --backup
+    --brf
+    --card-config
+    --cards
+    --config
+    --config-regenerate
+    --config-reset
+    --console
+    --doc
+    --edit
+    --engine
+    --format
+    --github
+    --hack
+    --help
+    --interactive
+    --log
+    --mail
+    --merge
+    --next
+    --options
+    --previous
+    --raw
+    --stats
+    --test
+    --trello
+    --update
+    --version
+    --whoami
+    --yesterday
+  )
+
   attr_reader :args, :path_to_punch, :month, :month_name, :year, :brf_filepath
 
   def initialize(args, path_to_punch = __FILE__)
@@ -113,7 +147,15 @@ class PunchClock
       @args.shift
       option = @args.first
     end
+    if option == '--options'
+      puts OPTIONS.join(" ")
+      exit
+    end
     if option == '--cards'
+      puts config.cards.keys.join(" ")
+      exit
+    end
+    if option == '--card-config'
       puts "  #{literal(config.cards)}"
       exit
     end

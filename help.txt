@@ -47,7 +47,7 @@ $ punch -b, --backup path/to/backup/dir
 $ punch --brf
     Open hours folder.
 
-$ punch --cards
+$ punch --card-config
     Print card configurations.
 
 $ punch -c, --config

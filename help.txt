@@ -82,8 +82,7 @@ $ punch -l, --log [entries]
     List the last 10 commit messages. Optionally pass a number to list more.
 
 $ punch --mail
-    Send an email to Brigitte with the current BRF file attached. Depends on
-    mail gem.
+    Send an email to Brigitte with the current BRF file attached.
 
 $ punch -m, --merge [card1] [card2] ...
     Merge cards with differents hours together and print an aggregated month.

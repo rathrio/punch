@@ -43,6 +43,27 @@ class Punch
       end
     end
 
+    # Generates smart accessor and predicate methods and remembers options to
+    # inject them into .punchrc.
+    #
+    # @example Generating a boolean option with default value `false`
+    #
+    #   option :adult                            # Name of the option
+    #     "Whether you have hair on your face.", # Short description
+    #     false                                  # Default value
+    #
+    #   # Generates following methods on the config instance:
+    #   Punch.config.adult        # => false
+    #   Punch.config.adult?       # => false
+    #   Punch.config.adult = true
+    #   Punch.config.adult?       # => true
+    #
+    #   # And will add following option to .punchrc with the given description
+    #   # as a comment:
+    #
+    #   # Whether you have hair on your face.
+    #   config.adult = false
+    #
     def option(opt, desc, default_value, args = {})
       options << Option.new(opt, desc) unless args.fetch(:hidden, false)
 
@@ -66,50 +87,62 @@ class Punch
     private :new
   end
 
+  # @return [String]
   option :hours_folder,
     "Where to look for the BRF files.",
     File.expand_path('../hours', File.dirname(__FILE__))
 
+  # @return [String]
   option :name,
     "Your full name.",
     "Spongebob Schwammkopf"
 
+  # @return [String]
   option :title,
     "Title that appears in the BRF file.",
     ""
 
+  # @return [Fixnum]
   option :hourly_pay,
     "How much you earn per hour.",
     0
 
+  # @return [String]
   option :text_editor,
     "Which terminal application to use to edit files.",
     "open"
 
+  # @return [Fixnum]
   option :hand_in_date,
     "After which day punch should generate the next month's BRF file.",
     20
 
+  # @return [String]
   option :system_ruby,
     "Which ruby command to use to execute subcommands.",
     "ruby"
 
+  # @return [Fixnum]
   option :monthly_goal,
     "How many hours you want to work per month.",
     68
 
+  # @return [Boolean]
   option :group_weeks_in_interactive_mode,
     "Whether to add padding to group by week in the interactive editor.",
     true
 
+  # @return [Boolean]
   option :regenerate_punchrc_after_udpate,
     "Whether to automatically regenerate ~/.punchrc with punch --update.",
     false
 
+  # @return [Boolean]
   option :debug,
     "Print stack trace instead of user friendly hint.",
     false
 
+  # @return [Hash]
   option :mailer_config,
     "BRFMailer configurations.",
     {
@@ -124,10 +157,12 @@ class Punch
       :body        => ""
     }
 
+  # @return [Hash]
   option :cards,
     "Register different punch cards.",
     {}
 
+  # @return [#puts,#print]
   option :out,
     "Where to output stuff.",
     STDOUT,

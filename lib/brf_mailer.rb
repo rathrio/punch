@@ -35,8 +35,6 @@ Hallo Tanja,
 
 anbei findest du meine Stunden vom #{month_name.capitalize}.
 
-lg Radi
-
 --#{boundary}
 Content-Type: multipart/mixed; name=\"#{filename}\"
 Content-Transfer-Encoding:base64

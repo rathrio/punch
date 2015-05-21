@@ -1,4 +1,5 @@
 require 'net/smtp'
+require 'erb'
 
 # Delivers a mail to Brigitte with the current BRF file attached.
 class BRFMailer
@@ -7,13 +8,21 @@ class BRFMailer
     :receiver, :cc, :bcc, :brf_filepath, :month_name, :body
 
   def initialize(brf_filepath, month_name)
+    @brf_filepath = brf_filepath
+    @month_name   = month_name
+
     # Load mailer config.
     Punch.config.mailer_config.each do |k, v|
       send("#{k}=", v) if respond_to? k
     end
+  end
 
-    @brf_filepath = brf_filepath
-    @month_name   = month_name
+  def body=(new_body)
+    @body = ERB.new(new_body).result(binding)
+  end
+
+  def month_name
+    @month_name.capitalize
   end
 
   def deliver
@@ -31,9 +40,7 @@ Content-Type: multipart/mixed; boundary=#{boundary}
 Content-Type: text/plain
 Content-Transfer-Encoding:8bit
 
-Hallo Tanja,
-
-anbei findest du meine Stunden vom #{month_name.capitalize}.
+#{body}
 
 --#{boundary}
 Content-Type: multipart/mixed; name=\"#{filename}\"
@@ -43,7 +50,6 @@ Content-Disposition: attachment; filename="#{filename}"
 #{encoded_brf_file_content}
 --#{boundary}--
 EOM
-
     smtp = Net::SMTP.new smtp_server, smtp_port
     smtp.enable_ssl
     smtp.start(smtp_domain, smtp_user, smtp_pw, :plain) do |sender|

@@ -58,7 +58,7 @@ class PunchClock
     --card-config
     --cards
     --config
-    --config-regenerate
+    --config-update
     --config-reset
     --console
     --doc
@@ -235,7 +235,7 @@ class PunchClock
       end
       exit
     end
-    if option == '--config-regenerate'
+    if option == '--config-update'
       generate_and_open_config_file
       exit
     end

@@ -201,10 +201,10 @@ class Punch
     "#\n"\
     "#   $ punch --config-reset\n"\
     "#\n"\
-    "# To regenerate this file while keeping your modifications and adding\n"\
+    "# To update this file while keeping your modifications and adding\n"\
     "# new options that might have been made available with an update run\n"\
     "#\n"\
-    "#   $ punch --config-regenerate\n"\
+    "#   $ punch --config-update\n"\
     "#\n"\
     "# If you messed up so badly that punch won't even start up because of\n"\
     "# this config file and you don't know how to fix it, feel free to delete\n"\

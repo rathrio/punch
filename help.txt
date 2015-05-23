@@ -56,9 +56,9 @@ $ punch -c, --config
 $ punch --config-reset
     Reset ~/.punchrc.
 
-$ punch --config-regenerate
-    Regenerate ~/.punchrc. Doesn't reset to default settings. This is useful
-    when new settings are available.
+$ punch --config-update
+    Update ~/.punchrc. Doesn't reset to default settings, but pulls newly
+    available settings in.
 
 $ punch -d, --day dd.mm.yy
     Pass a date to add blocks for that day. Defaults to today.

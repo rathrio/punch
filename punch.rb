@@ -290,7 +290,12 @@ class PunchClock
     end
     if option == '--mail'
       require 'brf_mailer'
-      BRFMailer.new(brf_filepath, month_name).deliver
+      mailer = BRFMailer.new(brf_filepath, month_name)
+      puts raw_brf
+      if yes?("Are you sure you want to mail "\
+          "#{mailer.month_name.pink} to #{mailer.receiver.pink}?")
+        mailer.deliver
+      end
       exit
     end
     File.open brf_filepath, 'r+' do |file|

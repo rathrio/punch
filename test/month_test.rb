@@ -12,7 +12,7 @@ class MonthTest < PunchTest
     EOS
 
     day = Day.new "02.01.15"
-    day.add Block.new("14-16", day)
+    day.add Block.from("14-16", day)
     month.days << day
     month.days.sort!
 

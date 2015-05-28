@@ -24,7 +24,7 @@ class Month
     NAMES[month_nr]
   end
 
-  def self.build(brf_str, month_nr, year)
+  def self.from(brf_str, month_nr, year)
     month        = BRFParser.new.parse(brf_str)
     month.number = month_nr
     month.year   = year

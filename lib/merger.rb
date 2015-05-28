@@ -18,7 +18,7 @@ class Merger
       hours_folder = card_config.fetch(:hours_folder) { next }
       brf_file_path = "#{hours_folder}/#{month_name}_#{year}.txt"
       begin
-        month = Month.build(File.read(brf_file_path), month_nr, year)
+        month = Month.from(File.read(brf_file_path), month_nr, year)
       rescue Errno::ENOENT
         next
       end

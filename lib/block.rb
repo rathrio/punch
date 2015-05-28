@@ -4,7 +4,7 @@ class Block
   attr_accessor :start, :finish, :day
   flag :over_midnight
 
-  def initialize(str, day)
+  def self.from(str, day)
     @day = day
     start_str, finish_str = str.split '-'
 

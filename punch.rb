@@ -299,7 +299,7 @@ class PunchClock
       exit
     end
     File.open brf_filepath, 'r+' do |file|
-      @month = Month.build(file.read, month_nr, year)
+      @month = Month.from(file.read, month_nr, year)
 
       if option == '-f' || option == '--format'
         @args.shift
@@ -353,7 +353,7 @@ class PunchClock
           @args.shift
           action = :remove
         end
-        blocks = @args.map { |block_str| Block.new block_str, day }
+        blocks = @args.map { |block_str| Block.from block_str, day }
         day.send action, *blocks
         if day.unhealthy?
           puts "#{midnight_madness_notes.sample.pink}\n"

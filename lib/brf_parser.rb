@@ -81,7 +81,7 @@ class BRFParser
       l.sub! TOTAL, ''
       day_ary    = l.split
       day        = Day.from(day_ary.shift)
-      day.blocks = day_ary.map { |block_str| Block.from block_str, day }
+      day.blocks = day_ary.map { |block_str| BlockCreator.from block_str, day }
       day
     end
     month

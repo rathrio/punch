@@ -1,5 +1,6 @@
 require 'net/smtp'
 require 'erb'
+require 'tempfile'
 
 # Delivers a mail to Brigitte with the current BRF file attached.
 class BRFMailer
@@ -12,9 +13,18 @@ class BRFMailer
     @month_name   = month_name
 
     # Load mailer config.
-    Punch.config.mailer_config.each do |k, v|
+    config.mailer_config.each do |k, v|
       send("#{k}=", v) if respond_to? k
     end
+
+    f = Tempfile.new 'body'
+    f.write body
+    f.rewind
+    system "#{config.text_editor} #{f.path}"
+    f.rewind
+    @body = f.read
+  ensure
+    f.close
   end
 
   def body=(new_body)
@@ -25,12 +35,14 @@ class BRFMailer
     @month_name.capitalize
   end
 
-  def deliver
+  def message(encode_attachment = true)
     boundary = "superUniqueIdentifier567"
     filename = File.basename brf_filepath
-    encoded_brf_file_content = [File.read(brf_filepath)].pack "m"
+    file_content = File.read(brf_filepath)
+    # Base64
+    encoded_brf_file_content = [file_content].pack "m"
 
-    message = <<EOM
+    msg = <<EOM
 From: #{smtp_user}
 To: #{receiver}
 Subject: Stunden #{month_name.capitalize}
@@ -47,14 +59,21 @@ Content-Type: multipart/mixed; name=\"#{filename}\"
 Content-Transfer-Encoding:base64
 Content-Disposition: attachment; filename="#{filename}"
 
-#{encoded_brf_file_content}
+#{encode_attachment ? encoded_brf_file_content : file_content}
 --#{boundary}--
 EOM
+  end
+
+  def deliver
     smtp = Net::SMTP.new smtp_server, smtp_port
     smtp.enable_ssl
     smtp.start(smtp_domain, smtp_user, smtp_pw, :plain) do |sender|
       sender.send_message(message, smtp_user, receiver)
     end
+  end
+
+  def config
+    Punch.config
   end
 
 end

@@ -291,9 +291,9 @@ class PunchClock
     if option == '--mail'
       require 'brf_mailer'
       mailer = BRFMailer.new(brf_filepath, month_name)
-      puts raw_brf
-      if yes?("Are you sure you want to mail "\
-          "#{mailer.month_name.pink} to #{mailer.receiver.pink}?")
+      # Print non-encoded version for confirmation.
+      puts mailer.message false
+      if yes?("Do you want to send this mail?")
         mailer.deliver
       end
       exit

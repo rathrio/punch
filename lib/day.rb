@@ -1,12 +1,16 @@
 class Day
-  include Totals
+  include Attributes
   include Comparable
+  include Totals
 
   attr_accessor :day, :month, :year, :blocks
   flag :highlight, :unhealthy
 
-  def initialize(date = '')
-    @day, @month, @year = date.split('.').map &:to_i
+  # @ param date [String] a date of format "DD.MM.YY", e.g., "26.03.15".
+  def self.from(date)
+    day = Day.new
+    day.day, day.month, day.year = date.split('.').map &:to_i
+    day
   end
 
   def date
@@ -111,6 +115,7 @@ class Day
 
       # Splitting up :(
       if (to_split = self.blocks.find { |b| b.strict_include?(block) })
+        new_block = Block.new
       end
     end
   end

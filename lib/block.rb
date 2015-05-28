@@ -1,11 +1,14 @@
 class Block
-  include Totals
+  include Attributes
   include Comparable
+  include Totals
+
   attr_accessor :start, :finish, :day
   flag :over_midnight
 
   def self.from(str, day)
-    @day = day
+    block = Block.new
+    block.day = day
     start_str, finish_str = str.split '-'
 
     if start_str.empty? || finish_str.empty?
@@ -15,13 +18,14 @@ class Block
     start_ary  = start_str.split(':')
     finish_ary = finish_str.split(':')
 
-    @start  = Time.new(day.long_year, day.month, day.day, *start_ary)
-    @finish = Time.new(day.long_year, day.month, day.day, *finish_ary)
-    if @finish < @start
-      @finish = @finish.next_day
+    block.start  = Time.new(day.long_year, day.month, day.day, *start_ary)
+    block.finish = Time.new(day.long_year, day.month, day.day, *finish_ary)
+    if block.finish < block.start
+      block.finish = block.finish.next_day
       day.unhealthy!
-      over_midnight!
+      block.over_midnight!
     end
+    block
   end
 
   def to_s

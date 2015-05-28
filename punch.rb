@@ -28,6 +28,7 @@ require 'core_extensions'
 require 'config'
 require 'brf_parser'
 require 'totals'
+require 'attributes'
 require 'block'
 require 'day'
 require 'month'
@@ -331,7 +332,7 @@ class PunchClock
           @args.shift
           date = @args.shift
           unless (day = month.days.find { |d| d.date == date })
-            day = Day.new date
+            day = Day.from date
             month.add day
           end
         else

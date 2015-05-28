@@ -217,4 +217,4 @@ In command mode, you can save and quit the interactive session with `x`, quit it
 without saving with `q` and open the BRF file for manual fixes with `e`.
 
 Once you have exited the session with `x`, Punch will print the edited month
-with the days updated highlighted in pink.
+with the days updated highlighted in pink by default.

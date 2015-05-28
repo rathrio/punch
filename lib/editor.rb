@@ -93,7 +93,7 @@ class Editor
 
   def prompt
     p = days_picked? ? "Add blocks:" : ">>"
-    print "\n#{p} ".pink
+    print "\n#{p} ".highlighted
     gets.chomp
   end
 
@@ -113,20 +113,20 @@ class Editor
   def print_month
     system 'clear'
     buffer = ''
-    buffer << title.pink
+    buffer << title.highlighted
 
     month.days.each_with_index do |d, i|
       index = i + 1
       index_str = "{#{index}}".rjust(4)
-      index_str = index_str.pink unless days_picked?
+      index_str = index_str.highlighted unless days_picked?
       day_str   = "#{d.short_name}  #{d.to_s(:padding => max_block_count)}"
-      day_str   = day_str.blue if d.today? && !days_picked?
+      day_str   = day_str.today_color if d.today? && !days_picked?
       str       = index_str + "  #{day_str}"
       if config.group_weeks_in_interactive_mode? && d.monday? && !i.zero?
         str.prepend("\n")
       end
       if days_picked.include?(index)
-        buffer << "\n#{str.pink}"
+        buffer << "\n#{str.highlighted}"
       else
         buffer << "\n#{str}"
       end
@@ -144,7 +144,7 @@ class Editor
   end
 
   def legend(cmd, desc)
-    "\n {#{cmd}}".pink + "  #{desc}"
+    "\n {#{cmd}}".highlighted + "  #{desc}"
   end
 
   def max_block_count

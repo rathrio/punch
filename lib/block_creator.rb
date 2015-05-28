@@ -3,19 +3,27 @@ class BlockCreator
   def self.from(str, day)
     start_str, finish_str = str.split '-'
 
+    start_ary  = start_str.split(':')
+    start_time = Time.new(day.long_year, day.month, day.day, *start_ary)
+
     if finish_str.nil?
-      # Half block
+      if (hb = day.blocks.find &:halfblock?)
+        Block.new(
+          :start  => hb.start,
+          :finish => start_time
+        )
+      else
+        Halfblock.new(:start => start_time)
+      end
     else
-      # Full block
       if start_str.empty? || finish_str.empty?
         raise ArgumentError, "\"#{str}\" is not valid Block"
       end
 
-      start_ary  = start_str.split(':')
       finish_ary = finish_str.split(':')
 
       block = Block.new(
-        :start  => Time.new(day.long_year, day.month, day.day, *start_ary),
+        :start  => start_time,
         :finish => Time.new(day.long_year, day.month, day.day, *finish_ary)
       )
 

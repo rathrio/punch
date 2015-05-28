@@ -59,8 +59,8 @@ class PunchClock
     --card-config
     --cards
     --config
-    --config-update
     --config-reset
+    --config-update
     --console
     --doc
     --edit
@@ -77,6 +77,7 @@ class PunchClock
     --options
     --previous
     --raw
+    --remove
     --stats
     --test
     --trello

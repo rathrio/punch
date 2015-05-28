@@ -109,9 +109,9 @@ class Day
   def remove(*blocks)
     highlight!
     blocks.each do |block|
-      # Get rid of old blocks with shorter spans than block's.
+      # Get rid of old blocks with shorter spans than block's. Shadowing.
       self.blocks.reject! { |b|
-        b.start >= block.start && b.finish <= block.finish }
+        block.strict_include?(b) }
 
       # Splitting up :(
       if (to_split = self.blocks.find { |b| b.strict_include?(block) })
@@ -121,6 +121,16 @@ class Day
         )
         to_split.finish = block.start
         self.blocks << new_block
+      end
+
+      # Removing at start.
+      if (b = self.blocks.find { |b| b.strict_include? block.finish })
+        b.start = block.finish
+      end
+
+      # Removing at finish.
+      if (b = self.blocks.find { |b| b.strict_include? block.start })
+        b.finish = block.start
       end
     end
   end

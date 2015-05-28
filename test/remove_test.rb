@@ -10,19 +10,6 @@ class RemoveTest < PunchTest
     clear_hours_folder
   end
 
-  def test_removing_at_end
-    brf_write %{
-      Februar 2015
-
-      28.01.15   08:00-12:00   Total: 04:00
-
-      Total: 04:00
-    }
-
-    punch '--remove 11:30-12'
-    assert_punched '28.01.15   08:00-11:30   Total: 03:30'
-  end
-
   def test_removing_at_start
     brf_write %{
       Februar 2015
@@ -34,6 +21,19 @@ class RemoveTest < PunchTest
 
     punch '--remove 8-11'
     assert_punched '28.01.15   11:00-12:00   Total: 01:00'
+  end
+
+  def test_removing_at_finish
+    brf_write %{
+      Februar 2015
+
+      28.01.15   08:00-12:00   Total: 04:00
+
+      Total: 04:00
+    }
+
+    punch '--remove 11:30-12'
+    assert_punched '28.01.15   08:00-11:30   Total: 03:30'
   end
 
   def test_splitting
@@ -60,5 +60,18 @@ class RemoveTest < PunchTest
 
     punch '--remove 7-12:30'
     assert_punched '28.01.15   13:00-17:00   Total: 04:00'
+  end
+
+  def test_remove_at_start_and_finish
+    brf_write %{
+      Februar 2015
+
+      28.01.15   08:00-12:00   13:00-17:00   Total: 08:00
+
+      Total: 08:00
+    }
+
+    punch '--remove 11-14'
+    assert_punched '28.01.15   08:00-11:00   14:00-17:00   Total: 06:00'
   end
 end

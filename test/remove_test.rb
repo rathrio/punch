@@ -46,7 +46,7 @@ class RemoveTest < PunchTest
     }
 
     punch '--remove 9-10'
-    assert_punched '28.01.15   08:00-09:00 10:00-12:00   Total: 03:00'
+    assert_punched '28.01.15   08:00-09:00   10:00-12:00   Total: 03:00'
   end
 
   def test_shadowing

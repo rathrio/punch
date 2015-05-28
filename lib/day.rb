@@ -115,7 +115,12 @@ class Day
 
       # Splitting up :(
       if (to_split = self.blocks.find { |b| b.strict_include?(block) })
-        new_block = Block.new
+        new_block = Block.new(
+          :start  => block.finish,
+          :finish => to_split.finish
+        )
+        to_split.finish = block.start
+        self.blocks << new_block
       end
     end
   end

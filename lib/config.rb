@@ -20,9 +20,9 @@ class Punch
         begin
           eval File.read(config_file)
         rescue Exception => e
-          message = "Something went wrong while trying to load ~/.punchrc:\n".pink
+          message = "Something went wrong while trying to load ~/.punchrc:\n".highlighted
           message << "\n#{e}\n\n"
-          message << "Proceeding with whatever settings could be loaded.\n".pink
+          message << "Proceeding with whatever settings could be loaded.\n".highlighted
           puts message
         end
       end
@@ -34,7 +34,7 @@ class Punch
 
     def load_card(card)
       card_config = config.cards.fetch(card.to_sym) do
-        puts "The card \"#{card}\" doesn't exist".pink
+        puts "The card \"#{card}\" doesn't exist".highlighted
         exit
       end
 
@@ -117,15 +117,20 @@ class Punch
     "After which day punch should generate the next month's BRF file.",
     20
 
-  # @return [String]
-  option :system_ruby,
-    "Which ruby command to use to execute subcommands.",
-    "ruby"
-
   # @return [Fixnum]
   option :monthly_goal,
     "How many hours you want to work per month.",
     68
+
+  # @return [Fixnum]
+  option :highlight_color_code,
+    "Which color to use for highlighting important text.",
+    35
+
+  # @return [Fixnum]
+  option :today_color_code,
+    "Which color to use for highlighting the current date.",
+    34
 
   # @return [Boolean]
   option :group_weeks_in_interactive_mode,
@@ -141,6 +146,11 @@ class Punch
   option :debug,
     "Print stack trace instead of user friendly hint.",
     false
+
+  # @return [String]
+  option :system_ruby,
+    "Which ruby command to use to execute subcommands.",
+    "ruby"
 
   # @return [Hash]
   option :mailer_config,

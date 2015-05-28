@@ -9,7 +9,7 @@ $$ |      \$$$$$$  |$$ |  $$ |\$$$$$$$\ $$ |  $$ |
 
 $ punch
     Print current month. Today is highlighted in blue, the last updated day in
-    pink.
+    pink by default.
 
 $ punch HH:MM-HH:MM HH:MM-HH:MM ...
     Add blocks to today. Minutes are optional.

@@ -4,20 +4,12 @@ class String
     "\e[#{color_code}m#{self}\e[0m"
   end
 
-  def green
-    colorize 32
+  def highlighted
+    colorize Punch.config.highlight_color_code
   end
 
-  def blue
-    colorize 34
-  end
-
-  def pink
-    colorize 35
-  end
-
-  def yellow
-    colorize 33
+  def today_color
+    colorize Punch.config.today_color_code
   end
 end
 

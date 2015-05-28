@@ -172,7 +172,7 @@ class PunchClock
         require 'tempfile'
         f = Tempfile.new 'help'
         f.write File.readlines(help_file).map { |l|
-          l.start_with?('$') ? l.blue : l }.join
+          l.start_with?('$') ? l.highlighted : l }.join
         f.seek 0, IO::SEEK_SET
         system "less -R #{f.path}"
       ensure
@@ -185,13 +185,13 @@ class PunchClock
       exit
     end
     if option == '-u' || option == '--update'
-      puts "Fetching master branch...".pink
+      puts "Fetching master branch...".highlighted
       system "cd #{punch_folder} && git pull origin master"
       print_version
       if config.regenerate_punchrc_after_udpate? &&
           File.exist?(config.config_file)
         config.generate_config_file
-        puts "Updated ~/.punchrc.".pink
+        puts "Updated ~/.punchrc.".highlighted
       end
       exit
     end
@@ -221,7 +221,7 @@ class PunchClock
       exit
     end
     if option == '--whoami'
-      puts "You are the sunshine of my life, #{config.name}.".pink
+      puts "You are the sunshine of my life, #{config.name}.".highlighted
       exit
     end
     if option == '-c' || option == '--config'
@@ -266,7 +266,7 @@ class PunchClock
     unless File.exist? brf_filepath
       # Create hours folder if necessary.
       unless File.directory? hours_folder
-        if yes? "The directory #{hours_folder.pink} does not exist. Create it?"
+        if yes? "The directory #{hours_folder.highlighted} does not exist. Create it?"
           require 'fileutils'
           FileUtils.mkdir_p(hours_folder)
         else
@@ -293,7 +293,7 @@ class PunchClock
       mailer = BRFMailer.new(brf_filepath, month_name)
       puts raw_brf
       if yes?("Are you sure you want to mail "\
-          "#{mailer.month_name.pink} to #{mailer.receiver.pink}?")
+          "#{mailer.month_name.highlighted} to #{mailer.receiver.highlighted}?")
         mailer.deliver
       end
       exit
@@ -303,11 +303,11 @@ class PunchClock
 
       if option == '-f' || option == '--format'
         @args.shift
-        puts "Before formatting:\n".blue
+        puts "Before formatting:\n".today_color
         puts raw_brf
         @month.cleanup!
         write! file
-        puts "\nAfter formatting:\n".blue
+        puts "\nAfter formatting:\n".today_color
         puts raw_brf
         exit
       end
@@ -350,7 +350,7 @@ class PunchClock
         blocks = @args.map { |block_str| Block.new block_str, day }
         day.add *blocks
         if day.unhealthy?
-          puts "#{midnight_madness_notes.sample.pink}\n"
+          puts "#{midnight_madness_notes.sample.highlighted}\n"
         end
         write! file
       end
@@ -364,13 +364,13 @@ class PunchClock
     end
   rescue BRFParser::ParserError => e
     raise e if config.debug?
-    puts "Couldn't parse #{brf_filepath.blue}."
+    puts "Couldn't parse #{brf_filepath.highlighted}."
   rescue Interrupt
-    puts "\nExiting...".pink
+    puts "\nExiting...".highlighted
     exit
   rescue => e
     raise e if config.debug?
-    puts %{That's not a valid argument, dummy.\nRun #{"punch -h".blue} for help.}
+    puts %{That's not a valid argument, dummy.\nRun #{"punch -h".highlighted} for help.}
   end
 
   def config
@@ -383,7 +383,7 @@ class PunchClock
   end
 
   def print_version
-    puts "#{version_name.blue} #{version.blue} released #{last_release}"
+    puts "#{version_name.highlighted} #{version.highlighted} released #{last_release}"
   end
 
   def raw_brf

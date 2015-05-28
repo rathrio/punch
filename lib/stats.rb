@@ -134,7 +134,7 @@ class Stats
   end
 
   def label(str)
-    "#{str}:".ljust(23).blue
+    "#{str}:".ljust(23).highlighted
   end
 
   def eight_am(day)

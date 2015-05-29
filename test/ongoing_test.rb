@@ -33,4 +33,20 @@ class OngoingTest < PunchTest
     )
   end
 
+  def test_shadow_block_with_complete
+    punch '13-13:30 12'
+    punch '14'
+    assert_punched(
+      '28.01.15   12:00-14:00   Total: 02:00'
+    )
+  end
+
+  def test_overlap_block_with_complete
+    punch '12 14-15'
+    punch '14:30'
+    assert_punched(
+      '28.01.15   12:00-15:00   Total: 03:00'
+    )
+  end
+
 end

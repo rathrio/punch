@@ -97,8 +97,11 @@ $ punch -n, --next
 $ punch -p, --previous
     Punch previous month.
 
-$ punch -r, --raw
+$ punch --raw
     Print current BRF file without fancy highlighting and auto-formatting.
+
+$ punch -r, --remove HH:MM-HH:MM HH:MM-HH:MM ...
+    Remove blocks.
 
 $ punch -s, --stats
     Print some stats.

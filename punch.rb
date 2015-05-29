@@ -329,7 +329,9 @@ class PunchClock
         puts Stats.new(month)
         exit
       end
+
       unless @args.empty?
+        # Determining which day to edit.
         if option == '-d' || option == '--day'
           @args.shift
           date = @args.shift
@@ -350,9 +352,11 @@ class PunchClock
             month.add day
           end
         end
+        option = @args.first
+
         # Add or remove blocks.
         action = :add
-        if @args.first == '--remove'
+        if option == '-r' || option == '--remove'
           @args.shift
           action = :remove
         end
@@ -363,7 +367,8 @@ class PunchClock
         end
         write! file
       end
-      # Add today if necessary
+
+      # Print month with an empty current day if necessary.
       if month.days.none? { |d| d.at? now }
         today = Day.new
         today.set now

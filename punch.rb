@@ -29,7 +29,6 @@ require 'config'
 require 'brf_parser'
 require 'totals'
 require 'attributes'
-require 'block_creator'
 require 'block'
 require 'day'
 require 'month'
@@ -360,7 +359,7 @@ class PunchClock
           @args.shift
           action = :remove
         end
-        blocks = @args.map { |block_str| BlockCreator.from block_str, day }
+        blocks = @args.map { |block_str| Block.from block_str, day }
         day.send action, *blocks
         if day.unhealthy?
           puts "#{midnight_madness_notes.sample.highlighted}\n"

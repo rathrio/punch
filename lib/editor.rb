@@ -21,7 +21,7 @@ class Editor
           days_picked.each do |d|
             day = month.days[d - 1]
             blocks = input.strip.split(/\s+/).map { |block_str|
-              BlockCreator.from block_str, day }
+              Block.from block_str, day }
             day.add *blocks
           end
           reset!

@@ -9,14 +9,31 @@ class Block
   def self.from(str, day)
     block = Block.new
     block.day = day
-    start_str, finish_str = str.split '-'
 
-    if start_str.empty? || finish_str.empty?
-      raise ArgumentError, "\"#{str}\" is not valid Block"
+    start_str, finish_str = str.split '-'
+    start_ary  = start_str.split(':')
+
+    if finish_str
+      # normal block handling
+      finish_ary = finish_str.split(':')
+    else
+      unless start_str =~ /^\d{1,2}(:\d{2})?$/
+        raise ArgumentError, "#{str} is not a valid block"
+      end
+      # set finish time to start time
+      finish_ary = start_ary
+
+      # set earlier start time if ongoing blocks exist
+      if (ob = day.blocks.find &:ongoing?)
+        day.blocks.delete ob
+        # complete existing ongoing block
+        start_ary = ob.start_s.split(':')
+      end
     end
 
-    start_ary  = start_str.split(':')
-    finish_ary = finish_str.split(':')
+    if start_ary.empty? && finish_ary.empty?
+      raise ArgumentError, "#{str} is not a valid block"
+    end
 
     block.start  = Time.new(day.long_year, day.month, day.day, *start_ary)
     block.finish = Time.new(day.long_year, day.month, day.day, *finish_ary)
@@ -52,6 +69,18 @@ class Block
   # @param t [#start, #finish]
   def strict_include?(t)
     (start < t.start) && (finish > t.finish)
+  end
+
+  def start_s
+    format start
+  end
+
+  def finish_s
+    format finish
+  end
+
+  def ongoing?
+    start == finish
   end
 
   private

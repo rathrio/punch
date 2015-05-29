@@ -12,7 +12,7 @@ class PunchClockTest < PunchTest
   end
 
   def test_nice_hint_when_being_dumb
-    punch "--i'm so dumb"
+    punch "--dani"
     assert_outputted 'punch -h'
   end
 

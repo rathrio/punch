@@ -33,6 +33,13 @@ require 'block'
 require 'day'
 require 'month'
 
+autoload :Tempfile, 'tempfile'
+autoload :Merger, 'merger'
+autoload :FileUtils, 'fileutils'
+autoload :Editor, 'editor'
+autoload :BRFMailer, 'brf_mailer'
+autoload :Stats, 'stats'
+
 class PunchClock
   VERSION_NAME = "Hydra Dynamite"
 
@@ -171,7 +178,6 @@ class PunchClock
     end
     if option == '-h' || option == '--help'
       begin
-        require 'tempfile'
         f = Tempfile.new 'help'
         f.write File.readlines(help_file).map { |l|
           l.start_with?('$') ? l.highlighted : l }.join
@@ -259,7 +265,6 @@ class PunchClock
     end
     @month_name = Month.name month_nr
     if option == '-m' || option == '--merge'
-      require 'merger'
       @args.shift
       puts Merger.new(@args, month_nr, year).month
       exit
@@ -269,7 +274,6 @@ class PunchClock
       # Create hours folder if necessary.
       unless File.directory? hours_folder
         if yes? "The directory #{hours_folder.highlighted} does not exist. Create it?"
-          require 'fileutils'
           FileUtils.mkdir_p(hours_folder)
         else
           exit
@@ -291,7 +295,6 @@ class PunchClock
       exit
     end
     if option == '--mail'
-      require 'brf_mailer'
       mailer = BRFMailer.new(brf_filepath, month_name)
       # Print non-encoded version for confirmation.
       puts mailer.message false
@@ -319,12 +322,11 @@ class PunchClock
       end
       if option == '-i' || option == '--interactive'
         @args.shift
-        require 'editor'; Editor.new(self).run
+        Editor.new(self).run
         write! file
       end
       if option == '-s' || option == '--stats'
         @args.shift
-        require 'stats'
         puts Stats.new(month)
         exit
       end

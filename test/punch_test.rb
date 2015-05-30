@@ -1,7 +1,6 @@
 require_relative 'config'
-require_relative 'day_test'
-require_relative 'month_test'
-require_relative 'punch_clock_test'
-require_relative 'remove_test'
-require_relative 'module_test'
-require_relative 'attributes_test'
+
+current_file = File.absolute_path(__FILE__)
+Dir.glob(File.dirname(current_file) + "/*_test.rb").each do |file|
+  require file unless file == current_file
+end

@@ -286,7 +286,7 @@ class PunchClock
       exit
     end
     edit_brf if option == '-e' || option == '--edit'
-    if option == '-r' || option == '--raw'
+    if option == '--raw'
       puts raw_brf
       exit
     end

@@ -25,6 +25,7 @@
 $LOAD_PATH.unshift "#{File.dirname(__FILE__)}/lib"
 
 require 'core_extensions'
+require 'option_parsing'
 require 'config'
 require 'brf_parser'
 require 'totals'
@@ -33,7 +34,16 @@ require 'block'
 require 'day'
 require 'month'
 
+autoload :Tempfile, 'tempfile'
+autoload :Merger, 'merger'
+autoload :FileUtils, 'fileutils'
+autoload :Editor, 'editor'
+autoload :BRFMailer, 'brf_mailer'
+autoload :Stats, 'stats'
+
 class PunchClock
+  include OptionParsing
+
   VERSION_NAME = "Hydra Dynamite"
 
   MIDNIGHT_MADNESS_NOTES = [
@@ -87,10 +97,10 @@ class PunchClock
     --yesterday
   )
 
-  attr_reader :args, :path_to_punch, :month, :month_name, :year, :brf_filepath
+  attr_reader :path_to_punch, :month, :month_name, :year, :brf_filepath
 
   def initialize(args, path_to_punch = __FILE__)
-    @args = args
+    self.args = args
     @path_to_punch = path_to_punch
   end
 
@@ -142,36 +152,41 @@ class PunchClock
   end
 
   def punch
-    option = @args.first
+
     # First argument can be a card.
-    if option =~ card_rgx
-      Punch.load_card option
+    card = @args.first
+    if card =~ card_rgx
+      Punch.load_card card
       @args.shift
-      option = @args.first
     end
-    if option == '--options'
+
+    switch "--options" do
       puts OPTIONS.join(" ")
       exit
     end
-    if option == '--cards'
+
+    switch "--cards" do
       puts config.cards.keys.join(" ")
       exit
     end
-    if option == '--card-config'
+
+    switch '--card-config' do
       puts "  #{literal(config.cards)}"
       exit
     end
-    if option == '--brf'
+
+    switch '--brf' do
       system "open #{hours_folder}"
       exit
     end
-    if option == '-H' || option == '--hack'
+
+    switch "-H", "--hack" do
       system "cd #{punch_folder} && #{config.text_editor} ."
       exit
     end
-    if option == '-h' || option == '--help'
+
+    switch "-h", "--help" do
       begin
-        require 'tempfile'
         f = Tempfile.new 'help'
         f.write File.readlines(help_file).map { |l|
           l.start_with?('$') ? l.highlighted : l }.join
@@ -182,11 +197,13 @@ class PunchClock
         exit
       end
     end
-    if option == '-D' || option == '--doc'
+
+    switch "-D", "--doc" do
       system "cd #{punch_folder} && yard && open doc/index.html"
       exit
     end
-    if option == '-u' || option == '--update'
+
+    switch "-u", "--update" do
       puts "Fetching master branch...".highlighted
       system "cd #{punch_folder} && git pull origin master"
       print_version
@@ -197,79 +214,89 @@ class PunchClock
       end
       exit
     end
-    if option == '-t' || option == '--test'
+
+    switch "-t", "--test" do
       system "#{config.system_ruby} #{test_file}"
       exit
     end
-    if option == '-v' || option == '--version'
+
+    switch "-v", "--version" do
       print_version
       exit
     end
-    if option == '--engine'
+
+    switch "--engine" do
       puts "#{RUBY_ENGINE} #{RUBY_VERSION}"
       exit
     end
-    if option == '-l' || option == '--log'
-      @args.shift
-      system "cd #{punch_folder} && #{log(@args.shift)}"
+
+    flag "-l", "--log" do |n|
+      system "cd #{punch_folder} && #{log(n)}"
       exit
     end
-    if option == '--trello'
+
+    switch "--trello" do
       system "open https://trello.com/b/xfN8alsq/punch"
       exit
     end
-    if option == '--github'
+
+    switch "--github" do
       system "open https://github.com/rathrio/punch"
       exit
     end
-    if option == '--whoami'
+
+    switch "--whoami" do
       puts "You are the sunshine of my life, #{config.name}.".highlighted
       exit
     end
-    if option == '-c' || option == '--config'
+
+    switch "-c", "--config" do
       open_or_generate_config_file
       exit
     end
-    if option == '--config-reset'
+
+    switch "--config-reset" do
       if yes? "Are you sure you want to reset ~/.punchrc?"
         config.reset!
         generate_and_open_config_file
       end
       exit
     end
-    if option == '--config-update'
+
+    switch "--config-update" do
       generate_and_open_config_file
       exit
     end
+
     now = Time.now
     month_nr = now.month
     month_nr = (month_nr + 1) % 12 if now.day > hand_in_date
-    if option == '-n' || option == '--next'
-      @args.shift
+
+    switch "-n", "--next" do
       month_nr = (month_nr + 1) % 12
-      option = @args.first
     end
+
     @year = (month_nr < now.month) ? now.year + 1 : now.year
-    if option == '-p' || option == '--previous'
-      @args.shift
+
+    switch "-p", "--previous" do
       month_nr = (month_nr - 1) % 12
       month_nr = 12 if month_nr.zero?
       @year = (month_nr > now.month) ? now.year - 1 : now.year
-      option = @args.first
     end
+
     @month_name = Month.name month_nr
-    if option == '-m' || option == '--merge'
-      require 'merger'
-      @args.shift
+
+    switch "-m", "--merge" do
       puts Merger.new(@args, month_nr, year).month
       exit
     end
+
     @brf_filepath = generate_brf_filepath month_name, year
+
     unless File.exist? brf_filepath
       # Create hours folder if necessary.
       unless File.directory? hours_folder
         if yes? "The directory #{hours_folder.highlighted} does not exist. Create it?"
-          require 'fileutils'
           FileUtils.mkdir_p(hours_folder)
         else
           exit
@@ -279,19 +306,23 @@ class PunchClock
       File.open(brf_filepath, "w") { |f|
         f.write "#{month_name.capitalize} #{year}" }
     end
-    if option == '-b' || option == '--backup'
-      @args.shift
+
+    switch "-b", "--backup" do
       path = @args.shift
       system "cp #{brf_filepath} #{path}"
       exit
     end
-    edit_brf if option == '-e' || option == '--edit'
-    if option == '--raw'
+
+    switch "-e", "--edit" do
+      edit_brf
+    end
+
+    switch "--raw" do
       puts raw_brf
       exit
     end
-    if option == '--mail'
-      require 'brf_mailer'
+
+    switch "--mail" do
       mailer = BRFMailer.new(brf_filepath, month_name)
       # Print non-encoded version for confirmation.
       puts mailer.message false
@@ -300,11 +331,11 @@ class PunchClock
       end
       exit
     end
+
     File.open brf_filepath, 'r+' do |file|
       @month = Month.from(file.read, month_nr, year)
 
-      if option == '-f' || option == '--format'
-        @args.shift
+      switch "-f", "--format" do
         puts "Before formatting:\n".today_color
         puts raw_brf
         @month.cleanup!
@@ -313,52 +344,54 @@ class PunchClock
         puts raw_brf
         exit
       end
-      if option == '-C' || option == '--console'
+
+      switch "-C", "--console" do
         require 'pry'; binding.pry
         exit
       end
-      if option == '-i' || option == '--interactive'
-        @args.shift
-        require 'editor'; Editor.new(self).run
+
+      switch "-i", "--interactive" do
+        Editor.new(self).run
         write! file
       end
-      if option == '-s' || option == '--stats'
-        @args.shift
-        require 'stats'
+
+      switch "-s", "--stats" do
         puts Stats.new(month)
         exit
       end
 
       unless @args.empty?
-        # Determining which day to edit.
-        if option == '-d' || option == '--day'
-          @args.shift
-          date = @args.shift
+
+        # The --day flag might set a day to edit.
+        day = nil
+        flag "-d", "--day" do |date|
           unless (day = month.days.find { |d| d.date == date })
+            # Create that day if it doesn't exist yet.
             day = Day.from date
             month.add day
           end
-        else
-          time_to_edit = if (option == '-y' || option == '--yesterday')
-            @args.shift
-            now.previous_day
-          else
-            now
+        end
+
+        # If not, auto-determine which day to edit.
+        if day.nil?
+          time_to_edit = now
+          switch "-y", "--yesterday" do
+            time_to_edit = now.previous_day
           end
           unless (day = month.days.find { |d| d.at? time_to_edit })
+            # Create that day if it doesn't exist yet.
             day = Day.new
             day.set time_to_edit
             month.add day
           end
         end
-        option = @args.first
 
         # Add or remove blocks.
         action = :add
-        if option == '-r' || option == '--remove'
-          @args.shift
+        switch "-r", "--remove" do
           action = :remove
         end
+
         blocks = @args.map { |block_str| Block.from block_str, day }
         day.send action, *blocks
         if day.unhealthy?
@@ -375,6 +408,7 @@ class PunchClock
       end
       puts month.colored
     end
+
   rescue BRFParser::ParserError => e
     raise e if config.debug?
     puts "Couldn't parse #{brf_filepath.highlighted}."

@@ -142,4 +142,32 @@ class PunchClockTest < PunchTest
     assert_punched "Maerz 2015"
   end
 
+  def test_option_order_shouldnt_matter
+    punch '-p -d 02.04.15 8-12'
+
+    assert_punched "Januar 2015"
+    assert_punched "02.04.15   08:00-12:00   Total: 04:00"
+  end
+
+  def test_option_order_shouldnt_matter2
+    punch '-d 02.04.15 -p 8-12'
+
+    assert_punched "Januar 2015"
+    assert_punched "02.04.15   08:00-12:00   Total: 04:00"
+  end
+
+  def test_option_order_shouldnt_matter3
+    punch '-d 02.04.15 8-12 -p'
+
+    assert_punched "Januar 2015"
+    assert_punched "02.04.15   08:00-12:00   Total: 04:00"
+  end
+
+  def test_option_order_shouldnt_matter4
+    punch '8-12 -p -d 02.04.15'
+
+    assert_punched "Januar 2015"
+    assert_punched "02.04.15   08:00-12:00   Total: 04:00"
+  end
+
 end

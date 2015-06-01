@@ -11,8 +11,10 @@ module OptionParsing
   def flag(*names)
     names.each do |n|
       if (index = args.index(n))
-        argument_index = index + 1
-        if (argument = args[argument_index]) && !argument.start_with?('-')
+        argument = args[index + 1]
+        # Only yield the argument when it is not another option. Note that it
+        # can be nil, so flag arguments are optional by default.
+        if !argument.to_s.start_with?('-')
           yield argument
           # Delete flag.
           args.delete_at index

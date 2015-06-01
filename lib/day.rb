@@ -110,8 +110,7 @@ class Day
     highlight!
     blocks.each do |block|
       # Get rid of old blocks with shorter spans than block's. Shadowing.
-      self.blocks.reject! { |b|
-        block.strict_include?(b) }
+      self.blocks.reject! { |b| block.include?(b) }
 
       # Splitting up :(
       if (to_split = self.blocks.find { |b| b.strict_include?(block) })

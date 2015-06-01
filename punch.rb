@@ -139,23 +139,11 @@ class PunchClock
     config.hand_in_date
   end
 
-  def version_name
-    VERSION_NAME
-  end
-
-  def midnight_madness_notes
-    MIDNIGHT_MADNESS_NOTES
-  end
-
-  def card_rgx
-    CARD_RGX
-  end
-
   def punch
 
     # First argument can be a card.
     card = @args.first
-    if card =~ card_rgx
+    if card =~ CARD_RGX
       Punch.load_card card
       @args.shift
     end
@@ -395,7 +383,7 @@ class PunchClock
         blocks = @args.map { |block_str| Block.from block_str, day }
         day.send action, *blocks
         if day.unhealthy?
-          puts "#{midnight_madness_notes.sample.highlighted}\n"
+          puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n"
         end
         write! file
       end
@@ -430,7 +418,7 @@ class PunchClock
   end
 
   def print_version
-    puts "#{version_name.highlighted} #{version.highlighted} released #{last_release}"
+    puts "#{VERSION_NAME.highlighted} #{version.highlighted} released #{last_release}"
   end
 
   def raw_brf

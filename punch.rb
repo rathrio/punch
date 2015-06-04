@@ -60,7 +60,7 @@ class PunchClock
   ]
 
   # Card names are a restricted form of identifiers.
-  CARD_RGX = /^([a-z_][a-zA-Z0-9_]*)$/
+  CARD_RGX = /^(?!now)([a-z_][a-zA-Z0-9_]*)$/
 
   # For easy bash completion export.
   OPTIONS = %w(
@@ -379,6 +379,9 @@ class PunchClock
         switch "-r", "--remove" do
           action = :remove
         end
+
+        # Punch now! Replacing all "now"s with the current Time for convenience.
+        @args.map! { |a| a.gsub(/now/, Time.now.strftime("%H:%M")) }
 
         blocks = @args.map { |block_str| Block.from block_str, day }
         day.send action, *blocks

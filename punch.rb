@@ -132,7 +132,7 @@ class PunchClock
   def write!(file)
     file.seek 0, IO::SEEK_SET
     file.truncate 0
-    file.write month
+    file.write month.to_brf
     file.seek 0, IO::SEEK_SET
   end
 
@@ -406,7 +406,7 @@ class PunchClock
         today.set now
         month.add today
       end
-      puts month.colored
+      puts month
     end
 
   rescue BRFParser::ParserError => e

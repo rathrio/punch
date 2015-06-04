@@ -11,7 +11,7 @@ module TestOut
   class << self
     attr_accessor :output
     def puts(str)
-      self.output = str
+      self.output = str.to_s
     end
   end
 end

@@ -62,6 +62,19 @@ class RemoveTest < PunchTest
     assert_punched '28.01.15   13:00-17:00   Total: 04:00'
   end
 
+  def test_shadowing2
+    brf_write %{
+      Februar 2015
+
+      28.01.15   08:00-12:00   13:00-17:00   Total: 08:00
+
+      Total: 08:00
+    }
+
+    punch '--remove 8-12'
+    assert_punched '28.01.15   13:00-17:00   Total: 04:00'
+  end
+
   def test_remove_at_start_and_finish
     brf_write %{
       Februar 2015

@@ -94,7 +94,7 @@ class Editor
   def prompt
     p = days_picked? ? "Add blocks:" : ">>"
     print "\n#{p} ".highlighted
-    gets.chomp
+    STDIN.gets.chomp
   end
 
   def days_picked

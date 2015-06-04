@@ -45,8 +45,10 @@ class Block
     block
   end
 
-  def to_s
-    "#{format start}-#{format finish}"
+  def to_s(options = {})
+    str = "#{format start}-"
+    return str << '     ' if options[:fancy] && ongoing?
+    str << format(finish)
   end
 
   def empty?

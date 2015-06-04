@@ -63,18 +63,18 @@ class Month
   end
 
   def to_s(options = {})
-    color = options.fetch :color, true
+    fancy = options.fetch :fancy, false
     days.sort!
     b_count = max_block_count
     "#{name}#{newline * 2}#{
       days.map { |d|
-        d.to_s(:color => color, :padding => b_count)
+        d.to_s(:fancy => fancy, :padding => b_count)
       }.join(newline)
     }#{newline * 2}Total: #{total_str}#{newline}"
   end
 
-  def to_brf
-    to_s :color => false
+  def fancy
+    to_s :fancy => true
   end
 
   def children

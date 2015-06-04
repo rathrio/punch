@@ -35,7 +35,7 @@ class Day
 
   def to_s(options = {})
     blocks.sort!
-    blocks_str = blocks.join('   ')
+    blocks_str = blocks.map { |b| b.to_s(options) }.join('   ')
     max_block_count = options.fetch :padding, 0
     if block_count < max_block_count
       (max_block_count - block_count).times do
@@ -45,7 +45,7 @@ class Day
     end
     str = "#{date}   #{blocks_str}   "
     str << "Total: #{total_str}" if blocks.any?
-    if options.fetch :color, false
+    if options.fetch :fancy, false
       return str.highlighted if highlight?
       return str.today_color if today?
     end

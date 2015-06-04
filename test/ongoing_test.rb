@@ -33,6 +33,23 @@ class OngoingTest < PunchTest
     )
   end
 
+  def test_start_ongoing_in_existing_block
+    punch '13-15'
+    punch '14'
+    assert_punched(
+      '28.01.15   13:00-15:00   Total: 02:00'
+    )
+  end
+
+  def test_end_ongoing_block_started_in_existing_block
+    punch '13-15'
+    punch '14'
+    punch '18'
+    assert_punched(
+      '28.01.15   13:00-15:00   18:00-18:00   Total: 02:00'
+    )
+  end
+
   def test_shadow_block_with_complete
     punch '13-13:30 12'
     punch '14'

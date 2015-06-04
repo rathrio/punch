@@ -11,23 +11,23 @@ class Block
     block.day = day
 
     start_str, finish_str = str.split '-'
-    start_ary  = start_str.split(':')
+    start_ary = start_str.split ':'
 
     if finish_str
       # normal block handling
-      finish_ary = finish_str.split(':')
+      finish_ary = finish_str.split ':'
     else
       unless start_str =~ /^\d{1,2}(:\d{2})?$/
         raise ArgumentError, "#{str} is not a valid block"
       end
-      # set finish time to start time
+
+      # Start ongoing block.
       finish_ary = start_ary
 
-      # set earlier start time if ongoing blocks exist
+      # Complete ongoing block.
       if (ob = day.blocks.find &:ongoing?)
         day.blocks.delete ob
-        # complete existing ongoing block
-        start_ary = ob.start_s.split(':')
+        start_ary = ob.start_s.split ':'
       end
     end
 

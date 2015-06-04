@@ -87,4 +87,17 @@ class RemoveTest < PunchTest
     punch '--remove 11-14'
     assert_punched '28.01.15   08:00-11:00   14:00-17:00   Total: 06:00'
   end
+
+  def test_remove_cleans_up_after
+    brf_write %{
+      Februar 2015
+
+      27.01.15   08:00-12:00   13:00-17:00   Total: 08:00
+
+      Total: 08:00
+    }
+
+    punch '-d 27.01.15 -r 8-18'
+    refute_punched '27.01.15'
+  end
 end

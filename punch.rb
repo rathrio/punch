@@ -45,7 +45,7 @@ autoload :FairRoundedTime, 'fair_rounded_time'
 class PunchClock
   include OptionParsing
 
-  VERSION_NAME = "Hydra Dynamite"
+  VERSION_NAME = "The Baddest Man on the Planet"
 
   MIDNIGHT_MADNESS_NOTES = [
     "Get some sleep!",
@@ -375,12 +375,6 @@ class PunchClock
           end
         end
 
-        # Add or remove blocks.
-        action = :add
-        switch "-r", "--remove" do
-          action = :remove
-        end
-
         # Punch now! Replacing all "now"s with the current Time for convenience.
         rounded_time = case config.punch_now_rounder
           when :fair
@@ -392,11 +386,23 @@ class PunchClock
           end
         @args.map! { |a| a.gsub(/now/, rounded_time.strftime('%H:%M')) }
 
+        # Add or remove blocks.
+        action = :add
+        switch "-r", "--remove" do
+          action = :remove
+        end
         blocks = @args.map { |block_str| Block.from block_str, day }
         day.send action, *blocks
+
+        # Cleanup in case we have empty days after a remove.
+        if action == :remove
+          month.cleanup!
+        end
+
         if day.unhealthy?
           puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n"
         end
+
         write! file
       end
 

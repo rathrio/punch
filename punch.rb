@@ -40,6 +40,7 @@ autoload :FileUtils, 'fileutils'
 autoload :Editor, 'editor'
 autoload :BRFMailer, 'brf_mailer'
 autoload :Stats, 'stats'
+autoload :FairRoundedTime, 'fair_rounded_time'
 
 class PunchClock
   include OptionParsing
@@ -381,7 +382,15 @@ class PunchClock
         end
 
         # Punch now! Replacing all "now"s with the current Time for convenience.
-        @args.map! { |a| a.gsub(/now/, Time.now.strftime("%H:%M")) }
+        rounded_time = case config.punch_now_rounder
+          when :fair
+            FairRoundedTime.now
+          when :exact
+            Time.now
+          else
+            FairRoundedTime.now
+          end
+        @args.map! { |a| a.gsub(/now/, rounded_time.strftime('%H:%M')) }
 
         blocks = @args.map { |block_str| Block.from block_str, day }
         day.send action, *blocks

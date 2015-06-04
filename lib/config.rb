@@ -137,6 +137,16 @@ class Punch
     "Whether to add padding to group by week in the interactive editor.",
     true
 
+  # @return [Symbol]
+  option :punch_now_rounder,
+    "Which rounding to use when using \"now\".",
+    :fair
+
+  # @return [Fixnum]
+  option :punch_now_minute_precision,
+    "What precision (minutes) to round to.",
+    5
+
   # @return [Boolean]
   option :regenerate_punchrc_after_udpate,
     "Whether to automatically regenerate ~/.punchrc with punch --update.",

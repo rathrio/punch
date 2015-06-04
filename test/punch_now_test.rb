@@ -57,4 +57,31 @@ class PunchNowTest < PunchTest
     )
   end
 
+  def test_now_fair_rounder_round_down
+    Timecop.freeze(Time.new(2015, 01, 28, 14, 02)) do
+      punch 'now'
+    end
+    assert_punched(
+      '28.01.15   14:00-14:00   Total: 00:00'
+    )
+  end
+
+  def test_now_fair_rounder_round_up
+    Timecop.freeze(Time.new(2015, 01, 28, 14, 03)) do
+      punch 'now'
+    end
+    assert_punched(
+      '28.01.15   14:05-14:05   Total: 00:00'
+    )
+  end
+
+  def test_now_fair_rounder_no_rounding
+    Timecop.freeze(Time.new(2015, 01, 28, 14, 05)) do
+      punch 'now'
+    end
+    assert_punched(
+      '28.01.15   14:05-14:05   Total: 00:00'
+    )
+  end
+
 end

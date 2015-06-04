@@ -26,8 +26,7 @@ class Punch
     {
       :test => {
         :hours_folder => TEST_HOURS_FOLDER,
-        :out          => TestOut,
-        :debug        => false
+        :out          => TestOut
       }
     }
   end

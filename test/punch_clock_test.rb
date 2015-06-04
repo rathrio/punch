@@ -11,11 +11,6 @@ class PunchClockTest < PunchTest
     clear_hours_folder
   end
 
-  def test_nice_hint_when_being_dumb
-    punch "--dani"
-    assert_outputted 'punch -h'
-  end
-
   def test_without_args_prints_month
     punch '8-12 13-17'
     punch

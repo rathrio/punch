@@ -84,4 +84,24 @@ class PunchNowTest < PunchTest
     )
   end
 
+  def test_now_fair_rouder_to_full_hour
+    Timecop.freeze(Time.new(2015, 01, 28, 14, 58)) do
+      punch '10-now'
+    end
+    assert_punched(
+      '28.01.15   10:00-15:00   Total: 05:00'
+    )
+  end
+
+  def test_now_with_exact_rounding
+    config(:punch_now_rounder => :exact) do
+      Timecop.freeze(Time.new(2015, 01, 28, 14, 58)) do
+        punch '10-now'
+      end
+      assert_punched(
+        '28.01.15   10:00-14:58   Total: 04:58'
+      )
+    end
+  end
+
 end

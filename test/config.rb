@@ -104,6 +104,18 @@ class PunchTest < MiniTest::Test
     @clock
   end
 
+  def config(args)
+    old_config = Punch.config.clone
+
+    args.each do |k, v|
+      Punch.config.send "#{k}=", v
+    end
+
+    yield
+
+    Punch.config = old_config
+  end
+
 end
 
 MiniTest.after_run { PunchTest.clear_hours_folder }

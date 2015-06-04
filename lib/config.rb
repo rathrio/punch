@@ -13,6 +13,10 @@ class Punch
       @config
     end
 
+    def config=(new_config)
+      @config = new_config
+    end
+
     def load_from_config_file
       @config = new
       # Load config file.

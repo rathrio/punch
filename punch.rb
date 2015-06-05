@@ -325,11 +325,11 @@ class PunchClock
       @month = Month.from(file.read, month_nr, year)
 
       switch "-f", "--format" do
-        puts "Before formatting:\n".today_color
+        puts "Before formatting:\n".highlighted
         puts raw_brf
         @month.cleanup!
         write! file
-        puts "\nAfter formatting:\n".today_color
+        puts "\nAfter formatting:\n".highlighted
         puts raw_brf
         exit
       end

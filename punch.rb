@@ -327,7 +327,7 @@ class PunchClock
       switch "-f", "--format" do
         puts "Before formatting:\n".highlighted
         puts raw_brf
-        @month.cleanup!
+        @month.cleanup! :remove_ongoing_blocks => true
         write! file
         puts "\nAfter formatting:\n".highlighted
         puts raw_brf

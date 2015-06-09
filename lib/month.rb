@@ -93,8 +93,8 @@ class Month
     year - 2000
   end
 
-  def cleanup!
-    days.each(&:cleanup!)
+  def cleanup!(options = {})
+    days.each(&:remove_ongoing_blocks!) if options[:remove_ongoing_blocks]
     days.reject!(&:empty?)
   end
 end

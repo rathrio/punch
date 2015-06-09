@@ -169,7 +169,7 @@ class Day
     @year  = time.short_year
   end
 
-  def cleanup!
-    blocks.reject!(&:empty?)
+  def remove_ongoing_blocks!
+    blocks.reject!(&:ongoing?)
   end
 end

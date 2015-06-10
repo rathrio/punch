@@ -41,6 +41,7 @@ autoload :Editor, 'editor'
 autoload :BRFMailer, 'brf_mailer'
 autoload :Stats, 'stats'
 autoload :FairRoundedTime, 'fair_rounded_time'
+autoload :MonthFiller, 'month_filler'
 
 class PunchClock
   include OptionParsing
@@ -77,6 +78,7 @@ class PunchClock
     --edit
     --engine
     --format
+    --full
     --github
     --hack
     --help
@@ -257,6 +259,10 @@ class PunchClock
       exit
     end
 
+    switch "--full" do
+      @print_full_month = true
+    end
+
     now = Time.now
     month_nr = now.month
     month_nr = (month_nr + 1) % 12 if now.day > hand_in_date
@@ -412,6 +418,11 @@ class PunchClock
         today.set now
         month.add today
       end
+
+      if print_full_month?
+        MonthFiller.new(month).fill!
+      end
+
       puts month.fancy
     end
 
@@ -444,6 +455,10 @@ class PunchClock
   end
 
   private
+
+  def print_full_month?
+    @print_full_month
+  end
 
   def generate_brf_filepath(month_name, year)
     "#{hours_folder}/#{month_name}_#{year}.txt"

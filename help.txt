@@ -78,6 +78,9 @@ $ punch -f, --format
     Reformat current BRF file. This will normalize whitespace and recalculate
     totals.
 
+$ punch --full
+    Print all days instead of the ones with blocks only.
+
 $ punch -h , --help
     Print this message.
 

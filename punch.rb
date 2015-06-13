@@ -74,6 +74,7 @@ class PunchClock
     --config-reset
     --config-update
     --console
+    --diagram
     --doc
     --edit
     --engine
@@ -191,6 +192,14 @@ class PunchClock
 
     switch "-D", "--doc" do
       system "cd #{punch_folder} && yard && open doc/index.html"
+      exit
+    end
+
+    switch "--diagram" do
+      system "cd #{punch_folder} && "\
+        "yard graph --protected --full --dependencies | "\
+        "dot -T pdf -o diagram.pdf && "\
+        "open diagram.pdf"
       exit
     end
 

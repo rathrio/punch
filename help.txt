@@ -132,6 +132,9 @@ $ punch -C, --console
     Start pry session after internal Month instance has been initialized.
     Depends on pry gem.
 
+$ punch --diagram
+    Generate and open a class diagram. Depends on yard, graphviz and dot.
+
 $ punch -D, --doc
     Generate and view docs in default browser. Depends on yard gem.
 

@@ -2,15 +2,6 @@ require_relative 'config'
 
 class PunchNowTest < PunchTest
 
-  # Travel to 28.01.2015. So the current BRF month is February.
-  def setup
-    Timecop.freeze(Time.new(2015, 01, 28, 14))
-  end
-
-  def teardown
-    clear_hours_folder
-  end
-
   def test_start_ongoing_with_now
     punch 'now'
     assert_punched(

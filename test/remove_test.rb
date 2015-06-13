@@ -1,15 +1,6 @@
 require_relative 'config'
 
 class RemoveTest < PunchTest
-  # Travel to 28.01.2015. So the current BRF month is February.
-  def setup
-    Timecop.freeze(Time.new(2015, 01, 28))
-  end
-
-  def teardown
-    clear_hours_folder
-  end
-
   def test_removing_at_start
     brf_write %{
       Februar 2015

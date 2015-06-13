@@ -35,8 +35,18 @@ end
 # Load test configurations.
 Punch.load_card :test
 
-# Provides some helper methods.
+# Provides some helper methods for integration tests. Also sets the current
+# Time to 2pm on 28.01.2015 and automatically cleans up the test hours folder.
 class PunchTest < MiniTest::Test
+
+  # Travel to 28.01.2015 2pm. So the current BRF month is February.
+  def setup
+    Timecop.freeze(Time.new(2015, 01, 28, 14))
+  end
+
+  def teardown
+    clear_hours_folder
+  end
 
   # Delete all BRF files in test hours folder.
   def self.clear_hours_folder
@@ -104,6 +114,14 @@ class PunchTest < MiniTest::Test
     @clock
   end
 
+  # Call a given block with the config hash in args temporarily loaded.
+  #
+  # @example Temporarily changing rounding strategy
+  #
+  #  config :punch_now_rounder => :exact do
+  #    punch "now"
+  #    assert_punched "13:41"
+  #  end
   def config(args)
     old_config = Punch.config.clone
 
@@ -113,6 +131,7 @@ class PunchTest < MiniTest::Test
 
     yield
 
+  ensure
     Punch.config = old_config
   end
 

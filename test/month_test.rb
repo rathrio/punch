@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class MonthTest < PunchTest
+class MonthTest < MiniTest::Test
   def test_sorting
     month = BRFParser.new.parse(<<-EOS)
       Januar 2014

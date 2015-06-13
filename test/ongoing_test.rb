@@ -2,15 +2,6 @@ require_relative 'config'
 
 class OngoingTest < PunchTest
 
-  # Travel to 28.01.2015. So the current BRF month is February.
-  def setup
-    Timecop.freeze(Time.new(2015, 01, 28))
-  end
-
-  def teardown
-    clear_hours_folder
-  end
-
   def test_add_ongoing_block
     punch '12'
     assert_punched '28.01.15   12:00-12:00   Total: 00:00'

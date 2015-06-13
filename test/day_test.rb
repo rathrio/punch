@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class DayTest < PunchTest
+class DayTest < MiniTest::Test
   def test_initialize
     day = Day.from '27.11.14'
     assert_equal 27, day.day

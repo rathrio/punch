@@ -26,9 +26,36 @@ $ punch HH:MM
     $ punch 12
     15.02.15   08:00-12:00   Total: 04:00
 
-$ punch [card] ...
+$ punch now
+    Start or complete a block with the current time. Can also be used inside
+    of a full block punch.
 
-    Load the a card configuration before punching.
+    Example day starting at 08:35:
+
+    $ punch now
+    15.02.15   08:35-        Total: 00:00
+
+    At 10:35:
+
+    $ punch now
+    15.02.15   08:35-10:35   Total: 02:00
+
+    At 18:00:
+
+    $ punch 11-now
+    15.02.15   08:35-10:35   11:00-18:00   Total: 09:00
+
+    Punch rounds the time to five minutes by default with a "fair" strategy.
+    Meaning 08:32 gets rounded down to 08:30 and 08:33 up to 08:35. To change
+    that strategy set the config.punch_now_rounder option to one of the
+    following Symbols:
+
+    * :fair, the default behaviour described above,
+    * :greedy, rounds to your advantage ;),
+    * :exact, don't round at all
+
+$ punch [card] ...
+    Load a card configuration before punching.
 
     Say you have a card called "workout" that sets up a different hours folder
     for you to save your workout time to:
@@ -44,6 +71,8 @@ $ punch [card] ...
     you can load that card and punch it with:
 
     $ punch workout 21-22
+
+    Card names can be tab-completed when bash completion is installed.
 
 $ punch -b, --backup path/to/backup/dir
     Copy the current month's BRF file to given directory.

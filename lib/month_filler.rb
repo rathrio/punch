@@ -8,6 +8,10 @@ class MonthFiller
     @month = month
   end
 
+  # Fills month up with the missing days from one day after the last hand in
+  # date to the next hand in date. Used for interactive mode for instance.
+  #
+  # @return [Month] the complete month.
   def fill!
     current_month_nr = month.number
     current_year     = month.short_year

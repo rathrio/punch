@@ -40,7 +40,7 @@ autoload :FileUtils, 'fileutils'
 autoload :Editor, 'editor'
 autoload :BRFMailer, 'brf_mailer'
 autoload :Stats, 'stats'
-autoload :FairRoundedTime, 'fair_rounded_time'
+autoload :RoundedTime, 'rounded_time'
 autoload :MonthFiller, 'month_filler'
 
 class PunchClock
@@ -391,15 +391,7 @@ class PunchClock
         end
 
         # Punch now! Replacing all "now"s with the current Time for convenience.
-        rounded_time = case config.punch_now_rounder
-          when :fair
-            FairRoundedTime.now
-          when :exact
-            Time.now
-          else
-            FairRoundedTime.now
-          end
-        @args.map! { |a| a.gsub(/now/, rounded_time.strftime('%H:%M')) }
+        @args.map! { |a| a.gsub(/now/, RoundedTime.now.strftime('%H:%M')) }
 
         # Add or remove blocks.
         action = :add

@@ -143,7 +143,7 @@ class Punch
 
   # @return [Symbol]
   option :punch_now_rounder,
-    "Which rounding to use when using \"now\".",
+    "Rounding strategy applied when substituting \"now\"",
     :fair
 
   # @return [Fixnum]

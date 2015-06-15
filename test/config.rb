@@ -114,6 +114,10 @@ class PunchTest < MiniTest::Test
     @clock
   end
 
+  def current_month
+    clock.month
+  end
+
   # Call a given block with the config hash in args temporarily loaded.
   #
   # @example Temporarily changing rounding strategy

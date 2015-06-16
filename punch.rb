@@ -94,6 +94,7 @@ class PunchClock
     --remove
     --stats
     --test
+    --travis
     --trello
     --update
     --version
@@ -232,6 +233,11 @@ class PunchClock
 
     flag "-l", "--log" do |n|
       system "cd #{punch_folder} && #{log(n)}"
+      exit
+    end
+
+    switch "--travis" do
+      system "open https://travis-ci.org/rathrio/punch"
       exit
     end
 

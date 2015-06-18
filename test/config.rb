@@ -26,13 +26,15 @@ class Punch
     {
       :test => {
         :hours_folder => TEST_HOURS_FOLDER,
-        :out          => TestOut
+        :out          => TestOut,
+        :debug        => true,
       }
     }
   end
 end
 
 # Load test configurations.
+Punch.config.reset!
 Punch.load_card :test
 
 # Provides some helper methods for integration tests. Also sets the current

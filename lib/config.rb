@@ -186,6 +186,11 @@ class Punch
     "Register different punch cards.",
     {}
 
+  # @return [Symbol,NilClass]
+  option :active_card,
+    "Which card to load by default. Set this to nil to load no card.",
+    nil
+
   # @return [#puts,#print]
   option :out,
     "Where to output stuff.",

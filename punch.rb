@@ -146,7 +146,10 @@ class PunchClock
 
   def punch
 
-    # First argument can be a card.
+    # Load card if one is active.
+    Punch.load_card config.active_card if config.active_card?
+
+    # First argument can be a card and may overwrite active card.
     card = @args.first
     if card =~ CARD_RGX
       Punch.load_card card

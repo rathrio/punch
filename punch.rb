@@ -134,10 +134,10 @@ class PunchClock
   end
 
   def write!(file)
-    file.seek 0, IO::SEEK_SET
+    file.rewind
     file.truncate 0
     file.write month
-    file.seek 0, IO::SEEK_SET
+    file.rewind
   end
 
   def hand_in_date
@@ -183,7 +183,7 @@ class PunchClock
         f = Tempfile.new 'help'
         f.write File.readlines(help_file).map { |l|
           l.start_with?('$') ? l.highlighted : l }.join
-        f.seek 0, IO::SEEK_SET
+        f.rewind
         system "less -R #{f.path}"
       ensure
         f.close

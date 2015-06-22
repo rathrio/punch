@@ -27,6 +27,11 @@ class BRFMailer
     f.close
   end
 
+  def cc
+    return smtp_user if @cc.nil? || @cc.empty?
+    @cc
+  end
+
   def body=(new_body)
     @body = ERB.new(new_body).result(binding)
   end
@@ -38,13 +43,14 @@ class BRFMailer
   def message(encode_attachment = true)
     boundary = "superUniqueIdentifier567"
     filename = File.basename brf_filepath
-    file_content = File.read(brf_filepath)
+    file_content = File.read brf_filepath
     # Base64
     encoded_brf_file_content = [file_content].pack "m"
 
     msg = <<EOM
 From: #{smtp_user}
 To: #{receiver}
+Cc: #{cc}
 Subject: Stunden #{month_name.capitalize}
 MIME-VERSION: 1.0
 Content-Type: multipart/mixed; boundary=#{boundary}
@@ -68,7 +74,7 @@ EOM
     smtp = Net::SMTP.new smtp_server, smtp_port
     smtp.enable_ssl
     smtp.start(smtp_domain, smtp_user, smtp_pw, :plain) do |sender|
-      sender.send_message(message, smtp_user, receiver)
+      sender.send_message(message, smtp_user, receiver, cc)
     end
   end
 

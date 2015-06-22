@@ -176,7 +176,6 @@ class Punch
       :smtp_user   => "",
       :smtp_pw     => "",
       :receiver    => "",
-      :cc          => "",
       :bcc         => "",
       :body        => ""
     }

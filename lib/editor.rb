@@ -1,11 +1,10 @@
 require 'month_filler'
 
 class Editor
-  attr_accessor :clock, :month, :days_picked
+  attr_accessor :month, :days_picked
 
-  def initialize(clock)
-    @clock = clock
-    @month = MonthFiller.new(clock.month).fill!
+  def initialize(month)
+    @month = MonthFiller.new(month).fill!
   end
 
   def run
@@ -14,7 +13,6 @@ class Editor
       input = prompt
       exit if %w(q quit exit).include? input
       break if input == 'x'
-      clock.edit_brf if input == 'e'
       if days_picked?
         begin
           days_picked.each do |d|
@@ -41,7 +39,7 @@ class Editor
   private
 
   def config
-    clock.config
+    Punch.config
   end
 
   def title
@@ -95,7 +93,6 @@ class Editor
 
     buffer << legend('x', 'Save and quit')
     buffer << legend('q', 'Quit without saving')
-    buffer << legend('e', 'Open BRF file and quit')
 
     puts buffer
   end

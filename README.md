@@ -213,8 +213,8 @@ indicated by the `Add blocks:` prompt, where you can use the Punch syntax you're
 used to from the default CLI. You can abort punch mode anytime by hitting return
 with an empty prompt. This will return you to command mode.
 
-In command mode, you can save and quit the interactive session with `x`, quit it
-without saving with `q` and open the BRF file for manual fixes with `e`.
+In command mode, you can save and quit the interactive session with `x` and quit it
+without saving with `q`.
 
 Once you have exited the session with `x`, Punch will print the edited month
 with the days updated highlighted in pink by default.

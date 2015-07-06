@@ -114,7 +114,8 @@ $ punch -h , --help
     Print this message.
 
 $ punch -i, --interactive
-    Start an interactive punch session. Quit it with 'q'.
+    Start an interactive punch session. Save and quit it with 'x'. Quit without
+    saving with 'q'.
 
 $ punch -l, --log [entries]
     List the last 10 commit messages. Optionally pass a number to list more.

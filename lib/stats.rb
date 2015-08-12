@@ -37,7 +37,7 @@ class Stats
   end
 
   def total_money_made
-    "#{money_made month.total} CHF"
+    "CHF #{money_made month.total}"
   end
 
   # Number of blocks where #start and #finish are on different days.
@@ -83,19 +83,20 @@ class Stats
   end
 
   def monthly_goal
-    goal      = config.monthly_goal * 3600
-    actual    = month.total
-    remaining = Totals.format(goal - actual)
-    "#{Totals.format actual}/#{config.monthly_goal} Diff: #{remaining}"
+    goal       = config.monthly_goal * 3600
+    actual     = month.total
+    remaining  = Totals.format(goal - actual)
+    percentage = (100.0 / goal * actual).round 2
+    "#{percentage} % | #{Totals.format actual}/#{config.monthly_goal} | " <<
+      "Diff: #{remaining}"
   end
 
   def to_s
     <<-EOS
 #{label "Total hours"}#{month.total_str}
+#{label "Hourly pay"}#{"CHF #{hourly_pay}"}
 #{label "Money made"}#{total_money_made}
-#{label "Monthly goal"}#{monthly_goal}
-#{label "Total days"}#{total_days}
-#{label "Total blocks"}#{total_blocks}
+#{label "Progress"}#{monthly_goal}
 #{label "Avg hours per day"}#{average_hours_per_day}
 #{label "Avg hours per block"}#{average_hours_per_block}
 #{label "Longest day"}#{longest_day}
@@ -104,6 +105,8 @@ class Stats
 #{label "Late nights"}#{late_nights}
 #{label "Early mornings"}#{early_mornings}
 #{label "Consecutive days"}#{consecutive_days}
+#{label "Total days"}#{total_days}
+#{label "Total blocks"}#{total_blocks}
     EOS
   end
 

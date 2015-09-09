@@ -399,8 +399,7 @@ class PunchClock
           end
         end
 
-        # Punch now! Replacing all "now"s with the current Time for convenience.
-        @args.map! { |a| a.gsub(/now/, RoundedTime.now.strftime('%H:%M')) }
+        prepare_block_args!
 
         # Add or remove blocks.
         action = :add
@@ -465,6 +464,18 @@ class PunchClock
   end
 
   private
+
+  # Convenience preps specific to CLI.
+  #
+  # Allows users to
+  #   * omit the colon in 4-digit blocks, e.g. "1330" instead of "13:30"
+  #   * type out "now" instead of the current time
+  def prepare_block_args!
+    @args.map! do |a|
+      a.gsub(/(\d{4})/) { "#{$1[0..1]}:#{$1[2..3]}" }.
+        gsub(/now/)     { RoundedTime.now.strftime('%H:%M') }
+    end
+  end
 
   def print_full_month?
     @print_full_month

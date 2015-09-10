@@ -12,10 +12,15 @@ $ punch
     pink by default.
 
 $ punch HH:MM-HH:MM HH:MM-HH:MM ...
-    Add blocks to today. Minutes are optional.
+    Add blocks to today. Minutes are optional. The colon is optional when
+    providing minutes.
 
-    $ punch 8-12 12:30-18
+    $ punch 08:00-12:00 12:30-18:00
     15.02.15   08:00-12:00   12:30-18:00   Total: 09:30
+
+    Possible shorthand that does the same thing:
+
+    $ punch 8-12 1230-18
 
 $ punch HH:MM
     Adds or completes an existing ongoing block.

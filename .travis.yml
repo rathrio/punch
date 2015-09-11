@@ -1,5 +1,5 @@
 language: ruby
-install: gem install timecop
+install: gem install minitest timecop
 rvm:
   - 2.2.0
   - 2.2.1

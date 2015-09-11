@@ -6,7 +6,7 @@ class Day
   attr_accessor :day, :month, :year, :blocks
   flag :highlight, :unhealthy
 
-  # @ param date [String] a date of format "DD.MM.YY", e.g., "26.03.15".
+  # @param date [String] a date of format "DD.MM.YY", e.g., "26.03.15".
   def self.from(date)
     day = Day.new
     day.day, day.month, day.year = date.split('.').map &:to_i

@@ -30,6 +30,7 @@ require 'config'
 require 'brf_parser'
 require 'totals'
 require 'attributes'
+require 'block_preprocessing'
 require 'block'
 require 'day'
 require 'month'
@@ -40,11 +41,11 @@ autoload :FileUtils, 'fileutils'
 autoload :Editor, 'editor'
 autoload :BRFMailer, 'brf_mailer'
 autoload :Stats, 'stats'
-autoload :RoundedTime, 'rounded_time'
 autoload :MonthFiller, 'month_filler'
 
 class PunchClock
   include OptionParsing
+  include BlockPreprocessing
 
   VERSION_NAME = "The Baddest Man on the Planet"
 
@@ -399,14 +400,14 @@ class PunchClock
           end
         end
 
-        prepare_block_args!
-
         # Add or remove blocks.
         action = :add
         switch "-r", "--remove" do
           action = :remove
         end
-        blocks = @args.map { |block_str| Block.from block_str, day }
+        blocks = @args.map do |block_str|
+          Block.from prepare_block_arg(block_str), day
+        end
         day.send action, *blocks
 
         # Cleanup in case we have empty days after a remove.
@@ -464,18 +465,6 @@ class PunchClock
   end
 
   private
-
-  # Convenience preps specific to CLI.
-  #
-  # Allows users to
-  #   * omit the colon in 4-digit blocks, e.g. "1330" instead of "13:30"
-  #   * type out "now" instead of the current time
-  def prepare_block_args!
-    @args.map! do |a|
-      a.gsub(/(\d{4})/) { "#{$1[0..1]}:#{$1[2..3]}" }.
-        gsub(/now/)     { RoundedTime.now.strftime('%H:%M') }
-    end
-  end
 
   def print_full_month?
     @print_full_month

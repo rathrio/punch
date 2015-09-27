@@ -71,8 +71,8 @@ class PunchTest < MiniTest::Test
     @clock = PunchClock.new(args.split)
     @clock.punch
   rescue SystemExit
-    # Do nothing and move on like a baws. We don't wanna exit the test suite when
-    # punch calls Kernel#exit.
+    # Do nothing and move on like a baws. We don't wanna exit the test suite
+    # when punch calls Kernel#exit.
   end
 
   # Recent test output.

@@ -24,10 +24,10 @@ class MonthFiller
     end
 
     current_month_days =
-      month.days.select { |d| d.month == current_month_nr }.map &:day
+      month.days.select { |d| d.month == current_month_nr }.map(&:day)
 
     prev_month_days =
-      month.days.select { |d| d.month == prev_month_nr }.map &:day
+      month.days.select { |d| d.month == prev_month_nr }.map(&:day)
 
     ((1..Punch.config.hand_in_date).to_a - current_month_days).each do |d|
       day = Day.new

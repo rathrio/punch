@@ -45,19 +45,17 @@ class Month
       @name
     else
       name = "#{NAMES[number].capitalize} #{year} - #{Punch.config.name}"
-      unless Punch.config.title.empty?
-        name.prepend("#{Punch.config.title} - ")
-      end
+      name.prepend("#{Punch.config.title} - ") unless Punch.config.title.empty?
       name
     end
   end
 
   def add(*new_days)
     new_days.each do |day|
-      if existing = days.find { |d| d.date == day.date }
-        existing.add *day.blocks
+      if (existing = days.find { |d| d.date == day.date })
+        existing.add(*day.blocks)
       else
-        self.days << day
+        days << day
       end
     end
   end
@@ -67,9 +65,9 @@ class Month
     days.sort!
     b_count = max_block_count
     "#{name}#{newline * 2}#{
-      days.map { |d|
+      days.map do |d|
         d.to_s(:fancy => fancy, :padding => b_count)
-      }.join(newline)
+      end.join(newline)
     }#{newline * 2}Total: #{total_str}#{newline}"
   end
 
@@ -82,7 +80,7 @@ class Month
   end
 
   def blocks
-    days.flat_map &:blocks
+    days.flat_map(&:blocks)
   end
 
   def max_block_count

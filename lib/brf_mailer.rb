@@ -47,7 +47,7 @@ class BRFMailer
     # Base64
     encoded_brf_file_content = [file_content].pack "m"
 
-    msg = <<EOM
+<<EOM
 From: #{smtp_user}
 To: #{receiver}
 Cc: #{cc}

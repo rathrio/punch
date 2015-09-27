@@ -18,21 +18,21 @@ class Block
       finish_ary = finish_str.split ':'
     else
       unless start_str =~ /^\d{1,2}(:\d{2})?$/
-        raise ArgumentError, "#{str} is not a valid block"
+        fail ArgumentError, "#{str} is not a valid block"
       end
 
       # Start ongoing block.
       finish_ary = start_ary
 
       # Complete ongoing block.
-      if (ob = day.blocks.find &:ongoing?)
+      if (ob = day.blocks.find(&:ongoing?))
         day.blocks.delete ob
         start_ary = ob.start_s.split ':'
       end
     end
 
     if start_ary.empty? && finish_ary.empty?
-      raise ArgumentError, "#{str} is not a valid block"
+      fail ArgumentError, "#{str} is not a valid block"
     end
 
     block.start  = Time.new(day.long_year, day.month, day.day, *start_ary)

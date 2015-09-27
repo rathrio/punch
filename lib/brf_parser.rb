@@ -68,7 +68,7 @@ class BRFParser
   #
   def parse(str)
     # Split lines and get rid of whitespace.
-    lines = str.split("\n").map(&:strip).reject &:empty?
+    lines = str.split("\n").map(&:strip).reject(&:empty?)
 
     # First line is the name.
     month = Month.new lines.shift
@@ -87,7 +87,7 @@ class BRFParser
     month
 
   rescue StandardError => e
-    raise ParserError.new("Couldn't parse string: " + e.message)
+    raise ParserError, "Couldn't parse string: #{e.message}"
   end
 
 end

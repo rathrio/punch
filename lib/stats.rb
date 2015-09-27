@@ -42,7 +42,7 @@ class Stats
 
   # Number of blocks where #start and #finish are on different days.
   def late_nights
-    blocks.count &:over_midnight?
+    blocks.count(&:over_midnight?)
   end
 
   # Number of blocks where the #start is before 8 am and #finish is after it.
@@ -76,7 +76,7 @@ class Stats
     max = 0
     days[0..days.size - 2].each do |d|
       i = 1
-      i += 1 while d = next_day(d)
+      i += 1 while (d = next_day(d))
       max = i if i > max
     end
     max
@@ -87,7 +87,7 @@ class Stats
     actual     = month.total
     remaining  = Totals.format(goal - actual)
     percentage = (100.0 / goal * actual).round 2
-    "#{percentage} % | #{Totals.format actual}/#{config.monthly_goal} | " <<
+    "#{percentage} % | #{Totals.format actual}/#{config.monthly_goal} | "\
       "Diff: #{remaining}"
   end
 

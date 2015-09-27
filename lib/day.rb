@@ -9,7 +9,7 @@ class Day
   # @param date [String] a date of format "DD.MM.YY", e.g., "26.03.15".
   def self.from(date)
     day = Day.new
-    day.day, day.month, day.year = date.split('.').map &:to_i
+    day.day, day.month, day.year = date.split('.').map(&:to_i)
     day
   end
 
@@ -69,8 +69,9 @@ class Day
     blocks.each do |block|
 
       # Get rid of old blocks with shorter spans than block's.
-      self.blocks.reject! { |b|
-        b.start >= block.start && b.finish <= block.finish }
+      self.blocks.reject! do |b|
+        b.start >= block.start && b.finish <= block.finish
+      end
 
       # Ignore new block if an existing block covers the new block's span.
       if self.blocks.any? { |b|

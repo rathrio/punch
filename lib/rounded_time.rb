@@ -4,7 +4,7 @@ class RoundedTime
     new(Time.now).time
   end
 
-  def initialize(time, args = {})
+  def initialize(time)
     @time = time
   end
 
@@ -20,7 +20,7 @@ class RoundedTime
     minutes = @time.min
     rounded_minutes = (@time.min * 2).round(-1) / 2
     diff = (minutes - rounded_minutes) * 60
-    @time = @time - diff
+    @time -= diff
   end
 
   def greedy

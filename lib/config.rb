@@ -3,32 +3,29 @@ class Punch
 
   class << self
     attr_accessor :options
+    attr_writer :config
 
     def options
       @options ||= []
     end
 
     def config
-      load_from_config_file if @config.nil?
+      init_and_load_from_config_file if @config.nil?
       @config
     end
 
-    def config=(new_config)
-      @config = new_config
-    end
-
-    def load_from_config_file
+    def init_and_load_from_config_file
       @config = new
-      # Load config file.
-      if File.exist?(config_file)
-        begin
-          eval File.read(config_file)
-        rescue Exception => e
-          message = "Something went wrong while trying to load ~/.punchrc:\n".highlighted
-          message << "\n#{e}\n\n"
-          message << "Proceeding with whatever settings could be loaded.\n".highlighted
-          puts message
-        end
+      return unless File.exist?(config_file)
+      begin
+        load config_file
+      rescue Exception => e
+        message = "Something went wrong while trying to load ~/.punchrc:\n".
+          highlighted
+        message << "\n#{e}\n\n"
+        message << "Proceeding with whatever settings could be loaded.\n".
+          highlighted
+        puts message
       end
     end
 
@@ -80,7 +77,7 @@ class Punch
       end
 
       define_method "#{opt}?" do
-        !!send(opt)
+        send(opt)
       end
     end
 
@@ -235,8 +232,8 @@ class Punch
     "#   $ punch --config-update\n"\
     "#\n"\
     "# If you messed up so badly that punch won't even start up because of\n"\
-    "# this config file and you don't know how to fix it, feel free to delete\n"\
-    "# it and generate a new one with\n"\
+    "# this config file and you don't know how to fix it, feel free to\n"\
+    "# delete it and generate a new one with\n"\
     "#\n"\
     "#   $ punch --config\n"\
     "#\n"\

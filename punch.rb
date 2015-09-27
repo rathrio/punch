@@ -93,6 +93,7 @@ class PunchClock
     --previous
     --raw
     --remove
+    --review
     --stats
     --test
     --travis
@@ -146,7 +147,6 @@ class PunchClock
   end
 
   def punch
-
     # Load card if one is active.
     Punch.load_card config.active_card if config.active_card?
 
@@ -185,8 +185,9 @@ class PunchClock
     switch "-h", "--help" do
       begin
         f = Tempfile.new 'help'
-        f.write File.readlines(help_file).map { |l|
-          l.start_with?('$') ? l.highlighted : l }.join
+        f.write File.readlines(help_file).map do |l|
+          l.start_with?('$') ? l.highlighted : l
+        end.join
         f.rewind
         system "less -R #{f.path}"
       ensure
@@ -237,6 +238,11 @@ class PunchClock
 
     flag "-l", "--log" do |n|
       system "cd #{punch_folder} && #{log(n)}"
+      exit
+    end
+
+    switch "--review" do
+      system "cd #{punch_folder} && pronto run"
       exit
     end
 
@@ -310,15 +316,17 @@ class PunchClock
     unless File.exist? brf_filepath
       # Create hours folder if necessary.
       unless File.directory? hours_folder
-        if yes? "The directory #{hours_folder.highlighted} does not exist. Create it?"
+        if yes?("The directory #{hours_folder.highlighted} does not exist. "\
+          "Create it?")
           FileUtils.mkdir_p(hours_folder)
         else
           exit
         end
       end
       # Create empty BRF file for this month.
-      File.open(brf_filepath, "w") { |f|
-        f.write "#{month_name.capitalize} #{year}" }
+      File.open(brf_filepath, "w") do |f|
+        f.write "#{month_name.capitalize} #{year}"
+      end
     end
 
     switch "-b", "--backup" do
@@ -340,9 +348,7 @@ class PunchClock
       mailer = BRFMailer.new(brf_filepath, month_name)
       # Print non-encoded version for confirmation.
       puts mailer.message false
-      if yes?("Do you want to send this mail?")
-        mailer.deliver
-      end
+      mailer.deliver if yes?("Do you want to send this mail?")
       exit
     end
 
@@ -411,13 +417,9 @@ class PunchClock
         day.send action, *blocks
 
         # Cleanup in case we have empty days after a remove.
-        if action == :remove
-          month.cleanup!
-        end
+        month.cleanup! if action == :remove
 
-        if day.unhealthy?
-          puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n"
-        end
+        puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n" if day.unhealthy?
 
         write! file
       end
@@ -429,9 +431,7 @@ class PunchClock
         month.add today
       end
 
-      if print_full_month?
-        MonthFiller.new(month).fill!
-      end
+      MonthFiller.new(month).fill! if print_full_month?
 
       puts month.fancy
     end
@@ -444,7 +444,8 @@ class PunchClock
     exit
   rescue => e
     raise e if config.debug?
-    puts %{That's not a valid argument, dummy.\nRun #{"punch -h".highlighted} for help.}
+    puts "That's not a valid argument, dummy.\n"\
+      "Run #{"punch -h".highlighted} for help."
   end
 
   def config
@@ -457,7 +458,8 @@ class PunchClock
   end
 
   def print_version
-    puts "#{VERSION_NAME.highlighted} #{version.highlighted} released #{last_release}"
+    puts "#{VERSION_NAME.highlighted} #{version.highlighted} "\
+      "released #{last_release}"
   end
 
   def raw_brf
@@ -502,6 +504,4 @@ class PunchClock
   end
 end
 
-if __FILE__ == $0
-  PunchClock.new(ARGV).punch
-end
+PunchClock.new(ARGV).punch if __FILE__ == $PROGRAM_NAME

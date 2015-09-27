@@ -1,0 +1,90 @@
+Style/StringLiterals:
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  Enabled: false
+
+Style/SpaceInsideStringInterpolation:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Style/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Style/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Style/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Style/TrailingComma:
+  Enabled: false
+
+Style/SingleLineBlockParams:
+  Enabled: false
+
+Style/TrivialAccessors:
+  AllowPredicates: true
+
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/SingleLineMethods:
+  Enabled: false
+
+Style/IndentationConsistency:
+  Exclude:
+    - 'lib/brf_mailer.rb'
+
+Style/Documentation:
+  Enabled: false
+
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+  Exclude:
+    - 'punch.rb'
+
+Metrics/PerceivedComplexity:
+  Max: 10
+  Exclude:
+    - 'punch.rb'
+
+Metrics/AbcSize:
+  Enabled: false
+
+
+Lint/Debugger:
+  Exclude:
+    - 'punch.rb'
+
+Lint/HandleExceptions:
+  Exclude:
+    - 'test/config.rb'
+
+Lint/RescueException:
+  Exclude:
+    - 'lib/config.rb'

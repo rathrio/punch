@@ -33,7 +33,8 @@ module Kernel
       return "{}" if object.empty?
       literal = "{\n"
       object.each do |k, v|
-        literal << "#{indent + "  "}#{literal(k)} => #{literal(v, (indent + "  "))},\n"
+        literal << "#{indent + "  "}#{literal(k)} => "\
+          "#{literal(v, (indent + "  "))},\n"
       end
       literal << "#{indent}}"
       literal
@@ -62,11 +63,11 @@ class Time
   end
 
   def previous_day
-    self - 86400
+    self - 86_400
   end
 
   def next_day
-    self + 86400
+    self + 86_400
   end
 
   # Act like a Block.

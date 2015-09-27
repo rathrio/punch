@@ -12,7 +12,7 @@ class DayTest < MiniTest::Test
     day = Day.from '08.04.91'
     day.add Block.from("08:00-12:00", day)
     day.add Block.from("13:00-18:00", day)
-    assert_equal 32400, day.total
+    assert_equal 32_400, day.total
     assert_equal '09:00', day.total_str
   end
 

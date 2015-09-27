@@ -16,7 +16,7 @@ module BlockPreprocessing
   # @return [String] e.g. "12:00-17:30"
   def prepare_block_arg(arg)
     arg.gsub(/(\d{4})/) { "#{$1[0..1]}:#{$1[2..3]}" }.
-      gsub(/now/)     { RoundedTime.now.strftime('%H:%M') }
+      gsub(/now/) { RoundedTime.now.strftime('%H:%M') }
   end
 
 end

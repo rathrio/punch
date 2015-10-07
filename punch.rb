@@ -178,16 +178,18 @@ class PunchClock
     end
 
     switch "-H", "--hack" do
-      system "cd #{punch_folder} && #{config.text_editor} ."
+      system "cd #{punch_folder} && #{config.text_editor} #{__FILE__}"
       exit
     end
 
     switch "-h", "--help" do
       begin
         f = Tempfile.new 'help'
-        f.write File.readlines(help_file).map do |l|
-          l.start_with?('$') ? l.highlighted : l
-        end.join
+        f.write(
+          File.readlines(help_file).map do |l|
+            l.start_with?('$') ? l.highlighted : l
+          end.join
+        )
         f.rewind
         system "less -R #{f.path}"
       ensure

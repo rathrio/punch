@@ -76,6 +76,7 @@ class PunchClock
     --test
     --travis
     --trello
+    --undo
     --update
     --version
     --whoami
@@ -334,6 +335,10 @@ class PunchClock
 
     File.open brf_filepath, 'r+' do |file|
       @month = Month.from(file.read, month_nr, year)
+
+      switch "--undo" do
+        exit
+      end
 
       switch "-f", "--format" do
         puts "Before formatting:\n".highlighted

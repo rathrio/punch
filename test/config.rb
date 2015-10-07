@@ -39,6 +39,7 @@ Punch.load_card :test
 
 # Provides some helper methods for integration tests. Also sets the current
 # Time to 2pm on 28.01.2015 and automatically cleans up the test hours folder.
+# When overriding #setup and #teardown, don't forget to call super.
 class PunchTest < MiniTest::Test
 
   # Travel to 28.01.2015 2pm. So the current BRF month is February.

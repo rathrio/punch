@@ -8,8 +8,8 @@ $$ |      \$$$$$$  |$$ |  $$ |\$$$$$$$\ $$ |  $$ |
 \__|       \______/ \__|  \__| \_______|\__|  \__|
 
 $ punch
-    Print current month. Today is highlighted in blue, the last updated day in
-    pink by default.
+    Print current month. By default, today is highlighted in blue, the most recently
+    updated day in pink.
 
 $ punch HH:MM-HH:MM HH:MM-HH:MM ...
     Add blocks to today. Minutes are optional. The colon is optional when
@@ -161,17 +161,19 @@ $ punch -y, --yesterday
 
     $ punch -y 12-13
 
-================================================================================
+==DEV COMMANDS=================================================================
+
+To run these, install the dev dependencies specified in Gemfile with
+$ bundle
 
 $ punch -C, --console
     Start pry session after internal Month instance has been initialized.
-    Depends on pry gem.
 
 $ punch --diagram
-    Generate and open a class diagram. Depends on yard, graphviz and dot.
+    Generate and open a class diagram.
 
 $ punch -D, --doc
-    Generate and view docs in default browser. Depends on yard gem.
+    Generate and view docs in default browser.
 
 $ punch --github
     Open GitHub page.
@@ -179,8 +181,11 @@ $ punch --github
 $ punch -H, --hack
     Edit this script.
 
+$ punch --review
+    Display review of your code and commit messages.
+
 $ punch -t, --test
-    Run tests. Depends on timecop gem.
+    Run tests.
 
 $ punch --trello
     Open Trello board.

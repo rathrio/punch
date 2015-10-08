@@ -12,24 +12,7 @@ class Block
 
     start_str, finish_str = str.split '-'
     start_ary = start_str.split ':'
-
-    if finish_str
-      # normal block handling
-      finish_ary = finish_str.split ':'
-    else
-      unless start_str =~ /^\d{1,2}(:\d{2})?$/
-        fail ArgumentError, "#{str} is not a valid block"
-      end
-
-      # Start ongoing block.
-      finish_ary = start_ary
-
-      # Complete ongoing block.
-      if (ob = day.blocks.find(&:ongoing?))
-        day.blocks.delete ob
-        start_ary = ob.start_s.split ':'
-      end
-    end
+    finish_ary = finish_str.split ':'
 
     if start_ary.empty? && finish_ary.empty?
       fail ArgumentError, "#{str} is not a valid block"

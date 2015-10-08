@@ -1,3 +1,5 @@
+# https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+
 Style/StringLiterals:
   Enabled: false
 
@@ -46,12 +48,11 @@ Style/PerlBackrefs:
 Style/SingleLineMethods:
   Enabled: false
 
-Style/IndentationConsistency:
-  Exclude:
-    - 'lib/brf_mailer.rb'
-
 Style/Documentation:
   Enabled: false
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
 
 
 Metrics/ClassLength:
@@ -65,26 +66,12 @@ Metrics/MethodLength:
 
 Metrics/CyclomaticComplexity:
   Max: 10
-  Exclude:
-    - 'punch.rb'
 
 Metrics/PerceivedComplexity:
   Max: 10
-  Exclude:
-    - 'punch.rb'
 
 Metrics/AbcSize:
   Enabled: false
 
-
-Lint/Debugger:
-  Exclude:
-    - 'punch.rb'
-
-Lint/HandleExceptions:
-  Exclude:
-    - 'test/config.rb'
-
-Lint/RescueException:
-  Exclude:
-    - 'lib/config.rb'
+Lint/EndAlignment:
+  AlignWith: variable

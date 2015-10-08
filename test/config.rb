@@ -48,6 +48,7 @@ class PunchTest < MiniTest::Test
   end
 
   def teardown
+    Timecop.return
     clear_hours_folder
   end
 

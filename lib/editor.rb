@@ -1,8 +1,6 @@
 require 'month_filler'
 
 class Editor
-  include BlockPreprocessing
-
   attr_accessor :month, :days_picked
 
   def initialize(month)
@@ -20,7 +18,7 @@ class Editor
           days_picked.each do |d|
             day = month.days[d - 1]
             blocks = input.strip.split(/\s+/).map do |block_str|
-              Block.from prepare_block_arg(block_str), day
+              BlockParser.parse block_str, day
             end
             day.add(*blocks)
           end

@@ -8,10 +8,10 @@ require 'config'
 require 'brf_parser'
 require 'totals'
 require 'attributes'
-require 'block_preprocessing'
 require 'block'
 require 'day'
 require 'month'
+require 'block_parser'
 
 autoload :Tempfile, 'tempfile'
 autoload :Merger, 'merger'
@@ -23,7 +23,6 @@ autoload :MonthFiller, 'month_filler'
 
 class PunchClock
   include OptionParsing
-  include BlockPreprocessing
 
   VERSION_NAME = "The Baddest Man on the Planet"
 
@@ -397,7 +396,7 @@ class PunchClock
           action = :remove
         end
         blocks = @args.map do |block_str|
-          Block.from prepare_block_arg(block_str), day
+          BlockParser.parse block_str, day
         end
         day.send action, *blocks
 

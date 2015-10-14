@@ -26,8 +26,9 @@ class Punch
     {
       :test => {
         :hours_folder => TEST_HOURS_FOLDER,
-        :out          => TestOut,
-        :debug        => true,
+        :out => TestOut,
+        :debug => true,
+        :clear_buffer_before_punch => false
       }
     }
   end

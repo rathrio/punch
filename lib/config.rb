@@ -179,7 +179,7 @@ class Punch
 
   option :clear_buffer_before_punch,
     "Clear terminal buffer before printing month.",
-    false
+    true
 
   # @return [Hash]
   option :cards,

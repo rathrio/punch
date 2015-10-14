@@ -28,7 +28,7 @@ class BlockParser
   #
   #   * omit the colon in 4-digit blocks, e.g. "1330" instead of "13:30"
   #   * type out "now" instead of the current time
-  #   * start and complet ongoing blocks by typing only a half block
+  #   * start and complete ongoing blocks by typing only a half block
   #
   def prepare_block_str!
     @block_str = @block_str.gsub(/(\d{4})/) { "#{$1[0..1]}:#{$1[2..3]}" }.

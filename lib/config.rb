@@ -177,6 +177,10 @@ class Punch
       :body        => ""
     }
 
+  option :clear_buffer_before_punch,
+    "Clear terminal buffer before printing month.",
+    false
+
   # @return [Hash]
   option :cards,
     "Register different punch cards.",

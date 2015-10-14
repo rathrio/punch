@@ -417,6 +417,7 @@ class PunchClock
 
       MonthFiller.new(month).fill! if print_full_month?
 
+      system "clear" if config.clear_buffer_before_punch?
       puts month.fancy
     end
 

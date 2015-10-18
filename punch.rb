@@ -268,7 +268,6 @@ class PunchClock
       @print_full_month = true
     end
 
-    now = Time.now
     month_nr = now.month
     month_nr = (month_nr + 1) % 12 if now.day > hand_in_date
 
@@ -452,6 +451,10 @@ class PunchClock
   end
 
   private
+
+  def now
+    @now ||= Time.now
+  end
 
   def print_full_month?
     @print_full_month

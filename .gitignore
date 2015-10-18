@@ -1,7 +1,9 @@
 hours/**
+.punch_history
 .ruby-version
 .ruby-gemset
 .yardoc
 .vimrc.local
 doc
 diagram.pdf
+

@@ -27,15 +27,19 @@ class BlockParser
   # This allows users to
   #
   #   * omit the colon in 4-digit blocks, e.g. "1330" instead of "13:30"
+  #   * type out three digits for am times, e.g. "930" instead of "09:30"
   #   * type out "now" instead of the current time
   #   * start and complete ongoing blocks by typing only a half block
   #
   def prepare_block_str!
-    @block_str = @block_str.gsub(/(\d{4})/) { "#{$1[0..1]}:#{$1[2..3]}" }.
-      gsub(/now/) { RoundedTime.now.strftime('%H:%M') }
+    @block_str = @block_str.
+      gsub(/(\d{4})/) { "#{$1[0..1]}:#{$1[2..3]}" }.    # 4 digits
+      gsub(/(\d{3})/) { "0#{$1[0]}:#{$1[1..2]}" }.      # 3 digits
+      gsub(/now/) { RoundedTime.now.strftime('%H:%M') } # now
 
     return unless @block_str =~ HALF_BLOCK_RGX
 
+    # Complete or start an ongoing block.
     @block_str = if (ob = @day.blocks.find(&:ongoing?))
       "#{ob.start_s}-#{@block_str}"
     else

@@ -32,6 +32,11 @@ class BlockParserTest < MiniTest::Test
     assert_equal '08:15-12:00', block.to_s
   end
 
+  def test_parse_three_digits
+    block = BlockParser.parse '815-900', @day
+    assert_equal '08:15-09:00', block.to_s
+  end
+
   def test_parse_now
     block = BlockParser.parse '8:15-now', @day
     assert_equal '08:15-14:00', block.to_s

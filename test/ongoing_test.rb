@@ -75,7 +75,7 @@ class OngoingTest < PunchTest
 
   # This is not really a feature and is only here to make sure that the second
   # half block doesn't complete the first one.
-  def test_start_multiple_ongoing_blocks
+  def test_start_multiple_ongoing_blocks_cant_complete_themselves
     punch '12 13'
     assert_punched '12:00-12:00   13:00-13:00'
   end

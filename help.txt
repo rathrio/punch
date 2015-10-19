@@ -22,6 +22,14 @@ $ punch HH:MM-HH:MM HH:MM-HH:MM ...
 
     $ punch 8-12 1230-18
 
+    Punch recognises the following formats:
+
+    * HH:MM  e.g. 09:00
+    * HHMM   e.g. 0900
+    * HH     e.g. 09
+    * H      e.g. 9
+    * HMM    e.g. 900
+
 $ punch HH:MM
     Adds or completes an existing ongoing block.
 

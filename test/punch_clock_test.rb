@@ -39,6 +39,11 @@ class PunchClockTest < PunchTest
     assert_punched '28.01.15   09:30-12:00   Total: 02:30'
   end
 
+  def test_three_digits_are_interpreted_as_hmm
+    punch '930-1200'
+    assert_punched '28.01.15   09:30-12:00   Total: 02:30'
+  end
+
   def test_day_flag
     punch '-d 02.02.15 14-15:45'
     assert_punched '02.02.15   14:00-15:45   Total: 01:45'

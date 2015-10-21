@@ -52,6 +52,7 @@ class PunchClock
     --config-reset
     --config-update
     --console
+    --coverage
     --diagram
     --doc
     --edit
@@ -203,6 +204,13 @@ class PunchClock
 
     switch "-t", "--test" do
       system "#{config.system_ruby} #{test_file}"
+      exit
+    end
+
+    switch "--coverage" do
+      system "cd #{punch_folder} && "\
+        "COVERAGE=true #{config.system_ruby} #{test_file} && "\
+        "open coverage/index.html"
       exit
     end
 

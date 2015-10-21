@@ -177,6 +177,9 @@ $ bundle
 $ punch -C, --console
     Start pry session after internal Month instance has been initialized.
 
+$ punch --coverage
+    Open test coverage stats in default browser.
+
 $ punch --diagram
     Generate and open a class diagram.
 

@@ -6,4 +6,4 @@ hours/**
 .vimrc.local
 doc
 diagram.pdf
-
+coverage

@@ -1,3 +1,10 @@
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start do
+    command_name 'MiniTest'
+    add_filter '/test/'
+  end
+end
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'timecop'

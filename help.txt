@@ -113,6 +113,9 @@ $ punch -d, --day dd.mm.yy
 
     $ punch -d 03.12.14 22-23
 
+$ punch --dry-run
+    Run commands without writing to file.
+
 $ punch -e, --edit
     Edit current BRF file with your default text editor.
 

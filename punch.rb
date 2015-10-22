@@ -55,6 +55,7 @@ class PunchClock
     --coverage
     --diagram
     --doc
+    --dry-run
     --edit
     --engine
     --format
@@ -82,6 +83,8 @@ class PunchClock
     --whoami
     --yesterday
   )
+
+  flag :dry_run
 
   attr_reader :path_to_punch, :month, :month_name, :year, :brf_filepath
 
@@ -115,6 +118,7 @@ class PunchClock
   end
 
   def write!(file)
+    return 0 if dry_run?
     file.rewind
     file.truncate 0
     file.write month
@@ -134,6 +138,10 @@ class PunchClock
     if card =~ CARD_RGX
       Punch.load_card card
       @args.shift
+    end
+
+    switch "--dry-run" do
+      dry_run!
     end
 
     switch "--options" do

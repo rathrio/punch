@@ -120,10 +120,6 @@ class Stats
     Punch.config
   end
 
-  def next_day(day)
-    days.find { |d| d.at? day.time_on_next_day }
-  end
-
   def days
     @days ||= month.days
   end

@@ -1,3 +1,5 @@
+require 'date'
+
 class Day
   include Attributes
   include Comparable
@@ -6,7 +8,7 @@ class Day
   attr_accessor :day, :month, :year, :blocks
   flag :highlight, :unhealthy
 
-  # @param date [String] a date of format "DD.MM.YY", e.g., "26.03.15".
+  # @param [String] a date of format "DD.MM.YY", e.g., "26.03.15".
   def self.from(date)
     day = Day.new
     day.day, day.month, day.year = date.split('.').map(&:to_i)
@@ -30,7 +32,11 @@ class Day
   end
 
   def time_on_next_day
-    to_time.next_day
+    to_time.to_date.next_day.to_time
+  end
+
+  def next_day(month)
+    month.days.find { |d| d.at? time_on_next_day }
   end
 
   def to_s(options = {})

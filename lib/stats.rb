@@ -76,7 +76,7 @@ class Stats
     max = 0
     days[0..days.size - 2].each do |d|
       i = 1
-      i += 1 while (d = next_day(d))
+      i += 1 while (d = d.next_day(month))
       max = i if i > max
     end
     max
@@ -118,10 +118,6 @@ class Stats
 
   def config
     Punch.config
-  end
-
-  def next_day(day)
-    days.find { |d| d.at? day.time_on_next_day }
   end
 
   def days

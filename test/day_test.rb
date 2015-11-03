@@ -121,4 +121,9 @@ class DayTest < MiniTest::Test
     day.remove Block.from("11:00-13:00", day)
     assert_equal '03.05.15   08:00-11:00   Total: 03:00', day.to_s
   end
+
+  def test_time_on_next_day_knows_about_daylight_savings
+    day = Day.from '25.10.15'
+    assert_equal day.time_on_next_day.day, 26
+  end
 end

@@ -71,6 +71,10 @@ class Month
     }#{newline * 2}Total: #{total_str}#{newline}"
   end
 
+  def find_day_by_date(date)
+    days.find { |d| d.date == date }
+  end
+
   def fancy
     to_s :fancy => true
   end

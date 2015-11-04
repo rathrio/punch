@@ -385,7 +385,8 @@ class PunchClock
         # The --day flag might set a day to edit.
         day = nil
         flag "-d", "--day" do |date|
-          unless (day = month.days.find { |d| d.date == date })
+          unless (day = month.find_day_by_date(date))
+          # unless (day = month.days.find { |d| d.date == date })
             # Create that day if it doesn't exist yet.
             day = Day.from date
             month.add day

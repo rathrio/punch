@@ -137,6 +137,6 @@ class Stats
   end
 
   def eight_am(day)
-    Time.new(day.long_year, day.month, day.day, 8)
+    Time.new(day.year, day.month, day.day, 8)
   end
 end

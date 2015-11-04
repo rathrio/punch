@@ -18,8 +18,8 @@ class Block
       fail ArgumentError, "#{str} is not a valid block"
     end
 
-    block.start  = Time.new(day.long_year, day.month, day.day, *start_ary)
-    block.finish = Time.new(day.long_year, day.month, day.day, *finish_ary)
+    block.start  = Time.new(day.year, day.month, day.day, *start_ary)
+    block.finish = Time.new(day.year, day.month, day.day, *finish_ary)
     if block.finish < block.start
       block.finish = block.finish.next_day
       day.unhealthy!

@@ -1,11 +1,12 @@
 require_relative 'config'
 
 class DayTest < MiniTest::Test
-  def test_initialize
+  def test_from_parses_ddmmyy
     day = Day.from '27.11.14'
     assert_equal 27, day.day
     assert_equal 11, day.month
-    assert_equal 14, day.year
+    assert_equal 2014, day.year
+    assert_equal 14, day.short_year
   end
 
   def test_total

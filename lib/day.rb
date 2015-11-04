@@ -5,18 +5,30 @@ class Day
   include Comparable
   include Totals
 
-  attr_accessor :day, :month, :year, :blocks
+  attr_accessor :day, :month, :blocks
+  attr_reader :short_year, :year
+
   flag :highlight, :unhealthy
 
   # @param [String] a date of format "DD.MM.YY", e.g., "26.03.15".
   def self.from(date)
     day = Day.new
-    day.day, day.month, day.year = date.split('.').map(&:to_i)
+    day.day, day.month, day.short_year = date.split('.').map(&:to_i)
     day
   end
 
+  def short_year=(yy)
+    @short_year = yy
+    @year = yy + 2000
+  end
+
+  def year=(yyyy)
+    @year = yyyy
+    @short_year = yyyy.to_s[-2..-1].to_i
+  end
+
   def date
-    "#{pad day}.#{pad month}.#{year}"
+    "#{pad day}.#{pad month}.#{short_year}"
   end
 
   def monday?
@@ -24,7 +36,7 @@ class Day
   end
 
   def to_time
-    Time.new long_year, month, day
+    Time.new year, month, day
   end
 
   def short_name
@@ -145,10 +157,6 @@ class Day
     blocks
   end
 
-  def long_year
-    year + 2000
-  end
-
   def <=>(other)
     if year == other.year
       if month == other.month
@@ -162,7 +170,7 @@ class Day
   end
 
   def at?(time)
-    (day == time.day) && (month == time.month) && (year == time.short_year)
+    (day == time.day) && (month == time.month) && (year == time.year)
   end
   alias_method :include?, :at?
 
@@ -171,9 +179,9 @@ class Day
   end
 
   def set(time)
-    @day   = time.day
-    @month = time.month
-    @year  = time.short_year
+    self.day   = time.day
+    self.month = time.month
+    self.year  = time.year
   end
 
   def remove_ongoing_blocks!

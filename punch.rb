@@ -53,6 +53,7 @@ class PunchClock
     --config-update
     --console
     --coverage
+    --day
     --diagram
     --doc
     --dry-run

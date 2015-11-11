@@ -12,9 +12,9 @@ class TagsTest < PunchTest
       Total: 02:00
     BRF
 
-    assert_equal month.days[0].tags, [:crazy]
-    assert_equal month.days[1].tags, [:ferien, :foo]
-    assert_equal month.days[2].tags, []
+    assert_equal [:crazy], month.days[0].tags
+    assert_equal [:ferien, :foo], month.days[1].tags
+    assert_equal [], month.days[2].tags
   end
 
   def test_tag_flag_adds_tags

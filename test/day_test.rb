@@ -126,4 +126,37 @@ class DayTest < MiniTest::Test
     day = Day.from '25.10.15'
     assert_equal day.time_on_next_day.day, 26
   end
+
+  def test_extract_tags_adds_new_tags
+    day = Day.new
+    day.extract_tags('chrank, wi, di, sau')
+    assert_equal [:chrank, :wi, :di, :sau], day.tags
+  end
+
+  def test_extract_tags_is_case_and_whitespace_insensitive
+    day = Day.new
+    day.extract_tags('CHrank, WI  , Di, sAu   ')
+    assert_equal [:chrank, :wi, :di, :sau], day.tags
+  end
+
+  def test_extract_tags_ignores_duplicates
+    day = Day.new
+    day.extract_tags('chrank, CHranK')
+    assert_equal [:chrank], day.tags
+  end
+
+  def test_clear_tags_removes_all_tags
+    day = Day.new
+    day.extract_tags('ferien')
+    assert_equal [:ferien], day.tags
+
+    day.clear_tags
+    assert_empty day.tags
+  end
+
+  def test_tags_str_returns_upcased_comma_separated_tags
+    day = Day.new
+    day.extract_tags('chrank, fuu')
+    assert_equal 'CHRANK, FUU', day.tags_str
+  end
 end

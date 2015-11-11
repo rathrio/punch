@@ -27,6 +27,18 @@ class Day
     @short_year = yyyy.to_s[-2..-1].to_i
   end
 
+  def extract_tags(tags_str)
+    @tags = tags | tags_str.split(',').map { |s| s.strip.downcase.to_sym }
+  end
+
+  def clear_tags
+    @tags = []
+  end
+
+  def tags
+    @tags ||= []
+  end
+
   def date
     "#{pad day}.#{pad month}.#{short_year}"
   end
@@ -63,11 +75,16 @@ class Day
     end
     str = "#{date}   #{blocks_str}   "
     str << "Total: #{total_str}" if blocks.any?
+    str << "   #{tags_str}" if tags.any?
     if options.fetch :fancy, false
       return str.highlighted if highlight?
       return str.today_color if today?
     end
     str
+  end
+
+  def tags_str
+    tags.map { |t| t.to_s.upcase }.join(', ')
   end
 
   def empty?

@@ -48,6 +48,7 @@ class PunchClock
     --brf
     --card-config
     --cards
+    --clear-tags
     --config
     --config-reset
     --config-update
@@ -75,6 +76,7 @@ class PunchClock
     --remove
     --review
     --stats
+    --tag
     --test
     --travis
     --trello
@@ -405,6 +407,14 @@ class PunchClock
             day.set time_to_edit
             month.add day
           end
+        end
+
+        flag "--tag" do |tag_str|
+          day.extract_tags tag_str
+        end
+
+        switch "--clear-tags" do
+          day.clear_tags
         end
 
         # Add or remove blocks.

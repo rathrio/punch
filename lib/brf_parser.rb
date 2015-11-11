@@ -36,7 +36,10 @@
 class BRFParser
 
   # Regexp used to extract totals.
-  TOTAL = /Total:.+$/
+  TOTAL_RGX = /Total:[\s:0-9]+/
+
+  # Regexp used to extract tags. They're basically comma serarated identifiers.
+  TAGS_RGX = /[A-Za-z]+[\s\w,]+/
 
   # Error raised when things go awry while parsing.
   ParserError = Class.new(StandardError)
@@ -74,13 +77,14 @@ class BRFParser
     month = Month.new lines.shift
 
     # Get rid of total at the end, because it gets recalculated anyways.
-    lines.pop if lines.last =~ TOTAL
+    lines.pop if lines.last =~ TOTAL_RGX
 
     # Create days.
     month.days = lines.map do |l|
-      l.sub! TOTAL, ''
-      day_ary    = l.split
-      day        = Day.from(day_ary.shift)
+      l.sub! TOTAL_RGX, ''
+      day_ary = l.split
+      day = Day.from(day_ary.shift)
+      day.extract_tags(day_ary.pop) if day_ary.last =~ TAGS_RGX
       day.blocks = day_ary.map { |block_str| Block.from block_str, day }
       day
     end

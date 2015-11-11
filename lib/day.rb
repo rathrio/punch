@@ -15,6 +15,14 @@ class Day
     day
   end
 
+  def extract_tags(tags_str)
+    @tags = self.tags | tags_str.split(',').map { |s| s.downcase.to_sym }
+  end
+
+  def tags
+    @tags ||= []
+  end
+
   def date
     "#{pad day}.#{pad month}.#{year}"
   end

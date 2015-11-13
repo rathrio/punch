@@ -152,12 +152,12 @@ class PunchClock
     end
 
     switch "--options" do
-      puts OPTIONS.join(" ")
+      puts OPTIONS.join("\n")
       exit
     end
 
     switch "--cards" do
-      puts config.cards.keys.join(" ")
+      puts config.cards.keys.join("\n")
       exit
     end
 

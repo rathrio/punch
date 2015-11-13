@@ -103,6 +103,11 @@ class Punch
     "Title that appears in the BRF file.",
     ""
 
+  # @return [String]
+  option :default_args,
+    "Arguments to pass by default. e.g. '-y' to always punch yesterday.",
+    ""
+
   # @return [Fixnum]
   option :hourly_pay,
     "How much you earn per hour.",

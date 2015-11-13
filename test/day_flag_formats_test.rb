@@ -16,12 +16,10 @@ class DayFlagFormatsTest < PunchTest
     assert_punched '02.02.15   08:00-11:00'
   end
 
-  def test_dd_in_previous_month
+  def test_dd_is_smart_and_loyal
     punch '-d 23 8-11'
     assert_punched '23.01.15   08:00-11:00'
-  end
 
-  def test_dd_in_current_month
     punch '-d 2 8-11'
     assert_punched '02.02.15   08:00-11:00'
 

@@ -21,9 +21,18 @@ class MonthTest < MiniTest::Test
     assert_equal day, @month.days.last
   end
 
-  def test_find_day_by_date_accepts_ddmmyy
-    found_day = @month.find_day_by_date('30.12.14')
+  # def test_find_day_by_finds_day_that_matches_args
+  #   assert_equal '28.11.14', @month.find_day_by(:day => 28, :month => 11).date
+  #   assert_equal '30.12.14', @month.find_day_by(:day => 30, :month => 12).date
+  #   assert_nil @month.find_day_by(:day => 30, :month => 10)
 
-    assert_equal '30.12.14', found_day.to_s
-  end
+  #   assert_equal '28.11.14', @month.find_day_by(:day => 28).date
+  #   assert_equal '30.12.14', @month.find_day_by(:day => 30).date
+  #   assert_nil @month.find_day_by(:day => 31)
+
+  #   assert_equal '28.11.14', @month.find_day_by(:year => 2014).date
+
+  #   assert_equal '28.11.14', @month.find_day_by(:month => 11).date
+  #   assert_equal '30.12.14', @month.find_day_by(:month => 12).date
+  # end
 end

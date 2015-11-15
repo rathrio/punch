@@ -71,8 +71,23 @@ class Month
     }#{newline * 2}Total: #{total_str}#{newline}"
   end
 
-  def find_day_by_date(date)
-    days.find { |d| d.date == date }
+  def find_or_create_day_by_date(date)
+    day_nr, month_nr, year_nr = date.split('.')
+
+    day = days.find do |d|
+      (day_nr ? d.day == day_nr.to_i : true) &&
+      (month_nr ? d.month == month_nr.to_i : true) &&
+      (year_nr ? d.year == year_nr.to_i : true)
+    end
+
+    if day.nil?
+      day = Day.from(date)
+      add day
+    else
+      day
+    end
+
+    day
   end
 
   def fancy

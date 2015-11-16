@@ -145,7 +145,7 @@ class PunchClock
 
     # Prepend default arguments.
     unless config.default_args.empty?
-      @args.unshift *config.default_args.split(' ')
+      @args.unshift(*config.default_args.split(' '))
     end
 
     switch "--dry-run" do

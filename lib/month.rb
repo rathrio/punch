@@ -75,9 +75,9 @@ class Month
     day_nr, month_nr, year_nr = date.split('.')
 
     day = days.find do |d|
-      (day_nr ? d.day == day_nr.to_i : true) &&
-      (month_nr ? d.month == month_nr.to_i : true) &&
-      (year_nr ? d.year == year_nr.to_i : true)
+      (day_nr   ? d.day?(day_nr)     : true) &&
+      (month_nr ? d.month?(month_nr) : true) &&
+      (year_nr  ? d.year?(year_nr)   : true)
     end
 
     if day.nil?

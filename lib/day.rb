@@ -17,6 +17,19 @@ class Day
     day
   end
 
+  def day?(day_nr)
+    day == day_nr.to_i
+  end
+
+  def month?(month_nr)
+    month == month_nr.to_i
+  end
+
+  def year?(year_nr)
+    year_nr = year_nr.to_i
+    short_year == year_nr || year == year_nr
+  end
+
   def short_year=(yy)
     @short_year = yy
     @year = yy + 2000

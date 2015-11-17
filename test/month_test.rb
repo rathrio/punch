@@ -21,6 +21,14 @@ class MonthTest < MiniTest::Test
     assert_equal day, @month.days.last
   end
 
+  def test_next_number_returns_next_month_nr
+    month = Month.new
+    month.number = 11
+    month.year = 2015
+
+    assert_equal 12, month.next_number
+  end
+
   # def test_find_day_by_finds_day_that_matches_args
   #   assert_equal '28.11.14', @month.find_day_by(:day => 28, :month => 11).date
   #   assert_equal '30.12.14', @month.find_day_by(:day => 30, :month => 12).date

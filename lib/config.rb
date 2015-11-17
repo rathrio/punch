@@ -47,6 +47,13 @@ class Punch
     # Generates smart accessor and predicate methods and remembers options to
     # inject them into .punchrc.
     #
+    # @param args [Hash]
+    # @option args [Boolean] :hidden (false) whether to hide this option
+    #   .punchrc.
+    # @option args [Boolean] :path (false) whether to treat the values as file
+    #   paths. Punch will for instance substitute '~' with ENV['home'] for
+    #   instance.
+    #
     # @example Generating a boolean option with default value `false`
     #
     #   option :adult                            # Name of the option
@@ -68,7 +75,13 @@ class Punch
     def option(opt, desc, default_value, args = {})
       options << Option.new(opt, desc) unless args.fetch(:hidden, false)
 
-      attr_writer opt
+      if args.fetch(:path, false)
+        define_method "#{opt}=" do |opt_value|
+          instance_variable_set "@#{opt}", opt_value.to_s.sub('~', ENV['HOME'])
+        end
+      else
+        attr_writer opt
+      end
 
       define_method opt do
         value = instance_variable_get("@#{opt}")
@@ -91,7 +104,8 @@ class Punch
   # @return [String]
   option :hours_folder,
     "Where to look for the BRF files.",
-    File.expand_path('../hours', File.dirname(__FILE__))
+    File.expand_path('../hours', File.dirname(__FILE__)),
+    :path => true
 
   # @return [String]
   option :name,
@@ -166,7 +180,8 @@ class Punch
   # @return [String]
   option :system_ruby,
     "Which ruby command to use to execute subcommands.",
-    "ruby"
+    "ruby",
+    :path => true
 
   # @return [Hash]
   option :mailer_config,
@@ -182,6 +197,7 @@ class Punch
       :body        => ""
     }
 
+  # @return [Boolean]
   option :clear_buffer_before_punch,
     "Clear terminal buffer before printing month.",
     true

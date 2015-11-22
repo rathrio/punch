@@ -293,6 +293,7 @@ class PunchClock
 
     month_nr = now.month
     month_nr = (month_nr + 1) % 12 if now.day > hand_in_date
+    month_nr = 12 if month_nr.zero?
 
     switch "-n", "--next" do
       month_nr = (month_nr + 1) % 12

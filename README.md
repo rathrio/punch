@@ -1,14 +1,14 @@
-$ punch
-=======
+$ punch [![Build Status](https://travis-ci.org/rathrio/punch.svg?branch=master)](https://travis-ci.org/rathrio/punch)
+=====================================================================================================================
 
-[![Build Status](https://travis-ci.org/rathrio/punch.svg?branch=master)](https://travis-ci.org/rathrio/punch)
+A CLI for file based time tracking.
 
-Every month, I send an excel file with my hours to Brigitte, the accountant of
-the company I work for.
+This came into existence because maintaining an Excel sheet with my working
+hours was a huge pain in the ass (mostly because I suck at Excel) and the
+accountant didn't care about the format as long as it's somewhat readable.
 
-I found it pretty annoying and tedious to edit that excel file, so I came up with
-a revolutionary format for Brigitte that both she and I can agree on: **BRF**
-(Brigitte-Readable-Format).
+Hence, I came up with a revolutionary format called BRF
+(Brigitte-Readable-Format):
 
 ```
 November 2014
@@ -19,20 +19,29 @@ November 2014
 Total: 12:00
 ```
 
+Super easy to read for Brigitte, super easy to parse and generate, aaand super
+useless otherwise.
+
 Recommended Installation
 ------------------------
 
-1. `git clone git@github.com:rathrio/punch.git`
-2. Add a bash alias `alias punch='ruby ~/path/to/punch/punch.rb'`. `punch.rb` is
-   executable, so feel free to link in in your path instead of creating an
-   alias.
-3. Optionally source `punch-completion.bash` in your bash profile or link it in
-   your `bash_completion.d` directory to enable basic tab completion.
-   (e.g. `ln -s /path/to/punch/punch-completion.bash
-   /usr/local/etc/bash_completion.d/punch-completion.bash` if you have
-   [`bash-completion`](https://bash-completion.alioth.debian.org/) installed)
-4. Optionally install development dependencies with `bundle`.
+Clone this repo and create an alias that executes `punch.rb`.
 
+```bash
+git clone git@github.com:rathrio/punch.git ~/wherever/you/like/punch
+alias punch=`ruby ~/wherever/you/like/punch/punch.rb`
+```
+
+As an alternative to the alias you can link punch.rb to a folder in your path, e.g.
+
+```bash
+cd ~/wherever/you/like/punch/
+ln -sr punch.rb ~/.bin/punch
+```
+
+Bash tab completion can be enabled by sourcing `punch-completion.bash`. Zsh
+completion is currently provided
+[here](https://github.com/rathrio/punch-zsh-completion).
 
 Help and Documentation
 ----------------------
@@ -48,10 +57,10 @@ This will open them up in your default web browser.
 Usage
 -----
 
-Punch saves your working time in a so called BRF text file. Each file represents
-one month and new files will be automatically generated as time goes by. A month
-in Punch starts on the 21th of the previous month and ends on the 20th of the
-current one. To display the month, execute `punch` without any arguments:
+Punch saves your working time in a BRF text file. Each file represents one month
+and new files will be automatically generated as time goes by. A month in Punch
+starts on the 21th of the previous month and ends on the 20th of the current
+one. To display the month, execute `punch` without any arguments:
 
 ```
 $ punch
@@ -87,7 +96,7 @@ Total: 04:30
 ```
 
 Leading zeros and minutes may be omitted, thus `punch 8-12:30` is equivalent to
-`punch 08:00-12:30`.
+`punch 08:00-12:30`. The colon can be omitted for 3+ digits.
 
 You can pass multiple blocks to add them all to the current day:
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift "#{File.dirname(__FILE__)}/lib"
+PUNCH_FILE = File.realpath(__FILE__)
+$LOAD_PATH.unshift File.expand_path('../lib', PUNCH_FILE)
 
 require 'core_extensions'
 require 'option_parsing'
@@ -88,15 +89,14 @@ class PunchClock
 
   flag :dry_run
 
-  attr_reader :path_to_punch, :month, :month_name, :year, :brf_filepath
+  attr_reader :month, :month_name, :year, :brf_filepath
 
-  def initialize(args, path_to_punch = __FILE__)
+  def initialize(args)
     self.args = args
-    @path_to_punch = path_to_punch
   end
 
   def punch_folder
-    @punch_folder ||= File.dirname(path_to_punch)
+    @punch_folder ||= File.dirname(PUNCH_FILE)
   end
 
   def hours_folder
@@ -172,7 +172,7 @@ class PunchClock
     end
 
     switch "-H", "--hack" do
-      system "cd #{punch_folder} && #{config.text_editor} #{__FILE__}"
+      system "cd #{punch_folder} && #{config.text_editor} #{PUNCH_FILE}"
       exit
     end
 

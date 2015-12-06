@@ -166,4 +166,11 @@ class PunchClockTest < PunchTest
     assert_punched "02.04.15   08:00-12:00   Total: 04:00"
   end
 
+  def test_punching_at_the_end_of_the_year_doesnt_fail
+    Timecop.freeze(2015, 11, 22) do
+      punch
+      assert_equal 12, current_month.number
+    end
+  end
+
 end

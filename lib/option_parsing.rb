@@ -25,13 +25,13 @@ module OptionParsing
   end
 
   def args=(args)
-    @args = args.map do |a|
+    @args = args.flat_map do |a|
       if a =~ /^-\w{2,}$/
         a[1..-1].split("").map { |c| c.prepend('-') }
       else
         a
       end
-    end.flatten
+    end
   end
 
   def args

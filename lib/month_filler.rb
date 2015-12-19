@@ -14,14 +14,10 @@ class MonthFiller
   # @return [Month] the complete month.
   def fill!
     current_month_nr = month.number
-    current_year     = month.short_year
+    current_year     = month.year
 
-    if (prev_month_nr = current_month_nr - 1).zero?
-      prev_month_nr = 12
-      prev_year = current_year - 1
-    else
-      prev_year = current_year
-    end
+    prev_month_nr = month.prev_month_number
+    prev_year = month.prev_month_year
 
     current_month_days =
       month.days.select { |d| d.month == current_month_nr }.map(&:day)
@@ -48,6 +44,7 @@ class MonthFiller
     end
 
     month.days.sort!
+
     month
   end
 

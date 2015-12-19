@@ -173,7 +173,7 @@ $ punch -r, --remove HH:MM-HH:MM HH:MM-HH:MM ...
 $ punch -s, --stats
     Print some stats.
 
-$ punch --tag [tag]
+$ punch -t, --tag [tag]
     Tag a day with an identifier. This can for instance be used to mark sick
     days, which count as 0830 work days, but need to be quickly identified as
     sick days for stats and Brigitte.
@@ -218,7 +218,7 @@ $ punch -H, --hack
 $ punch --review
     Display review of your code and commit messages.
 
-$ punch -t, --test
+$ punch --test
     Run tests.
 
 $ punch --trello

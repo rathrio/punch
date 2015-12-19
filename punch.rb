@@ -220,7 +220,7 @@ class PunchClock
       exit
     end
 
-    switch "-t", "--test" do
+    switch "--test" do
       system "#{config.system_ruby} #{test_file}"
       exit
     end
@@ -413,7 +413,7 @@ class PunchClock
           end
         end
 
-        flag "--tag" do |tag_str|
+        flag "-t", "--tag" do |tag_str|
           day.extract_tags tag_str
         end
 

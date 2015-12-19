@@ -14,24 +14,44 @@ class DateParser
 
   def parse
     case date
+
     when /^\d{1,2}$/
       d = date.to_i
-      Day.new(
-        :day => d,
-        :month => m,
-        :year => y
-      )
+      if d > hand_in_date
+        m = month.prev_month_number
+        y = month.prev_month_year
+      else
+        m = month.number
+        y = month.year
+      end
+
     when /^\d{1,2}\.\d{1,2}$/
       d, m = date.split('.').map(&:to_i)
-      Day.new(
-        :day => d,
-        :month => m,
-        :year => month.year
-      )
+      if d > hand_in_date
+        y = month.prev_month_year
+      else
+        y = month.year
+      end
+
+
     when /^\d{1,2}\.\d{1,2}\.\d{2,4}$/
-      Day.from(date)
+      d, m, y = date.split('.').map(&:to_i)
+      y += 2000 if y < 100
+
     else
       raise "\"#{date}\" is in an unknown date format"
     end
+
+    Day.new(
+      :day => d,
+      :month => m,
+      :year => y
+    )
+  end
+
+  private
+
+  def hand_in_date
+    Punch.config.hand_in_date
   end
 end

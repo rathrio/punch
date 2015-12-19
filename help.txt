@@ -64,7 +64,6 @@ $ punch now
     following Symbols:
 
     * :fair, the default behaviour described above,
-    * :greedy, rounds to your advantage ;),
     * :exact, don't round at all
 
 $ punch [card] ...
@@ -115,6 +114,16 @@ $ punch -d, --day dd.mm.yy
     Pass a date to add blocks for that day. Defaults to today.
 
     $ punch -d 03.12.14 22-23
+
+    The following date formats are supported:
+
+    * dd.mm.yy
+    * dd.mm.yyyy
+    * dd.mm
+    * dd
+
+    Leading zeros may be omitted. Punch tries to be smart about missing month
+    or year information.
 
 $ punch --dry-run
     Run commands without writing to file.

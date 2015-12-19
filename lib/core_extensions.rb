@@ -5,10 +5,12 @@ class String
   end
 
   def highlighted
+    return self unless Punch.config.colors_enabled?
     colorize Punch.config.highlight_color_code
   end
 
   def today_color
+    return self unless Punch.config.colors_enabled?
     colorize Punch.config.today_color_code
   end
 end

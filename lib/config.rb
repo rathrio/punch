@@ -142,6 +142,11 @@ class Punch
     "How many hours you want to work per month.",
     68
 
+  # @return [Boolean]
+  option :colors_enabled,
+    "Whether to color certain output.",
+    true
+
   # @return [Fixnum]
   option :highlight_color_code,
     "Which color to use for highlighting important text.",
@@ -173,6 +178,11 @@ class Punch
     false
 
   # @return [Boolean]
+  option :clear_buffer_before_punch,
+    "Clear terminal buffer before printing month.",
+    true
+
+  # @return [Boolean]
   option :debug,
     "Print stack trace instead of user friendly hint.",
     false
@@ -196,11 +206,6 @@ class Punch
       :bcc         => "",
       :body        => ""
     }
-
-  # @return [Boolean]
-  option :clear_buffer_before_punch,
-    "Clear terminal buffer before printing month.",
-    true
 
   # @return [Hash]
   option :cards,

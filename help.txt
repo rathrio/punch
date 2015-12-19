@@ -197,7 +197,7 @@ $ punch -y, --yesterday
 To run these, install the dev dependencies specified in Gemfile with
 $ bundle
 
-$ punch -C, --console
+$ punch --console
     Start pry session after internal Month instance has been initialized.
 
 $ punch --coverage
@@ -206,13 +206,13 @@ $ punch --coverage
 $ punch --diagram
     Generate and open a class diagram.
 
-$ punch -D, --doc
+$ punch --doc
     Generate and view docs in default browser.
 
 $ punch --github
     Open GitHub page.
 
-$ punch -H, --hack
+$ punch --hack
     Edit this script.
 
 $ punch --review

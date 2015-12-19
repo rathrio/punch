@@ -174,7 +174,7 @@ class PunchClock
       exit
     end
 
-    switch "-H", "--hack" do
+    switch "--hack" do
       system "cd #{punch_folder} && #{config.text_editor} #{PUNCH_FILE}"
       exit
     end
@@ -195,7 +195,7 @@ class PunchClock
       end
     end
 
-    switch "-D", "--doc" do
+    switch "--doc" do
       system "cd #{punch_folder} && yard && open doc/index.html"
       exit
     end
@@ -375,7 +375,7 @@ class PunchClock
         exit
       end
 
-      switch "-C", "--console" do
+      switch "--console" do
         require 'pry'
         binding.pry
         exit

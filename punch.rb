@@ -21,6 +21,7 @@ autoload :Editor, 'editor'
 autoload :BRFMailer, 'brf_mailer'
 autoload :Stats, 'stats'
 autoload :MonthFiller, 'month_filler'
+autoload :DateParser, 'date_parser'
 
 class PunchClock
   include OptionParsing
@@ -374,7 +375,8 @@ class PunchClock
       end
 
       switch "-C", "--console" do
-        require 'pry'; binding.pry
+        require 'pry'
+        binding.pry
         exit
       end
 

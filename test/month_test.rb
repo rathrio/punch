@@ -21,26 +21,35 @@ class MonthTest < MiniTest::Test
     assert_equal day, @month.days.last
   end
 
-  def test_next_number_returns_next_month_nr
-    month = Month.new
+  def test_next_number_and_year_work_as_expected
+    month = Month.new('FOO')
     month.number = 11
     month.year = 2015
 
-    assert_equal 12, month.next_number
+    assert_equal 12, month.next_month_number
+    assert_equal 2015, month.next_month_year
+
+    month = Month.new("BAR")
+    month.number = 12
+    month.year = 2015
+
+    assert_equal 1, month.next_month_number
+    assert_equal 2016, month.next_month_year
   end
 
-  # def test_find_day_by_finds_day_that_matches_args
-  #   assert_equal '28.11.14', @month.find_day_by(:day => 28, :month => 11).date
-  #   assert_equal '30.12.14', @month.find_day_by(:day => 30, :month => 12).date
-  #   assert_nil @month.find_day_by(:day => 30, :month => 10)
+  def test_prev_number_and_year_work_as_expected
+    month = Month.new('FOO')
+    month.number = 11
+    month.year = 2015
 
-  #   assert_equal '28.11.14', @month.find_day_by(:day => 28).date
-  #   assert_equal '30.12.14', @month.find_day_by(:day => 30).date
-  #   assert_nil @month.find_day_by(:day => 31)
+    assert_equal 10, month.prev_month_number
+    assert_equal 2015, month.prev_month_year
 
-  #   assert_equal '28.11.14', @month.find_day_by(:year => 2014).date
+    month = Month.new("BAR")
+    month.number = 1
+    month.year = 2015
 
-  #   assert_equal '28.11.14', @month.find_day_by(:month => 11).date
-  #   assert_equal '30.12.14', @month.find_day_by(:month => 12).date
-  # end
+    assert_equal 12, month.prev_month_number
+    assert_equal 2014, month.prev_month_year
+  end
 end

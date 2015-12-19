@@ -81,13 +81,33 @@ class Month
     end
 
     if day.nil?
-      day = Day.from(date)
+      day = Day.parse(date)
       add day
     else
       day
     end
 
     day
+  end
+
+  def next_month_number
+    to_date.next_month.month
+  end
+
+  def next_month_year
+    to_date.next_month.year
+  end
+
+  def prev_month_number
+    to_date.prev_month.month
+  end
+
+  def prev_month_year
+    to_date.prev_month.year
+  end
+
+  def to_date
+    @date ||= Date.new(year, number, 1)
   end
 
   def fancy

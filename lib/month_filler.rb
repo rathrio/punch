@@ -1,7 +1,4 @@
-require 'date'
-
 class MonthFiller
-
   attr_accessor :month
 
   def initialize(month)
@@ -53,5 +50,4 @@ class MonthFiller
   def days_in_month(year, month_nr)
     Date.new(year, month_nr, -1).day
   end
-
 end

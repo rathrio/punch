@@ -13,6 +13,7 @@ require 'block'
 require 'day'
 require 'month'
 require 'block_parser'
+require 'date'
 
 autoload :Tempfile, 'tempfile'
 autoload :Merger, 'merger'

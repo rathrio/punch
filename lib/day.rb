@@ -1,5 +1,3 @@
-require 'date'
-
 class Day
   include Attributes
   include Comparable

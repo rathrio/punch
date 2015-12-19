@@ -18,6 +18,9 @@ module TestOut
   class << self
     attr_accessor :output
     def puts(str)
+      if ENV['PUNCH_VERBOSE_TESTS']
+        STDOUT.puts(str)
+      end
       self.output = str.to_s
     end
   end

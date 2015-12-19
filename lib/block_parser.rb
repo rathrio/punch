@@ -1,7 +1,7 @@
 require 'rounded_time'
 
-# Can parse various string representations of a block and turn it into an
-# instance of Block.
+# Can translate various string representations of a block (e.g. 12:40-18) into
+# an instance of Block.
 class BlockParser
   # What the start or finish part of a block may look like,
   # e.g. "09:00", "09", "9", etc

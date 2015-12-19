@@ -81,7 +81,7 @@ class Month
     end
 
     if day.nil?
-      day = Day.parse(date)
+      day = DateParser.parse(date, self)
       add day
     else
       day

@@ -28,7 +28,7 @@ class DateParserTest < PunchTest
     end
   end
 
-  def test_dd_autodetermines_month_and_year
+  def test_parse_dd_autodetermines_month_and_year
     day = DateParser.parse("22", current_month)
 
     assert_equal 22, day.day
@@ -36,7 +36,7 @@ class DateParserTest < PunchTest
     assert_equal 2015, day.year
   end
 
-  def test_dd_considers_hand_in_date
+  def test_parse_dd_considers_hand_in_date
     day = DateParser.parse("30", current_month)
 
     assert_equal 30, day.day
@@ -44,7 +44,7 @@ class DateParserTest < PunchTest
     assert_equal 2015, day.year
   end
 
-  def test_dd_considers_hand_in_date_over_year
+  def test_parse_dd_considers_hand_in_date_over_year
     # Change punch month to January.
     Timecop.freeze(Time.new(2015, 01, 01)) do
       day = DateParser.parse("30", current_month)
@@ -52,6 +52,12 @@ class DateParserTest < PunchTest
       assert_equal 30, day.day
       assert_equal 12, day.month
       assert_equal 2014, day.year
+    end
+  end
+
+  def test_parse_raises_error_on_unknown_format
+    assert_raises(RuntimeError) do
+      DateParser.parse('123.034.512392', current_month)
     end
   end
 end

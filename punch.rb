@@ -294,26 +294,26 @@ class PunchClock
       @print_full_month = true
     end
 
-    month_nr = now.month
-    month_nr = (month_nr + 1) % 12 if now.day > hand_in_date
-    month_nr = 12 if month_nr.zero?
+    month_number = now.month
+    month_number = (month_number + 1) % 12 if now.day > hand_in_date
+    month_number = 12 if month_number.zero?
 
     switch "-n", "--next" do
-      month_nr = (month_nr + 1) % 12
+      month_number = (month_number + 1) % 12
     end
 
-    @year = (month_nr < now.month) ? now.year + 1 : now.year
+    @year = (month_number < now.month) ? now.year + 1 : now.year
 
     switch "-p", "--previous" do
-      month_nr = (month_nr - 1) % 12
-      month_nr = 12 if month_nr.zero?
-      @year = (month_nr > now.month) ? now.year - 1 : now.year
+      month_number = (month_number - 1) % 12
+      month_number = 12 if month_number.zero?
+      @year = (month_number > now.month) ? now.year - 1 : now.year
     end
 
-    @month_name = Month.name month_nr
+    @month_name = Month.name month_number
 
     switch "-m", "--merge" do
-      puts Merger.new(@args, month_nr, year).month
+      puts Merger.new(@args, month_number, year).month
       exit
     end
 
@@ -359,7 +359,7 @@ class PunchClock
     end
 
     File.open brf_filepath, 'r+' do |file|
-      @month = Month.from(file.read, month_nr, year)
+      @month = Month.from(file.read, month_number, year)
 
       switch "--undo" do
         exit
@@ -403,7 +403,7 @@ class PunchClock
         if day.nil?
           time_to_edit = now
           switch "-y", "--yesterday" do
-            time_to_edit = now.previous_day
+            time_to_edit = now.prev_day
           end
           unless (day = month.days.find { |d| d.at? time_to_edit })
             # Create that day if it doesn't exist yet.
@@ -485,7 +485,7 @@ class PunchClock
   private
 
   def now
-    @now ||= Time.now
+    @now ||= Date.today
   end
 
   def print_full_month?

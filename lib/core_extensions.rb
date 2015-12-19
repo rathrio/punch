@@ -64,7 +64,7 @@ class Time
     strftime('%y').to_i
   end
 
-  def previous_day
+  def prev_day
     self - 86_400
   end
 

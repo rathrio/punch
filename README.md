@@ -1,5 +1,7 @@
-$ punch [![Build Status](https://travis-ci.org/rathrio/punch.svg?branch=master)](https://travis-ci.org/rathrio/punch)
-=====================================================================================================================
+$ punch
+=======
+
+[![Build Status](https://travis-ci.org/rathrio/punch.svg?branch=master)](https://travis-ci.org/rathrio/punch) [![Inline docs](http://inch-ci.org/github/rathrio/punch.svg?branch=master)](http://inch-ci.org/github/rathrio/punch)
 
 A CLI for file based time tracking.
 

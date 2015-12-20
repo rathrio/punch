@@ -90,9 +90,9 @@ class PunchClock
     --yesterday
   )
 
-  flag :dry_run
-
   attr_reader :month, :month_name, :year, :brf_filepath
+
+  flag :dry_run, :print_full_month
 
   def initialize(args)
     self.args = args
@@ -291,7 +291,7 @@ class PunchClock
     end
 
     switch "--full" do
-      @print_full_month = true
+      print_full_month!
     end
 
     month_number = now.month
@@ -486,10 +486,6 @@ class PunchClock
 
   def now
     @now ||= Date.today
-  end
-
-  def print_full_month?
-    @print_full_month
   end
 
   def generate_brf_filepath(month_name, year)

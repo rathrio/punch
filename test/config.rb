@@ -1,10 +1,16 @@
-if ENV['COVERAGE']
+if ENV['PUNCH_COVERAGE']
   require 'simplecov'
   SimpleCov.start do
     command_name 'MiniTest'
     add_filter '/test/'
   end
 end
+
+if ENV['CI']
+  require 'coveralls'
+  Coveralls.wear!
+end
+
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'timecop'

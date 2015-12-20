@@ -227,7 +227,7 @@ class PunchClock
 
     switch "--coverage" do
       system "cd #{punch_folder} && "\
-        "COVERAGE=true #{config.system_ruby} #{test_file} && "\
+        "PUNCH_COVERAGE=true #{config.system_ruby} #{test_file} && "\
         "open coverage/index.html"
       exit
     end

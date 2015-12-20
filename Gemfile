@@ -10,3 +10,4 @@ gem 'pronto-rubocop'
 gem 'pronto-fasterer'
 gem 'pronto-poper'
 gem 'simplecov'
+gem 'coveralls', :require => false

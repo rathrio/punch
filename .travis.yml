@@ -1,6 +1,6 @@
 sudo: false
 language: ruby
-install: gem install minitest timecop
+install: gem install minitest timecop coveralls
 rvm:
   - 2.2.0
   - 2.2.1

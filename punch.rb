@@ -354,7 +354,7 @@ class PunchClock
       mailer = BRFMailer.new(brf_filepath, month_name)
       # Print non-encoded version for confirmation.
       puts mailer.message false
-      mailer.deliver if yes?("Do you want to send this mail?")
+      mailer.deliver if yes?("Do you want to send this mail?".highlighted)
       exit
     end
 

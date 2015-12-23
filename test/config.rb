@@ -32,24 +32,12 @@ end
 
 # Stub config file
 class Punch
-  def config_file
+  def self.config_file
     TEST_CONFIG_FILE
-  end
-
-  def cards
-    {
-      :test => {
-        :hours_folder => TEST_HOURS_FOLDER,
-        :out => TestOut,
-        :debug => true,
-        :clear_buffer_before_punch => false
-      }
-    }
   end
 end
 
-# Load test configurations.
-Punch.config.reset!
+# Load test configurations. See test/.punchrc.
 Punch.load_card :test
 
 # Provides some helper methods for integration tests. Also sets the current

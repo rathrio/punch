@@ -66,8 +66,8 @@ $ punch now
     * :fair, the default behaviour described above,
     * :exact, don't round at all
 
-$ punch [card] ...
-    Load a card configuration before punching.
+$ punch [card1] [card2] ...
+    Load card configurations before punching.
 
     Say you have a card called "workout" that sets up a different hours folder
     for you to save your workout time to:

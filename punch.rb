@@ -179,19 +179,8 @@ class PunchClock
     end
 
     switch "-h", "--help" do
-      begin
-        f = Tempfile.new 'help'
-        f.write(
-          File.readlines(help_file).map do |l|
-            l.start_with?('$') ? l.highlighted : l
-          end.join
-        )
-        f.rewind
-        system "less -R #{f.path}"
-      ensure
-        f.close
-        exit
-      end
+      generate_and_open_help_file
+      exit
     end
 
     switch "--doc" do
@@ -200,22 +189,12 @@ class PunchClock
     end
 
     switch "--diagram" do
-      system "cd #{punch_folder} && "\
-        "yard graph --protected --full --dependencies | "\
-        "dot -T pdf -o diagram.pdf && "\
-        "open diagram.pdf"
+      generate_and_open_dependency_diagram
       exit
     end
 
     switch "-u", "--update" do
-      puts "Fetching master branch...".highlighted
-      system "cd #{punch_folder} && git pull origin master"
-      print_version
-      if config.regenerate_punchrc_after_udpate? &&
-          File.exist?(config.config_file)
-        config.generate_config_file
-        puts "Updated ~/.punchrc.".highlighted
-      end
+      update_punch
       exit
     end
 
@@ -225,9 +204,7 @@ class PunchClock
     end
 
     switch "--coverage" do
-      system "cd #{punch_folder} && "\
-        "PUNCH_COVERAGE=true #{config.system_ruby} #{test_file} && "\
-        "open coverage/index.html"
+      generate_and_open_coverage
       exit
     end
 
@@ -516,6 +493,48 @@ class PunchClock
       " --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s'"\
       " --date=short"\
       " -n #{n}"
+  end
+
+  def generate_and_open_help_file
+    begin
+      f = Tempfile.new 'help'
+      f.write(
+        File.readlines(help_file).map do |l|
+          l.start_with?('$') ? l.highlighted : l
+        end.join
+      )
+      f.rewind
+      system "less -R #{f.path}"
+    ensure
+      f.close
+    end
+  end
+
+  def generate_and_open_dependency_diagram
+    system "cd #{punch_folder} && "\
+      "yard graph --protected --full --dependencies | "\
+      "dot -T pdf -o diagram.pdf && "\
+      "open diagram.pdf"
+  end
+
+  def update_punch
+    puts "Fetching master branch...".highlighted
+    system "cd #{punch_folder} && git pull origin master"
+
+    print_version
+
+    if config.regenerate_punchrc_after_udpate? &&
+        File.exist?(config.config_file)
+
+      config.generate_config_file
+      puts "Updated ~/.punchrc.".highlighted
+    end
+  end
+
+  def generate_and_open_coverage
+    system "cd #{punch_folder} && "\
+      "PUNCH_COVERAGE=true #{config.system_ruby} #{test_file} && "\
+      "open coverage/index.html"
   end
 end
 

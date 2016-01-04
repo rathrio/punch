@@ -77,7 +77,7 @@ class Punch
 
       if args.fetch(:path, false)
         define_method "#{opt}=" do |opt_value|
-          instance_variable_set "@#{opt}", opt_value.to_s.sub('~', ENV['HOME'])
+          instance_variable_set "@#{opt}", opt_value.to_s.absolute_path
         end
       else
         attr_writer opt

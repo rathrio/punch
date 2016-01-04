@@ -13,6 +13,10 @@ class String
     return self unless Punch.config.colors_enabled?
     colorize Punch.config.today_color_code
   end
+
+  def absolute_path
+    sub '~', Dir.home
+  end
 end
 
 class Module

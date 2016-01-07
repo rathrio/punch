@@ -422,10 +422,13 @@ class PunchClock
         month.add today
       end
 
-      MonthFiller.new(month).fill! if print_full_month?
-
       system "clear" if config.clear_buffer_before_punch?
-      puts month.fancy
+
+      if print_full_month?
+        puts month.full
+      else
+        puts month.fancy
+      end
     end
 
   rescue BRFParser::ParserError => e

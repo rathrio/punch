@@ -61,12 +61,12 @@ class Month
   end
 
   def to_s(options = {})
-    fancy = options.fetch :fancy, false
     days.sort!
     b_count = max_block_count
+    day_options = options.merge :padding => b_count
     "#{name}#{newline * 2}#{
       days.map do |d|
-        d.to_s(:fancy => fancy, :padding => b_count)
+        d.to_s(day_options)
       end.join(newline)
     }#{newline * 2}Total: #{total_str}#{newline}"
   end
@@ -112,6 +112,11 @@ class Month
 
   def fancy
     to_s :fancy => true
+  end
+
+  def full
+    MonthFiller.new(self).fill!
+    to_s :fancy => true, :prepend_name => true
   end
 
   def children

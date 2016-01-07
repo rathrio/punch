@@ -4,6 +4,7 @@ hours/**
 .ruby-gemset
 .yardoc
 .vimrc.local
+*.yarb
 doc
 diagram.pdf
 coverage

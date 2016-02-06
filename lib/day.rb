@@ -8,7 +8,7 @@ class Day
 
   flag :highlight, :unhealthy
 
-  # @param [String] a date of format "DD.MM.YY", e.g., "26.03.15".
+  # @param [String] date a date of format "DD.MM.YY", e.g., "26.03.15".
   def self.from(date)
     day = Day.new
     day.day, day.month, day.short_year = date.split('.').map(&:to_i)

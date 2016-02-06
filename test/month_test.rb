@@ -20,36 +20,4 @@ class MonthTest < MiniTest::Test
 
     assert_equal day, @month.days.last
   end
-
-  def test_next_number_and_year_work_as_expected
-    month = Month.new('FOO')
-    month.number = 11
-    month.year = 2015
-
-    assert_equal 12, month.next_month_number
-    assert_equal 2015, month.next_month_year
-
-    month = Month.new("BAR")
-    month.number = 12
-    month.year = 2015
-
-    assert_equal 1, month.next_month_number
-    assert_equal 2016, month.next_month_year
-  end
-
-  def test_prev_number_and_year_work_as_expected
-    month = Month.new('FOO')
-    month.number = 11
-    month.year = 2015
-
-    assert_equal 10, month.prev_month_number
-    assert_equal 2015, month.prev_month_year
-
-    month = Month.new("BAR")
-    month.number = 1
-    month.year = 2015
-
-    assert_equal 12, month.prev_month_number
-    assert_equal 2014, month.prev_month_year
-  end
 end

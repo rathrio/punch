@@ -5,6 +5,7 @@ $LOAD_PATH.unshift File.expand_path('../lib', PUNCH_FILE)
 
 require 'core_extensions'
 require 'option_parsing'
+require 'month_year'
 require 'config'
 require 'brf_parser'
 require 'totals'
@@ -270,30 +271,34 @@ class PunchClock
       print_full_month!
     end
 
-    month_number = now.month
-    month_number = (month_number + 1) % 12 if now.day > hand_in_date
-    month_number = 12 if month_number.zero?
+    # month_number = now.month
+    # month_number = (month_number + 1) % 12 if now.day > hand_in_date
+    # month_number = 12 if month_number.zero?
+
+    month_year = MonthYear.new(:month => now.month, :year => now.year)
+    month_year = month_year.next if now.day > hand_in_date
 
     switch "-n", "--next" do
-      month_number = (month_number + 1) % 12
+      month_year = month_year.next
     end
 
-    @year = (month_number < now.month) ? now.year + 1 : now.year
+    # @year = (month_number < now.month) ? now.year + 1 : now.year
 
     switch "-p", "--previous" do
-      month_number = (month_number - 1) % 12
-      month_number = 12 if month_number.zero?
-      @year = (month_number > now.month) ? now.year - 1 : now.year
+      month_year = month_year.prev
+      # month_number = (month_number - 1) % 12
+      # month_number = 12 if month_number.zero?
+      # @year = (month_number > now.month) ? now.year - 1 : now.year
     end
 
-    @month_name = Month.name month_number
+    @month_name = Month.name month_year.month
 
     switch "-m", "--merge" do
-      puts Merger.new(@args, month_number, year).month
+      puts Merger.new(@args, month_year).month
       exit
     end
 
-    @brf_filepath = generate_brf_filepath month_name, year
+    @brf_filepath = generate_brf_filepath month_name, month_year.year
 
     unless File.exist? brf_filepath
       # Create hours folder if necessary.
@@ -307,7 +312,7 @@ class PunchClock
       end
       # Create empty BRF file for this month.
       File.open(brf_filepath, "w") do |f|
-        f.write "#{month_name.capitalize} #{year}"
+        f.write "#{month_name.capitalize} #{month_year.year}"
       end
     end
 

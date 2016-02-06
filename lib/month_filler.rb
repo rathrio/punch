@@ -10,33 +10,28 @@ class MonthFiller
   #
   # @return [Month] the complete month.
   def fill!
-    current_month_nr = month.number
-    current_year     = month.year
-
-    prev_month_nr = month.prev_month_number
-    prev_year = month.prev_month_year
+    current_month_year = month.month_year
+    prev_month_year = current_month_year.prev
 
     current_month_days =
-      month.days.select { |d| d.month == current_month_nr }.map(&:day)
+      month.days.select { |d| current_month_year.month_eq? d.month }.map(&:day)
 
     prev_month_days =
-      month.days.select { |d| d.month == prev_month_nr }.map(&:day)
+      month.days.select { |d| prev_month_year.month_eq? d.month }.map(&:day)
 
     ((1..Punch.config.hand_in_date).to_a - current_month_days).each do |d|
       day = Day.new
       day.day = d
-      day.month = current_month_nr
-      day.year = current_year
+      day.year, day.month = current_month_year
       month.days << day
     end
 
-    (((Punch.config.hand_in_date + 1)..days_in_month(prev_year, prev_month_nr)).
+    (((Punch.config.hand_in_date + 1)..days_in_month(prev_month_year)).
       to_a - prev_month_days).each do |d|
 
       day = Day.new
       day.day = d
-      day.month = prev_month_nr
-      day.year = prev_year
+      day.year, day.month = prev_month_year
       month.days << day
     end
 
@@ -47,7 +42,7 @@ class MonthFiller
 
   private
 
-  def days_in_month(year, month_nr)
-    Date.new(year, month_nr, -1).day
+  def days_in_month(month_year)
+    Date.new(*month_year, -1).day
   end
 end

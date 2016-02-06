@@ -1,12 +1,12 @@
 class Merger
   attr_reader :cards, :month_nr, :month_name, :year
 
-  def initialize(cards, month_nr, year)
+  def initialize(cards, month_year)
     fail ArgumentError, "cards must not be empty" if cards.empty?
     @cards = cards
-    @month_nr = month_nr
+    @month_nr = month_year.month
     @month_name = Month.name(month_nr)
-    @year = year
+    @year = month_year.year
   end
 
   def month

@@ -20,6 +20,8 @@ class Month
 
   attr_accessor :name, :days, :number, :year
 
+  alias_method :month, :number
+
   def self.name(month_nr)
     NAMES[month_nr]
   end
@@ -90,24 +92,20 @@ class Month
     day
   end
 
-  def next_month_number
-    to_date.next_month.month
-  end
-
-  def next_month_year
-    to_date.next_month.year
-  end
-
-  def prev_month_number
-    to_date.prev_month.month
+  def month_year
+    @month_year ||= MonthYear.new(:month => number, :year => year)
   end
 
   def prev_month_year
-    to_date.prev_month.year
+    month_year.prev
+  end
+
+  def next_month_year
+    month_year.next
   end
 
   def to_date
-    @date ||= Date.new(year, number, 1)
+    month_year.date
   end
 
   def fancy

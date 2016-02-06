@@ -18,8 +18,7 @@ class DateParser
     when /^\d{1,2}$/
       d = date.to_i
       if d > hand_in_date
-        m = month.prev_month_number
-        y = month.prev_month_year
+        y, m = month.prev_month_year
       else
         m = month.number
         y = month.year
@@ -28,7 +27,7 @@ class DateParser
     when /^\d{1,2}\.\d{1,2}$/
       d, m = date.split('.').map(&:to_i)
       if d > hand_in_date
-        y = month.prev_month_year
+        y = month.prev_month_year.year
       else
         y = month.year
       end

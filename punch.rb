@@ -340,7 +340,7 @@ class PunchClock
     end
 
     File.open brf_filepath, 'r+' do |file|
-      @month = Month.from(file.read, month_number, year)
+      @month = Month.from(file.read, month_year.month, month_year.year)
 
       switch "--undo" do
         exit

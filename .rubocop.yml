@@ -27,9 +27,6 @@ Style/EmptyLinesAroundModuleBody:
 Style/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
-Style/TrailingComma:
-  Enabled: false
-
 Style/SingleLineBlockParams:
   Enabled: false
 

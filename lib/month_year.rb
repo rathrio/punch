@@ -5,9 +5,7 @@ class MonthYear
     @month = args.fetch(:month).to_i
     @year = args.fetch(:year).to_i
 
-    if @year < 99
-      @year += 2000
-    end
+    @year += 2000 if @year < 99
 
     @date = Date.new(@year, @month)
   end

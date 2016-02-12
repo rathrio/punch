@@ -156,7 +156,12 @@ $ punch -m, --merge [card1] [card2] ...
 
     How much time have I spent on project1 and project2 this month?
 
-    $ punch -m project1 project2
+    $ punch --merge project1 project2
+
+$ punch --month [month]
+    Load specific month of current year. To punch February for instance:
+
+    $ punch --month 2
 
 $ punch -n, --next
     Punch next month.
@@ -186,6 +191,15 @@ $ punch -u, --update
 
 $ punch -v, --version
     Print commit hash of the current version.
+
+$ punch --year [year]
+    Punch specific year of current month. To punch the current month in 2014:
+
+    $ punch --year 2014
+
+    or
+
+    $ punch --year 14
 
 $ punch -y, --yesterday
     Add blocks to yesterday.

@@ -2,8 +2,13 @@ class MonthYear
   attr_reader :month, :year, :date
 
   def initialize(args)
-    @month = args.fetch(:month)
-    @year = args.fetch(:year)
+    @month = args.fetch(:month).to_i
+    @year = args.fetch(:year).to_i
+
+    if @year < 99
+      @year += 2000
+    end
+
     @date = Date.new(@year, @month)
   end
 

@@ -73,6 +73,7 @@ class PunchClock
     --log
     --mail
     --merge
+    --month
     --next
     --options
     --previous
@@ -88,6 +89,7 @@ class PunchClock
     --update
     --version
     --whoami
+    --year
     --yesterday
   )
 
@@ -271,10 +273,6 @@ class PunchClock
       print_full_month!
     end
 
-    # month_number = now.month
-    # month_number = (month_number + 1) % 12 if now.day > hand_in_date
-    # month_number = 12 if month_number.zero?
-
     month_year = MonthYear.new(:month => now.month, :year => now.year)
     month_year = month_year.next if now.day > hand_in_date
 
@@ -282,13 +280,16 @@ class PunchClock
       month_year = month_year.next
     end
 
-    # @year = (month_number < now.month) ? now.year + 1 : now.year
-
     switch "-p", "--previous" do
       month_year = month_year.prev
-      # month_number = (month_number - 1) % 12
-      # month_number = 12 if month_number.zero?
-      # @year = (month_number > now.month) ? now.year - 1 : now.year
+    end
+
+    flag "--month" do |month|
+      month_year = MonthYear.new(:month => month, :year => month_year.year)
+    end
+
+    flag "--year" do |year|
+      month_year = MonthYear.new(:month => month_year.month, :year => year)
     end
 
     @month_name = Month.name month_year.month

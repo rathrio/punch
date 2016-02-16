@@ -82,21 +82,22 @@ class Stats
     max
   end
 
-  def monthly_goal
-    goal       = config.monthly_goal * 3600
-    actual     = month.total
-    remaining  = Totals.format(goal - actual)
-    percentage = (100.0 / goal * actual).round 2
-    "#{percentage} % | #{Totals.format actual}/#{config.monthly_goal} | "\
+  def progress
+    remaining  = Totals.format(monthly_goal - reached)
+    percentage = (100.0 / monthly_goal * reached).round 2
+    "#{percentage} % | #{Totals.format reached}/#{config.monthly_goal} | "\
       "Diff: #{remaining}"
+  end
+
+  def work_days_left
+
   end
 
   def to_s
     <<-EOS
-#{label "Total hours"}#{month.total_str}
-#{label "Hourly pay"}#{"CHF #{hourly_pay}"}
+#{label "Progress"}#{progress}
 #{label "Money made"}#{total_money_made}
-#{label "Progress"}#{monthly_goal}
+#{label "Work days left"}#{work_days_left}
 #{label "Avg hours per day"}#{average_hours_per_day}
 #{label "Avg hours per block"}#{average_hours_per_block}
 #{label "Longest day"}#{longest_day}
@@ -111,6 +112,14 @@ class Stats
   end
 
   private
+
+  def monthly_goal
+    @monthly_goal ||= config.monthly_goal * 3600
+  end
+
+  def reached
+    @reached ||= month.total
+  end
 
   def hourly_pay
     @hourly_pay ||= config.hourly_pay
@@ -138,5 +147,9 @@ class Stats
 
   def eight_am(day)
     Time.new(day.year, day.month, day.day, 8)
+  end
+
+  def now
+    @now ||= Time.now
   end
 end

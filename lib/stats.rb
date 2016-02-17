@@ -96,8 +96,8 @@ class Stats
   def to_s
     <<-EOS
 #{label "Progress"}#{progress}
-#{label "Money made"}#{total_money_made}
 #{label "Work days left"}#{work_days_left}
+#{label "Money made"}#{total_money_made}
 #{label "Avg hours per day"}#{average_hours_per_day}
 #{label "Avg hours per block"}#{average_hours_per_block}
 #{label "Longest day"}#{longest_day}

@@ -142,6 +142,11 @@ class Punch
     "How many hours you want to work per month.",
     68
 
+  # @return [Array]
+  option :workdays,
+    "Which days you work on. Used for stats.",
+    [:monday, :tuesday, :wednesday, :thursday, :friday]
+
   # @return [Boolean]
   option :colors_enabled,
     "Whether to color certain output.",

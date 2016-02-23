@@ -59,7 +59,11 @@ class Day
   end
 
   def workday?
-    !(to_time.saturday? || to_time.sunday?)
+    if Punch.config.workdays.empty?
+      return !(to_time.saturday? || to_time.sunday?)
+    end
+
+    Punch.config.workdays.any? { |day| to_time.send("#{day}?") }
   end
 
   def to_time

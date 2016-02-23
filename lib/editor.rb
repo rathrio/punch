@@ -1,10 +1,8 @@
-require 'month_filler'
-
 class Editor
   attr_accessor :month, :days_picked
 
   def initialize(month)
-    @month = MonthFiller.new(month).fill!
+    @month = month.full_month
   end
 
   def run

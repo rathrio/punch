@@ -113,8 +113,15 @@ class Month
   end
 
   def full
-    MonthFiller.new(self).fill!
-    to_s :fancy => true, :prepend_name => true
+    full_month.to_s :fancy => true, :prepend_name => true
+  end
+
+  def full_month
+    @full_month ||= FullMonth.new(self).full_month
+  end
+
+  def workdays
+    full_month.days.select(&:workday?)
   end
 
   def children

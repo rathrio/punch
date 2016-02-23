@@ -206,7 +206,7 @@ $ punch -y, --yesterday
 
     $ punch -y 12-13
 
-==DEV COMMANDS=================================================================
+= DEV COMMANDS ================================================================
 
 To run these, install the dev dependencies specified in Gemfile with
 $ bundle

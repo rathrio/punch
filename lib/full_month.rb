@@ -1,15 +1,14 @@
-class MonthFiller
+# Fills month up with the missing days from one day after the last hand in
+# date to the next hand in date. Used for interactive mode for instance.
+class FullMonth
   attr_accessor :month
 
   def initialize(month)
-    @month = month
+    @month = Marshal.load Marshal.dump(month)
   end
 
-  # Fills month up with the missing days from one day after the last hand in
-  # date to the next hand in date. Used for interactive mode for instance.
-  #
   # @return [Month] the complete month.
-  def fill!
+  def full_month
     current_month_year = month.month_year
     prev_month_year = current_month_year.prev
 

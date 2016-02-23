@@ -83,20 +83,28 @@ class Stats
   end
 
   def progress
-    remaining  = Totals.format(monthly_goal - reached)
-    percentage = (100.0 / monthly_goal * reached).round 2
+    diff = Totals.format(remaining)
     "#{percentage} % | #{Totals.format reached}/#{config.monthly_goal} | "\
-      "Diff: #{remaining}"
+      "Diff: #{diff}"
   end
 
-  def work_days_left
+  def workdays_left
+    @worddays_left = workdays.count { |d| d > now }
+  end
 
+  def average_hours_per_workday_remaining
+    if workdays_left.zero?
+      Totals.format remaining
+    else
+      Totals.format(remaining / workdays_left)
+    end
   end
 
   def to_s
     <<-EOS
 #{label "Progress"}#{progress}
-#{label "Work days left"}#{work_days_left}
+#{label "Workdays left"}#{workdays_left}
+#{label "Hours per workday remaining"}#{average_hours_per_workday_remaining}
 #{label "Money made"}#{total_money_made}
 #{label "Avg hours per day"}#{average_hours_per_day}
 #{label "Avg hours per block"}#{average_hours_per_block}
@@ -113,12 +121,24 @@ class Stats
 
   private
 
+  def percentage
+    (100.0 / monthly_goal * reached).round 2
+  end
+
+  def workdays
+    @workdays ||= month.workdays
+  end
+
   def monthly_goal
     @monthly_goal ||= config.monthly_goal * 3600
   end
 
   def reached
     @reached ||= month.total
+  end
+
+  def remaining
+    @remaining ||= monthly_goal - reached
   end
 
   def hourly_pay
@@ -142,7 +162,7 @@ class Stats
   end
 
   def label(str)
-    "#{str}:".ljust(23).highlighted
+    "#{str}:".ljust(29).highlighted
   end
 
   def eight_am(day)

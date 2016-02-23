@@ -58,8 +58,12 @@ class Day
     to_time.monday?
   end
 
+  def workday?
+    !(to_time.saturday? || to_time.sunday?)
+  end
+
   def to_time
-    Time.new year, month, day
+    @time ||= Time.new year, month, day
   end
 
   def short_name

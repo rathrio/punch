@@ -37,7 +37,7 @@ class Stats
   end
 
   def total_money_made
-    "CHF #{money_made month.total}"
+    "CHF #{money_made}"
   end
 
   # Number of blocks where #start and #finish are on different days.
@@ -119,8 +119,6 @@ class Stats
     EOS
   end
 
-  private
-
   def percentage
     (100.0 / monthly_goal * reached).round 2
   end
@@ -157,8 +155,8 @@ class Stats
     @blocks ||= month.blocks
   end
 
-  def money_made(seconds)
-    (hourly_pay / 3600.0 * seconds).round 2
+  def money_made
+    (hourly_pay / 3600.0 * reached).round 2
   end
 
   def label(str)

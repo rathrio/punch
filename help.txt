@@ -128,8 +128,11 @@ $ punch -d, --day dd.mm.yy
 $ punch --dry-run
     Run commands without writing to file.
 
-$ punch -e, --edit
-    Edit current BRF file with your default text editor.
+$ punch -e, --edit [editor]
+    Edit current BRF file with your default text editor. Optionally pass the
+    name of the application to open the file with.
+
+    $ punch -e "TextEdit"
 
 $ punch -f, --format
     Reformat current BRF file. This will normalize whitespace and recalculate

@@ -323,8 +323,8 @@ class PunchClock
       exit
     end
 
-    switch "-e", "--edit" do
-      edit_brf
+    flag "-e", "--edit" do |application|
+      edit_brf application
     end
 
     switch "--raw" do
@@ -453,8 +453,10 @@ class PunchClock
     Punch.config
   end
 
-  def edit_brf
-    open brf_filepath
+  # @param application [String] which application to open file with,
+  #   e.g. "TextEdit"
+  def edit_brf(application = nil)
+    open brf_filepath, application
     exit
   end
 
@@ -492,8 +494,12 @@ class PunchClock
     open config.config_file
   end
 
-  def open(file)
-    system "#{config.text_editor} #{file}"
+  def open(file, application = nil)
+    if application.nil?
+      system "#{config.text_editor} #{file}"
+    else
+      system %{open -a "#{application}" #{file}}
+    end
   end
 
   def log(n = nil)

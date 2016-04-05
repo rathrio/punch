@@ -135,8 +135,8 @@ $ punch -e, --edit [editor]
     $ punch -e "TextEdit"
 
 $ punch -f, --format
-    Reformat current BRF file. This will normalize whitespace and recalculate
-    totals.
+    Reformat current BRF file. This will normalize whitespace, recalculate
+    totals and remove ongoing blocks.
 
 $ punch --full
     Print all days instead of the ones with blocks only.

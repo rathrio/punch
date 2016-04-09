@@ -51,8 +51,7 @@ class Punch
     # @option args [Boolean] :hidden (false) whether to hide this option
     #   .punchrc.
     # @option args [Boolean] :path (false) whether to treat the values as file
-    #   paths. Punch will for instance substitute '~' with ENV['home'] for
-    #   instance.
+    #   paths. Punch will for instance substitute '~' with ENV['home'].
     #
     # @example Generating a boolean option with default value `false`
     #

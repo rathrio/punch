@@ -82,10 +82,10 @@ class BRFParser
     # Create days.
     month.days = lines.map do |l|
       # Get rid of totals.
-      l.sub! TOTAL_RGX, ''
+      l = l.sub TOTAL_RGX, ''
 
       # Get rid of tags and remember the string.
-      l.sub! TAGS_RGX, ''
+      l = l.sub TAGS_RGX, ''
       tags_str = $1
 
       # Parse date.

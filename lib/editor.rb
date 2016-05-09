@@ -42,7 +42,7 @@ class Editor
   end
 
   def title
-    "Interactive Punch - Edit #{month.name}\n"
+    "#{month.name}\n"
   end
 
   def prompt

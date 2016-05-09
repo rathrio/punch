@@ -51,7 +51,7 @@ module Kernel
 
   def yes?(prompt)
     puts "#{prompt} (y|n)"
-    STDIN.gets.chomp == 'y'
+    Punch.config.in.gets.chomp == 'y'
   end
 
   def no?(prompt)

@@ -30,6 +30,12 @@ module TestOut
   end
 end
 
+module TestIn
+  def self.gets(input = '')
+    input
+  end
+end
+
 # Stub config file
 class Punch
   def self.config_file

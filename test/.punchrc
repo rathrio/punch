@@ -5,6 +5,7 @@ Punch.configure do |config|
     :test => {
       :hours_folder => TEST_HOURS_FOLDER,
       :out => TestOut,
+      :in => TestIn,
       :debug => true,
       :clear_buffer_before_punch => false
     }

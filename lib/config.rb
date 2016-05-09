@@ -227,6 +227,11 @@ class Punch
     STDOUT,
     :hidden => true
 
+  option :in,
+    "Where to get user input from.",
+    STDIN,
+    :hidden => true
+
   def config_file
     self.class.config_file
   end

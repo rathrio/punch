@@ -66,11 +66,18 @@ class Month
     days.sort!
     b_count = max_block_count
     day_options = options.merge :padding => b_count
-    "#{name}#{newline * 2}#{
-      days.map do |d|
-        d.to_s(day_options)
-      end.join(newline)
-    }#{newline * 2}Total: #{total_str}#{newline}"
+    days_str = days.map do |d|
+      day_str = d.to_s(day_options)
+
+      if (days.first != d) && options[:group_weeks] && d.monday?
+        day_str.prepend("\n")
+      end
+
+      day_str
+    end.join(newline)
+
+    "#{name}#{newline * 2}#{days_str}#{newline * 2}" \
+      "Total: #{total_str}#{newline}"
   end
 
   def find_or_create_day_by_date(date)
@@ -113,7 +120,11 @@ class Month
   end
 
   def full
-    full_month.to_s :fancy => true, :prepend_name => true
+    full_month.to_s(
+      :fancy => true,
+      :prepend_name => true,
+      :group_weeks => Punch.config.group_weeks_in_interactive_mode
+    )
   end
 
   def full_month

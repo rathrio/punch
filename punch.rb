@@ -301,22 +301,6 @@ class PunchClock
 
     @brf_filepath = generate_brf_filepath month_name, month_year.year
 
-    unless File.exist? brf_filepath
-      # Create hours folder if necessary.
-      unless File.directory? hours_folder
-        if yes?("The directory #{hours_folder.highlighted} does not exist. "\
-          "Create it?")
-          FileUtils.mkdir_p(hours_folder)
-        else
-          exit
-        end
-      end
-      # Create empty BRF file for this month.
-      File.open(brf_filepath, "w") do |f|
-        f.write "#{month_name.capitalize} #{month_year.year}"
-      end
-    end
-
     switch "-b", "--backup" do
       path = @args.shift
       system "cp #{brf_filepath} #{path}"
@@ -476,7 +460,25 @@ class PunchClock
   end
 
   def generate_brf_filepath(month_name, year)
-    "#{hours_folder}/#{month_name}_#{year}.txt"
+    filepath = "#{hours_folder}/#{month_name}_#{year}.txt"
+    return filepath if File.exist? filepath
+
+    # Create hours folder if necessary
+    unless File.directory? hours_folder
+      if yes?("The directory #{hours_folder.highlighted} does not exist. "\
+          "Create it?")
+        FileUtils.mkdir_p(hours_folder)
+      else
+        exit
+      end
+    end
+
+    # Create empty BRF file for this month.
+    File.open(filepath, "w") do |f|
+      f.write "#{month_name.capitalize} #{year}"
+    end
+
+    filepath
   end
 
   def open_or_generate_config_file

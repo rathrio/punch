@@ -27,23 +27,35 @@ useless otherwise.
 Recommended Installation
 ------------------------
 
-Clone this repo and create an alias that executes `punch.rb`.
+Clone this repo and run `rake install` to create a symlink to `/usr/local/bin`.
 
 ```bash
+# Clone the repo.
 git clone git@github.com:rathrio/punch.git ~/wherever/you/like/punch
-alias punch=`ruby ~/wherever/you/like/punch/punch.rb`
+
+# Change into punch directory.
+cd ~/wherever/you/like/punch
+
+# Create the symlink.
+rake install
 ```
 
-As an alternative to the alias you can link punch.rb to a folder in your path, e.g.
+You should now be able to run `punch` from anywhere.
+
+Alternatively, instead of running `rake install`, you could manually create a
+symlink or an alias that runs the executable `punch.rb` in the repo's root
+folder.
 
 ```bash
-cd ~/wherever/you/like/punch/
-ln -sr punch.rb ~/.bin/punch
+# Example alias.
+alias punch=`./wherever/you/like/punch/punch.rb`
 ```
 
 Bash tab completion can be enabled by sourcing `punch-completion.bash`. Zsh
 completion is currently provided
 [here](https://github.com/rathrio/punch-zsh-completion).
+
+To remove any links to punch in `/usr/local/bin` run `rake uninstall`.
 
 Help and Documentation
 ----------------------
@@ -205,7 +217,7 @@ Krusty Krab - Mai 2015 - Spongebob Squarepants
 Total: 06:00
 ```
 
-### Interactive Editor
+### Experimental Interactive Editor
 
 The `--interactive` (`-i`) mode comes in very handy when `--day` and
 `--yesterday` just won't do. It provides a simple interface to select one or
@@ -229,3 +241,18 @@ without saving with `q`.
 
 Once you have exited the session with `x`, Punch will print the edited month
 with the days updated highlighted in pink by default.
+
+Configuration
+-------------
+
+A lot of behaviour can be configured in `~/.punchrc`. If `~/.punchrc` does not
+exist yet, run `punch --config` to generate one. You can now use `punch
+--config` to edit that file.
+
+Updating
+--------
+
+Run `punch --update` to fetch the latest changes from master.
+
+Run `punch --config-update` to update `.punchrc` from time to time, so that it
+always knows about all available options.

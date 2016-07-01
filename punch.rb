@@ -69,6 +69,7 @@ class PunchClock
     --github
     --hack
     --help
+    --hours
     --interactive
     --log
     --mail
@@ -171,8 +172,8 @@ class PunchClock
       exit
     end
 
-    switch '--brf' do
-      system "open #{hours_folder}"
+    switch '--hours', '--brf' do
+      system "#{config.text_editor} #{hours_folder}"
       exit
     end
 

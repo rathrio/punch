@@ -146,6 +146,11 @@ class Punch
     "Which days you work on. Used for stats.",
     [:monday, :tuesday, :wednesday, :thursday, :friday]
 
+  # @return [Symbol]
+  option :totals_format,
+    "How to render totals. Currently avaible are :digital and :decimal.",
+    :digital
+
   # @return [Boolean]
   option :colors_enabled,
     "Whether to color certain output.",
@@ -184,7 +189,7 @@ class Punch
   # @return [Boolean]
   option :clear_buffer_before_punch,
     "Clear terminal buffer before printing month.",
-    true
+    false
 
   # @return [Boolean]
   option :debug,
@@ -201,14 +206,14 @@ class Punch
   option :mailer_config,
     "BRFMailer configurations.",
     {
-      :smtp_domain => "aarboard.ch",
-      :smtp_server => "smtp.aarboard.ch",
+      :smtp_domain => "example.com",
+      :smtp_server => "smtp.example.com",
       :smtp_port   => 465,
-      :smtp_user   => "",
-      :smtp_pw     => "",
-      :receiver    => "",
+      :smtp_user   => "spongebob@example.com",
+      :smtp_pw     => "gary4ever",
+      :receiver    => "mr_krabs@example.com",
       :bcc         => "",
-      :body        => ""
+      :body        => "Hi Mr Krabs, you'll find my hours attached. Cheers S."
     }
 
   # @return [Hash]
@@ -259,6 +264,8 @@ class Punch
       "  # #{o.description}\n  config.#{o.name} = #{literal(send(o.name))}"
     end.join("\n\n")
 
+    "# vi: ft=ruby\n"\
+    "#\n"\
     "# Punch settings file. Use valid Ruby syntax or you shall be punished!\n"\
     "#\n"\
     "# To reset all settings run\n"\

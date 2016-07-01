@@ -51,7 +51,7 @@ class Day
   end
 
   def date
-    "#{pad day}.#{pad month}.#{short_year}"
+    "#{day.left_pad}.#{month.left_pad}.#{short_year}"
   end
 
   def monday?

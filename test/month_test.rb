@@ -2,7 +2,7 @@ require_relative 'config'
 
 class MonthTest < MiniTest::Test
   def setup
-    @month = BRFParser.new.parse(<<-EOS)
+    @month = Month.from(<<-EOS, 1, 2014)
       Januar 2014
 
       28.11.14   18:00-19:00   Total: 01:00

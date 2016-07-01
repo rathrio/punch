@@ -34,9 +34,8 @@
 #   Total: HH:MM
 #
 class BRFParser
-
   # Regexp used to extract totals.
-  TOTAL_RGX = /Total:[\s:0-9]+/
+  TOTAL_RGX = /Total:[\s:0-9\.]+/
 
   # Regexp used to extract tags. They're basically comma serarated identifiers.
   TAGS_RGX = /([A-Za-z]+[\s\w,]+)/
@@ -98,10 +97,10 @@ class BRFParser
       day.blocks = day_ary.map { |block_str| Block.from block_str, day }
       day
     end
+
     month
 
   rescue StandardError => e
     raise ParserError, "Couldn't parse string: #{e.message}"
   end
-
 end

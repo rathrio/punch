@@ -91,7 +91,7 @@ $ punch -b, --backup path/to/backup/dir
 
     $ punch -b ~/Desktop
 
-$ punch --brf
+$ punch --hours, --brf
     Open hours folder.
 
 $ punch --card-config

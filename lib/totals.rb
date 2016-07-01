@@ -1,4 +1,37 @@
 module Totals
+  module Formatter
+    attr_reader :seconds
+
+    def initialize(seconds)
+      @seconds = seconds.to_i
+    end
+  end
+
+  class DigitalFormatter
+    include Formatter
+
+    def format
+      hours   = seconds / 3600
+      rest    = seconds - (hours * 3600)
+      minutes = rest / 60
+
+      "#{hours.left_pad}:#{minutes.left_pad}"
+    end
+  end
+
+  class DecimalFormatter
+    include Formatter
+
+    def format
+      (seconds / 3600.0).round(1).left_pad(:with => ' ', :length => 4)
+    end
+  end
+
+  FORMATTERS = {
+    :digital => DigitalFormatter,
+    :decimal => DecimalFormatter
+  }.freeze
+
   def total
     children.inject(0) { |sum, c| sum += c.total }
   end
@@ -9,15 +42,12 @@ module Totals
 
   module_function
 
-  def pad(number)
-    number.to_i.to_s.rjust 2, '0'
-  end
-
   def format(seconds)
-    seconds = seconds.to_i
-    hours   = seconds / 3600
-    rest    = seconds - (hours * 3600)
-    minutes = rest / 60
-    "#{pad hours}:#{pad minutes}"
+    totals_format = Punch.config.totals_format
+    formatter_class = FORMATTERS.fetch(totals_format) do
+      raise "Unknown totals format #{totals_format}"
+    end
+
+    formatter_class.new(seconds).format
   end
 end

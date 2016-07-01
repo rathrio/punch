@@ -30,7 +30,7 @@ module Totals
   FORMATTERS = {
     :digital => DigitalFormatter,
     :decimal => DecimalFormatter
-  }
+  }.freeze
 
   def total
     children.inject(0) { |sum, c| sum += c.total }

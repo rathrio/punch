@@ -16,7 +16,7 @@ class BRFParserTest < MiniTest::Test
     assert_equal 'Januar 2014', @month.name
   end
 
-  def test_parses_days_and_blocks(*args)
+  def test_parses_days_and_blocks
     day1, day2 = @month.days
 
     assert_equal "18:00-19:00", day1.blocks.first.to_s

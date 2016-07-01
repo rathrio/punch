@@ -245,9 +245,8 @@ with the days updated highlighted in pink by default.
 Configuration
 -------------
 
-A lot of behaviour can be configured in `~/.punchrc`. If `~/.punchrc` does not
-exist yet, run `punch --config` to generate one. You can now use `punch
---config` to edit that file.
+A lot of behaviour can be configured in `~/.punchrc`. Run `punch --config` to
+edit that file.
 
 Updating
 --------

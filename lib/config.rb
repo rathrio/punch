@@ -148,7 +148,7 @@ class Punch
 
   # @return [Symbol]
   option :totals_format,
-    "How to render totals. Currently avaible are :digital and :decimal.",
+    "How to render totals (:digital or :decimal).",
     :digital
 
   # @return [Boolean]
@@ -173,7 +173,7 @@ class Punch
 
   # @return [Symbol]
   option :punch_now_rounder,
-    "Rounding strategy applied when substituting \"now\"",
+    "Rounding strategy applied when substituting \"now\" (:fair or :exact).",
     :fair
 
   # @return [Fixnum]

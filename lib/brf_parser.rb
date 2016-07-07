@@ -37,8 +37,8 @@ class BRFParser
   # Regexp used to extract totals.
   TOTAL_RGX = /Total:[\s:0-9\.]+/
 
-  # Regexp used to extract tags. They're basically comma serarated identifiers.
-  TAGS_RGX = /([A-Za-z]+[\s\w,]+)/
+  # Regexp used to extract tags.
+  TAGS_RGX = /([A-Za-z]+.*)/
 
   # Error raised when things go awry while parsing.
   ParserError = Class.new(StandardError)

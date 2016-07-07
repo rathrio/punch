@@ -41,4 +41,10 @@ class TagsTest < PunchTest
     punch '--clear-tags'
     refute_punched 'KRANK'
   end
+
+  def test_invalid_tags_with_periods_dont_break_parser
+    punch '8-9 --tag foo.bar.'
+    punch
+    assert_equal [:"foo.bar."], current_month.days.first.tags
+  end
 end

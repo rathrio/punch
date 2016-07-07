@@ -42,4 +42,17 @@ class BRFParserTest < MiniTest::Test
     assert_equal "08:00-13:00", day2.blocks.first.to_s
     assert_equal 21_600, @month.total
   end
+
+  def test_parse_tags_with_spaces_and_periods
+    @month = BRFParser.new.parse(<<-EOS)
+      Januar 2014
+
+      30.12.14   08:00-13:00   Total:  5.0   SUPPORT FOO, BAR.CHABIS
+
+      Total:  6.0
+    EOS
+
+    day = @month.days.first
+    assert_equal [:"support foo", :"bar.chabis"], day.tags
+  end
 end

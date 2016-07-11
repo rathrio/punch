@@ -129,8 +129,8 @@ $ punch --dry-run
     Run commands without writing to file.
 
 $ punch -e, --edit [editor]
-    Edit current BRF file with your default text editor. Optionally pass the
-    name of the application to open the file with.
+    Edit current BRF file with your default text editor. If you're on OSX, you
+    may optionally pass the name of the application to open the file with.
 
     $ punch -e "TextEdit"
 

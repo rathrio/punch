@@ -3,6 +3,7 @@
 PUNCH_FILE = File.realpath(__FILE__)
 $LOAD_PATH.unshift File.expand_path('../lib', PUNCH_FILE)
 
+require 'os'
 require 'core_extensions'
 require 'option_parsing'
 require 'month_year'

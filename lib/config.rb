@@ -91,6 +91,10 @@ class Punch
       define_method "#{opt}?" do
         send(opt)
       end
+
+      define_method "_default_#{opt}" do
+        default_value
+      end
     end
 
     def configure
@@ -129,7 +133,7 @@ class Punch
   # @return [String]
   option :text_editor,
     "Which terminal application to use to edit files.",
-    "open"
+    OS.open_cmd
 
   # @return [Fixnum]
   option :hand_in_date,

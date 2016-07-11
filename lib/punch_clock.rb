@@ -161,7 +161,7 @@ class PunchClock
     end
 
     switch "--doc" do
-      system "cd #{punch_folder} && yard && open doc/index.html"
+      system "cd #{punch_folder} && yard && #{OS.open_cmd} doc/index.html"
       exit
     end
 
@@ -206,17 +206,17 @@ class PunchClock
     end
 
     switch "--travis" do
-      system "open https://travis-ci.org/rathrio/punch"
+      OS.open "https://travis-ci.org/rathrio/punch"
       exit
     end
 
     switch "--trello" do
-      system "open https://trello.com/b/xfN8alsq/punch"
+      OS.open "https://trello.com/b/xfN8alsq/punch"
       exit
     end
 
     switch "--github" do
-      system "open https://github.com/rathrio/punch"
+      OS.open "https://github.com/rathrio/punch"
       exit
     end
 
@@ -474,7 +474,7 @@ class PunchClock
     if application.nil?
       system "#{config.text_editor} #{file}"
     else
-      system %{open -a "#{application}" #{file}}
+      system %{#{OS.open_cmd} -a "#{application}" #{file}}
     end
   end
 
@@ -505,7 +505,7 @@ class PunchClock
     system "cd #{punch_folder} && "\
       "yard graph --protected --full --dependencies | "\
       "dot -T pdf -o diagram.pdf && "\
-      "open diagram.pdf"
+      "#{OS.open_cmd} diagram.pdf"
   end
 
   def update_punch
@@ -525,6 +525,6 @@ class PunchClock
   def generate_and_open_coverage
     system "cd #{punch_folder} && "\
       "PUNCH_COVERAGE=true #{config.system_ruby} #{test_file} && "\
-      "open coverage/index.html"
+      "#{OS.open_cmd} coverage/index.html"
   end
 end

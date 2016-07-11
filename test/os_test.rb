@@ -1,0 +1,58 @@
+require_relative 'config'
+
+class OSTest < MiniTest::Test
+  def test_windows_when_ruby_platform_windows
+    %w(cygwin mswin mingw bccwin wince emx).each do |s|
+      OS.stub :ruby_platform, s do
+        assert OS.windows?
+        refute OS.mac?
+        refute OS.linux?
+      end
+    end
+  end
+
+  def test_mac_when_ruby_platform_darwin
+    OS.stub :ruby_platform, 'x86_64-darwin15foobar' do
+      assert OS.mac?
+      refute OS.linux?
+      refute OS.windows?
+    end
+  end
+
+  def test_unix_when_not_windows
+    %w(foobar x86_64-linux x86_64-darwin).each do |s|
+      OS.stub :ruby_platform, s do
+        assert OS.unix?
+        refute OS.windows?
+      end
+    end
+  end
+
+  def test_linux_when_not_windows_and_not_mac
+    %w(foobar x86_64-linux blabla).each do |s|
+      OS.stub :ruby_platform, s do
+        assert OS.linux?
+        refute OS.mac?
+        refute OS.windows?
+      end
+    end
+  end
+
+  def test_open_cmd_returns_open_on_mac
+    OS.stub :ruby_platform, 'x86_64-darwin' do
+      assert_equal 'open', OS.open_cmd
+    end
+  end
+
+  def test_open_cmd_returns_xdg_open_on_linux
+    OS.stub :ruby_platform, 'x86_64-linux' do
+      assert_equal 'xdg-open', OS.open_cmd
+    end
+  end
+
+  def test_open_cmd_fallbacks_to_vi_for_unsupporter_os
+    OS.stub :ruby_platform, 'mswin' do
+      assert_equal 'vi', OS.open_cmd
+    end
+  end
+end

@@ -51,9 +51,13 @@ folder.
 alias punch=`./wherever/you/like/punch/punch.rb`
 ```
 
+### Tab completion
+
 Bash tab completion can be enabled by sourcing `punch-completion.bash`. Zsh
 completion is currently provided
 [here](https://github.com/rathrio/punch-zsh-completion).
+
+### Uninstallation
 
 To remove any links to punch in `/usr/local/bin` run `rake uninstall`.
 

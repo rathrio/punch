@@ -243,7 +243,7 @@ class PunchClock
       exit
     end
 
-    switch "--full" do
+    switch "--ful", "--full" do
       print_full_month!
     end
 

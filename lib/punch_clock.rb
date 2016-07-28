@@ -1,7 +1,7 @@
 class PunchClock
   include OptionParsing
 
-  VERSION_NAME = "The Baddest Man on the Planet"
+  VERSION_NAME = "The Baddest Man on the Planet".freeze
 
   MIDNIGHT_MADNESS_NOTES = [
     "Get some sleep!",
@@ -14,7 +14,7 @@ class PunchClock
     "You need to get your priorities straight.",
     "Work-life balance. Ever heard of it?",
     "Did you know that the average adult needs 7-8 hours of sleep?"
-  ]
+  ].freeze
 
   # Card names are a restricted form of identifiers.
   CARD_RGX = /^(?!now)([a-z_][a-zA-Z0-9_]*)$/
@@ -65,7 +65,7 @@ class PunchClock
     --whoami
     --year
     --yesterday
-  )
+  ).freeze
 
   attr_reader :month, :month_name, :year, :brf_filepath
 
@@ -458,10 +458,8 @@ class PunchClock
   def open_or_generate_config_file
     if File.exist? config.config_file
       open config.config_file
-    else
-      if yes? "The ~/.punchrc file does not exist. Generate it?"
-        generate_and_open_config_file
-      end
+    elsif yes? "The ~/.punchrc file does not exist. Generate it?"
+      generate_and_open_config_file
     end
   end
 
@@ -487,18 +485,16 @@ class PunchClock
   end
 
   def generate_and_open_help_file
-    begin
-      f = Tempfile.new 'help'
-      f.write(
-        File.readlines(help_file).map do |l|
-          l.start_with?('$') ? l.highlighted : l
-        end.join
-      )
-      f.rewind
-      system "less -R #{f.path}"
-    ensure
-      f.close
-    end
+    f = Tempfile.new 'help'
+    f.write(
+      File.readlines(help_file).map do |l|
+        l.start_with?('$') ? l.highlighted : l
+      end.join
+    )
+    f.rewind
+    system "less -R #{f.path}"
+  ensure
+    f.close
   end
 
   def generate_and_open_dependency_diagram

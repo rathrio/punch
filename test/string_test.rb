@@ -6,7 +6,8 @@ class StringTest < MiniTest::Test
       assert_equal 'foobar', 'foobar'.absolute_path
       assert_equal '/Users/spongebob/foo/bar/punch',
         '/Users/spongebob/foo/bar/punch'.absolute_path
-      assert_equal '/Users/spongebob/foo/bar/punch', '~/foo/bar/punch'.absolute_path
+      assert_equal '/Users/spongebob/foo/bar/punch',
+        '~/foo/bar/punch'.absolute_path
     end
   end
 end

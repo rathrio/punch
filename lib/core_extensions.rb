@@ -86,6 +86,12 @@ class Time
   end
 
   # Act like a Block.
-  def start; self; end
-  def finish; self; end
+  def start
+    self
+  end
+
+  # Act like a Block.
+  def finish
+    self
+  end
 end

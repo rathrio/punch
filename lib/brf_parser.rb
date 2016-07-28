@@ -34,11 +34,8 @@
 #   Total: HH:MM
 #
 class BRFParser
-  # Regexp used to extract totals.
-  TOTAL_RGX = /Total:[\s:0-9\.]+/
-
-  # Regexp used to extract tags.
-  TAGS_RGX = /([A-Za-z]+.*)/
+  # Regexp used to extract meta info.
+  META_RGX = /Total:\s+\S+\s?(.*)/
 
   # Error raised when things go awry while parsing.
   ParserError = Class.new(StandardError)
@@ -76,15 +73,12 @@ class BRFParser
     month = Month.new lines.shift
 
     # Get rid of total at the end, because it gets recalculated anyways.
-    lines.pop if lines.last =~ TOTAL_RGX
+    lines.pop if lines.last =~ /Total:/
 
     # Create days.
     month.days = lines.map do |l|
-      # Get rid of totals.
-      l = l.sub TOTAL_RGX, ''
-
-      # Get rid of tags and remember the string.
-      l = l.sub TAGS_RGX, ''
+      # Get rid of total and comments.
+      l = l.sub META_RGX, ''
       tags_str = $1
 
       # Parse date.

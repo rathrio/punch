@@ -94,8 +94,9 @@ class Day
       end
     end
 
-    str = "#{date}   #{blocks_str}   "
-    str << "Total: #{total_str}" if blocks.any?
+    str = "#{date}   #{blocks_str}"
+    str << '   ' if blocks.any?
+    str << "Total: #{total_str}"
     str << "   #{tags_str}" if tags.any?
 
     if options.fetch :prepend_name, false

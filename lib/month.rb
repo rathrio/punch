@@ -1,7 +1,7 @@
 class Month
   include Totals
 
-  NEWLINE = "\r\n"
+  NEWLINE = "\r\n".freeze
 
   NAMES = {
     1  => 'januar',
@@ -16,7 +16,7 @@ class Month
     10 => 'oktober',
     11 => 'november',
     12 => 'dezember',
-  }
+  }.freeze
 
   attr_accessor :name, :days, :number, :year
 

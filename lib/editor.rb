@@ -79,10 +79,10 @@ class Editor
       if config.group_weeks_in_interactive_mode? && d.monday? && !i.zero?
         str.prepend("\n")
       end
-      if days_picked.include?(index)
-        buffer << "\n#{str.highlighted}"
+      buffer << if days_picked.include?(index)
+        "\n#{str.highlighted}"
       else
-        buffer << "\n#{str}"
+        "\n#{str}"
       end
     end
 

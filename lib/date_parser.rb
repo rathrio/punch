@@ -26,10 +26,10 @@ class DateParser
 
     when /^\d{1,2}\.\d{1,2}$/
       d, m = date.split('.').map(&:to_i)
-      if d > hand_in_date
-        y = month.prev_month_year.year
+      y = if d > hand_in_date
+        month.prev_month_year.year
       else
-        y = month.year
+        month.year
       end
 
 

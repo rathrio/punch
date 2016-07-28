@@ -33,7 +33,7 @@ module Totals
   }.freeze
 
   def total
-    children.inject(0) { |sum, c| sum += c.total }
+    children.inject(0) { |sum, c| sum + c.total }
   end
 
   def total_str

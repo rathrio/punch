@@ -6,7 +6,7 @@ class BRFParserTest < MiniTest::Test
       Januar 2014
 
       28.11.14   18:00-19:00   Total: 01:00
-      30.12.14   08:00-13:00   Total: 05:00   SUPPORT
+      30.12.14   08:00-13:00   Total: 05:00   2ti&m rescode #5118
 
       Total: 06:00
     EOS
@@ -23,8 +23,8 @@ class BRFParserTest < MiniTest::Test
     assert_equal "08:00-13:00", day2.blocks.first.to_s
   end
 
-  def test_parses_tags
-    assert_equal [:support], @month.days.last.tags
+  def test_parses_comment
+    assert_equal '2ti&m rescode #5118', @month.days.last.comment
   end
 
   def test_doesnt_care_about_totals_format
@@ -43,16 +43,16 @@ class BRFParserTest < MiniTest::Test
     assert_equal 21_600, @month.total
   end
 
-  def test_parse_tags_with_spaces_and_periods
+  def test_parse_comment_with_spaces_and_periods
     @month = BRFParser.new.parse(<<-EOS)
       Januar 2014
 
-      30.12.14   08:00-13:00   Total:  5.0   SUPPORT FOO, BAR.CHABIS
+      30.12.14   08:00-13:00   Total:  5.0   SUPPORT FOO, BAR.CHAbis
 
       Total:  6.0
     EOS
 
     day = @month.days.first
-    assert_equal [:"support foo", :"bar.chabis"], day.tags
+    assert_equal 'SUPPORT FOO, BAR.CHAbis', day.comment
   end
 end

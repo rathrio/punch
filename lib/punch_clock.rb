@@ -25,7 +25,9 @@ class PunchClock
     --brf
     --card-config
     --cards
+    --clear-comment
     --clear-tags
+    --comment
     --config
     --config-reset
     --config-update
@@ -53,6 +55,7 @@ class PunchClock
     --previous
     --raw
     --remove
+    --reset-config
     --review
     --stats
     --tag
@@ -61,6 +64,7 @@ class PunchClock
     --trello
     --undo
     --update
+    --update-config
     --version
     --whoami
     --year
@@ -230,7 +234,7 @@ class PunchClock
       exit
     end
 
-    switch "--config-reset" do
+    switch "--reset-config", "--config-reset" do
       if yes? "Are you sure you want to reset ~/.punchrc?"
         config.reset!
         generate_and_open_config_file
@@ -238,7 +242,7 @@ class PunchClock
       exit
     end
 
-    switch "--config-update" do
+    switch "--update-config", "--config-update" do
       generate_and_open_config_file
       exit
     end
@@ -353,12 +357,12 @@ class PunchClock
           end
         end
 
-        flag "-t", "--tag" do |tag_str|
-          day.extract_tags tag_str
+        flag "-t", "--tag", "--comment" do |comment|
+          day.comment = comment
         end
 
-        switch "--clear-tags" do
-          day.clear_tags
+        switch "--clear-tags", "--clear-comment" do
+          day.comment = nil
         end
 
         # Add or remove blocks.

@@ -79,15 +79,13 @@ class BRFParser
     month.days = lines.map do |l|
       # Get rid of total and comments.
       l = l.sub META_RGX, ''
-      tags_str = $1
+      comment = $1
 
       # Parse date.
       day_ary = l.split
       day = Day.from(day_ary.shift)
 
-      # Let day take care of parsing tags.
-      day.extract_tags(tags_str) if tags_str
-
+      day.comment = comment unless comment.nil? || comment.empty?
       day.blocks = day_ary.map { |block_str| Block.from block_str, day }
       day
     end

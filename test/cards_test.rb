@@ -41,7 +41,7 @@ class CardsTest < PunchTest
 
       assert_punched 'Bikini'
       assert_punched 'Patrick Star'
-      assert_punched '27.01.15   09:00-14:00   Total: 05:00   BAD'
+      assert_punched '27.01.15   09:00-14:00   Total: 05:00   bad'
     end
   end
 end

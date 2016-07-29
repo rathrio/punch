@@ -4,7 +4,7 @@ class Day
   include Totals
 
   attr_accessor :day, :month, :blocks
-  attr_reader :short_year, :year
+  attr_reader :short_year, :year, :comment
 
   flag :highlight, :unhealthy
 
@@ -38,16 +38,8 @@ class Day
     @short_year = yyyy.to_s[-2..-1].to_i
   end
 
-  def extract_tags(tags_str)
-    @tags = tags | tags_str.split(',').map { |s| s.strip.downcase.to_sym }
-  end
-
-  def clear_tags
-    @tags = []
-  end
-
-  def tags
-    @tags ||= []
+  def comment=(new_comment)
+    @comment = new_comment.to_s.strip
   end
 
   def date
@@ -97,7 +89,7 @@ class Day
     str = "#{date}   #{blocks_str}"
     str << '   ' if blocks.any?
     str << "Total: #{total_str}"
-    str << "   #{tags_str}" if tags.any?
+    str << "   #{comment}" if comment
 
     if options.fetch :prepend_name, false
       str = str.prepend "#{short_name}   "
@@ -109,10 +101,6 @@ class Day
     end
 
     str
-  end
-
-  def tags_str
-    tags.map { |t| t.to_s.upcase }.join(', ')
   end
 
   def empty?

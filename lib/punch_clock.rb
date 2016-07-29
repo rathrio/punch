@@ -374,7 +374,9 @@ class PunchClock
         # Cleanup in case we have empty days after a remove.
         month.cleanup! if action == :remove
 
-        puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n" if day.unhealthy?
+        if day.unhealthy? && action == :add
+          puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n"
+        end
 
         write! file
       end

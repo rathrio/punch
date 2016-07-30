@@ -358,6 +358,19 @@ class PunchClock
         end
 
         flag "-t", "--tag", "--comment" do |comment|
+          if comment.nil?
+            begin
+              f = Tempfile.new 'comment'
+              f.write day.comment.to_s
+              f.rewind
+              system "#{config.text_editor} #{f.path}"
+              f.rewind
+              comment = f.read
+            ensure
+              f.close
+            end
+          end
+
           day.comment = comment
         end
 

@@ -187,6 +187,9 @@ $ punch -t, --tag, --comment [comment]
     $ punch 9-1730 --comment "support for company X"
     15.02.15   09:00-17:30   Total: 09:00   support for company X
 
+    When given no argument, you can create/edit a comment with the configured
+    text editor.
+
 $ punch -u, --update
     Update this script. (Given you installed it via git-clone)
 

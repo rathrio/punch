@@ -51,6 +51,11 @@ Style/Documentation:
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Style/DoubleNegation:
+  Enabled: false
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
 
 Metrics/ClassLength:
   Enabled: false

@@ -19,7 +19,7 @@ class PunchClock
   # Card names are a restricted form of identifiers.
   CARD_RGX = /^(?!now)([a-z_][a-zA-Z0-9_]*)$/
 
-  # For easy bash completion export.
+  # The options listed here can be tab completed.
   OPTIONS = %w(
     --backup
     --brf
@@ -320,8 +320,10 @@ class PunchClock
       end
 
       switch "--console" do
+        # rubocop:disable Debugger
         require 'pry'
         binding.pry
+        # rubocop:enable Debugger
         exit
       end
 
@@ -358,10 +360,7 @@ class PunchClock
         end
 
         flag "-t", "--tag", "--comment" do |comment|
-          if comment.nil?
-            comment = gets_tmp 'comment', day.comment
-          end
-
+          comment = gets_tmp('comment', day.comment) if comment.nil?
           day.comment = comment
         end
 

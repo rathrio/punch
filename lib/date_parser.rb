@@ -32,7 +32,6 @@ class DateParser
         month.year
       end
 
-
     when /^\d{1,2}\.\d{1,2}\.\d{2,4}$/
       d, m, y = date.split('.').map(&:to_i)
       y += 2000 if y < 100

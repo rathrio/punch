@@ -125,8 +125,7 @@ class Day
       end
 
       # Ignore new block if an existing block covers the new block's span.
-      if self.blocks.any? { |b|
-        b.start <= block.start && b.finish >= block.finish }
+      if self.blocks.any? { |b| b.start <= block.start && b.finish >= block.finish }
         next
       end
 

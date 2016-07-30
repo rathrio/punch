@@ -15,6 +15,7 @@ class Punch
     end
 
     def init_and_load_from_config_file
+      # rubocop:disable RescueException
       @config = new
       return unless File.exist?(config_file)
       begin
@@ -27,6 +28,7 @@ class Punch
           highlighted
         puts message
       end
+      # rubocop:enable RescueException
     end
 
     def config_file

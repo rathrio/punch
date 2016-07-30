@@ -15,7 +15,7 @@ class Block
     finish_ary = finish_str.split ':'
 
     if start_ary.empty? && finish_ary.empty?
-      fail ArgumentError, "#{str} is not a valid block"
+      raise ArgumentError, "#{str} is not a valid block"
     end
 
     block.start  = Time.new(day.year, day.month, day.day, *start_ary)

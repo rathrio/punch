@@ -70,6 +70,19 @@ module Kernel
   def puts(str = "")
     Punch.config.out.puts str
   end
+
+  # Open tempfile and read the content after allowing the
+  # user to edit it (like a git commit message).
+  def gets_tmp(name, content = '')
+    f = Tempfile.new name
+    f.write content.to_s
+    f.rewind
+    system "#{Punch.config.text_editor} #{f.path}"
+    f.rewind
+    f.read
+  ensure
+    f.close
+  end
 end
 
 class Time

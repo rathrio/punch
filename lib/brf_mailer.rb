@@ -17,14 +17,7 @@ class BRFMailer
       send("#{k}=", v) if respond_to? k
     end
 
-    f = Tempfile.new 'body'
-    f.write body
-    f.rewind
-    system "#{config.text_editor} #{f.path}"
-    f.rewind
-    @body = f.read
-  ensure
-    f.close
+    @body = gets_tmp 'body', body
   end
 
   def cc

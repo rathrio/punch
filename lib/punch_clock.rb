@@ -361,7 +361,7 @@ class PunchClock
 
         flag "-t", "--tag", "--comment" do |comment|
           comment = gets_tmp('comment', day.comment) if comment.nil?
-          day.comment = comment
+          day.comment = comment.tr("\n", " ")
         end
 
         switch "--clear-tags", "--clear-comment" do

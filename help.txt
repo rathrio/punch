@@ -182,7 +182,8 @@ $ punch -s, --stats
     Print some stats.
 
 $ punch -t, --tag, --comment [comment]
-    Add a comment to the end of the line.
+    Add a comment to the end of the line. A comment may not contain any
+    newlines.
 
     $ punch 9-1730 --comment "support for company X"
     15.02.15   09:00-17:30   Total: 09:00   support for company X

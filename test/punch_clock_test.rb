@@ -1,7 +1,6 @@
 require_relative 'config'
 
 class PunchClockTest < PunchTest
-
   def test_without_args_prints_month
     punch '8-12 13-17'
     punch
@@ -173,4 +172,11 @@ class PunchClockTest < PunchTest
     end
   end
 
+  def test_help_file
+    assert_match(/help.txt$/, clock.help_file)
+  end
+
+  def test_test_file
+    assert_match(/punch_test.rb$/, clock.test_file)
+  end
 end

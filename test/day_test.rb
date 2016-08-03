@@ -133,4 +133,10 @@ class DayTest < MiniTest::Test
     day.comment = '  chrank wi di, sau  '
     assert_equal 'chrank wi di, sau', day.comment
   end
+
+  def test_comment_writer_replaces_newlines_with_spaces
+    day = Day.new
+    day.comment = "doo\nbario\nsanchez"
+    assert_equal 'doo bario sanchez', day.comment
+  end
 end

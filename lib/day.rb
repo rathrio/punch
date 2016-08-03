@@ -39,7 +39,7 @@ class Day
   end
 
   def comment=(new_comment)
-    @comment = new_comment.to_s.strip
+    @comment = new_comment.to_s.strip.tr("\n", " ")
   end
 
   def date

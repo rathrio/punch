@@ -279,8 +279,7 @@ class PunchClock
 
     @brf_filepath = generate_brf_filepath month_name, month_year.year
 
-    switch "-b", "--backup" do
-      path = @args.shift
+    flag "-b", "--backup" do |path|
       system "cp #{brf_filepath} #{path}"
       exit
     end
@@ -361,7 +360,7 @@ class PunchClock
 
         flag "-t", "--tag", "--comment" do |comment|
           comment = gets_tmp('comment', day.comment) if comment.nil?
-          day.comment = comment.tr("\n", " ")
+          day.comment = comment
         end
 
         switch "--clear-tags", "--clear-comment" do

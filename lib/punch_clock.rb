@@ -327,7 +327,7 @@ class PunchClock
       end
 
       switch "-i", "--interactive" do
-        Editor.new(@month).run
+        @month = Editor.new(@month).run
         write! file
       end
 

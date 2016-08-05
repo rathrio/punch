@@ -28,6 +28,7 @@ class Editor
         @days_picked = input.split(/,|\s+/).map!(&:to_i) unless input.empty?
       end
     end
+    month
   rescue Interrupt, SystemExit
     exit
   ensure

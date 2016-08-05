@@ -43,13 +43,12 @@ class Month
   end
 
   def name
-    if year.nil? || number.nil?
-      @name
-    else
-      name = "#{NAMES[number].capitalize} #{year} - #{Punch.config.name}"
-      name.prepend("#{Punch.config.title} - ") unless Punch.config.title.empty?
-      name
-    end
+    return @name if year.nil? || number.nil?
+
+    name = "#{NAMES[number].capitalize} #{year}"
+    name << " - #{Punch.config.name}" unless Punch.config.name.empty?
+    name.prepend("#{Punch.config.title} - ") unless Punch.config.title.empty?
+    name
   end
 
   def add(*new_days)

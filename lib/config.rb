@@ -115,7 +115,7 @@ class Punch
   # @return [String]
   option :name,
     "Your full name.",
-    "Spongebob Schwammkopf"
+    ""
 
   # @return [String]
   option :title,

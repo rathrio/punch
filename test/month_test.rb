@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class MonthTest < MiniTest::Test
+class MonthTest < PunchTest
   def setup
     @month = Month.from(<<-EOS, 1, 2014)
       Januar 2014
@@ -19,5 +19,23 @@ class MonthTest < MiniTest::Test
     @month.days.sort!
 
     assert_equal day, @month.days.last
+  end
+
+  def test_name_with_title_and_username_present
+    config :name => 'Spongebob', :title => 'Krosse Krabbe' do
+      assert_equal 'Krosse Krabbe - Januar 2014 - Spongebob', @month.name
+    end
+  end
+
+  def test_name_with_title_missing
+    config :name => 'Spongebob', :title => '' do
+      assert_equal 'Januar 2014 - Spongebob', @month.name
+    end
+  end
+
+  def test_name_with_username_missing
+    config :name => '', :title => 'Krosse Krabbe' do
+      assert_equal 'Krosse Krabbe - Januar 2014', @month.name
+    end
   end
 end

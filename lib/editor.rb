@@ -5,6 +5,7 @@ class Editor
     @month = month.full_month
   end
 
+  # @return [Month] the edited month.
   def run
     loop do
       print_month

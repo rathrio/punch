@@ -263,7 +263,9 @@ class PunchClock
     end
 
     flag "--month" do |month|
-      month_year = MonthYear.new(:month => month, :year => month_year.year)
+      month, year = month.split(".")
+      year = month_year.year if year.nil?
+      month_year = MonthYear.new(:month => month, :year => year)
     end
 
     flag "--year" do |year|

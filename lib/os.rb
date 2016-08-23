@@ -28,8 +28,10 @@ module OS
       'open'
     when linux?
       'xdg-open'
+    when windows?
+      'START ""'
     else
-      'vi'
+      raise "Unsupported OS"
     end
   end
 

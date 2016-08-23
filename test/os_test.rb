@@ -50,9 +50,11 @@ class OSTest < MiniTest::Test
     end
   end
 
-  def test_open_cmd_fallbacks_to_vi_for_unsupported_os
-    OS.stub :ruby_platform, 'mswin' do
-      assert_equal 'vi', OS.open_cmd
+  def test_open_cmd_returns_start_on_windows
+    %w(cygwin mswin mingw bccwin wince emx).each do |s|
+      OS.stub :ruby_platform, s do
+        assert_equal 'START ""', OS.open_cmd
+      end
     end
   end
 end

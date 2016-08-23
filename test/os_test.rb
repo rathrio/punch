@@ -50,7 +50,7 @@ class OSTest < MiniTest::Test
     end
   end
 
-  def test_open_cmd_fallbacks_to_vi_for_unsupporter_os
+  def test_open_cmd_fallbacks_to_vi_for_unsupported_os
     OS.stub :ruby_platform, 'mswin' do
       assert_equal 'vi', OS.open_cmd
     end

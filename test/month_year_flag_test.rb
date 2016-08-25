@@ -6,7 +6,7 @@ class MonthYearFlagTest < PunchTest
 
     assert_punched 'Maerz 2015'
     assert_punched '28.01.15   12:00-13:00'
-    assert_includes clock.brf_filepath, 'maerz_2015.txt'
+    assert_includes clock.brf_filepath, '2015-3.txt'
   end
 
   def test_month_flag_takes_optional_year
@@ -14,20 +14,20 @@ class MonthYearFlagTest < PunchTest
 
     assert_punched 'Maerz 2014'
     assert_punched '28.01.15   13:00-14:00'
-    assert_includes clock.brf_filepath, 'maerz_2014.txt'
+    assert_includes clock.brf_filepath, '2014-3.txt'
   end
 
   def test_year_flag_sets_year
     punch '--year 2012'
 
     assert_punched 'Februar 2012'
-    assert_includes clock.brf_filepath, 'februar_2012.txt'
+    assert_includes clock.brf_filepath, '2012-2.txt'
   end
 
   def test_month_and_year_flag_can_be_combined
     punch '--month 8 --year 18'
 
     assert_punched 'August 2018'
-    assert_includes clock.brf_filepath, 'august_2018.txt'
+    assert_includes clock.brf_filepath, '2018-8.txt'
   end
 end

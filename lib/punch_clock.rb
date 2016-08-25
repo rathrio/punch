@@ -279,7 +279,7 @@ class PunchClock
       exit
     end
 
-    @brf_filepath = generate_brf_filepath month_name, month_year.year
+    @brf_filepath = generate_brf_filepath(month_year, month_name)
 
     flag "-b", "--backup" do |path|
       system "cp #{brf_filepath} #{path}"
@@ -443,9 +443,15 @@ class PunchClock
     @now ||= Date.today
   end
 
-  def generate_brf_filepath(month_name, year)
-    filepath = "#{hours_folder}/#{month_name}_#{year}.txt"
-    return filepath if File.exist? filepath
+  def generate_brf_filepath(month_year, month_name)
+    filepath = "#{hours_folder}/#{month_year.year}-#{month_year.month}.txt"
+    return filepath if File.exists?(filepath)
+
+    legacy_filepath = "#{hours_folder}/#{month_name}_#{month_year.year}.txt"
+    if File.exists?(legacy_filepath)
+      FileUtils.mv(legacy_filepath, filepath)
+      return filepath
+    end
 
     # Create hours folder if necessary
     unless File.directory? hours_folder
@@ -459,7 +465,7 @@ class PunchClock
 
     # Create empty BRF file for this month.
     File.open(filepath, "w") do |f|
-      f.write "#{month_name.capitalize} #{year}"
+      f.write "#{month_name.capitalize} #{month_year.year}"
     end
 
     filepath

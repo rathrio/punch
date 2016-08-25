@@ -17,10 +17,10 @@ class LegacyFilenameTest < PunchTest
   end
 
   def test_renames_legacy_file_to_new_format
-    assert File.exists?(@legacy_filename), 'This should not happen™'
+    assert File.exist?(@legacy_filename), 'This should not happen™'
     punch '--month 11.13'
-    refute File.exists?(@legacy_filename), 'Moving legacy file failed.'
-    assert File.exists?(@new_filename), 'Moving legacy file failed.'
+    refute File.exist?(@legacy_filename), 'Moving legacy file failed.'
+    assert File.exist?(@new_filename), 'Moving legacy file failed.'
   end
 
   def test_ignores_legacy_file_if_new_file_present
@@ -32,6 +32,6 @@ class LegacyFilenameTest < PunchTest
     punch '--month 11.13'
     assert_punched '14.11.13   03:00-05:00'
 
-    assert File.exists?(@legacy_filename), 'Deleted legacy file.'
+    assert File.exist?(@legacy_filename), 'Deleted legacy file.'
   end
 end

@@ -445,10 +445,10 @@ class PunchClock
 
   def generate_brf_filepath(month_year, month_name)
     filepath = "#{hours_folder}/#{month_year.year}-#{month_year.month}.txt"
-    return filepath if File.exists?(filepath)
+    return filepath if File.exist?(filepath)
 
     legacy_filepath = "#{hours_folder}/#{month_name}_#{month_year.year}.txt"
-    if File.exists?(legacy_filepath)
+    if File.exist?(legacy_filepath)
       FileUtils.mv(legacy_filepath, filepath)
       return filepath
     end

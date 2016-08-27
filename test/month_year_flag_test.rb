@@ -4,7 +4,7 @@ class MonthYearFlagTest < PunchTest
   def test_month_flag_sets_month
     punch '--month 3 12-13'
 
-    assert_punched 'Maerz 2015'
+    assert_punched 'März 2015'
     assert_punched '28.01.15   12:00-13:00'
     assert_includes clock.brf_filepath, '2015-3.txt'
   end
@@ -12,7 +12,7 @@ class MonthYearFlagTest < PunchTest
   def test_month_flag_takes_optional_year
     punch '--month 3.14 13-14'
 
-    assert_punched 'Maerz 2014'
+    assert_punched 'März 2014'
     assert_punched '28.01.15   13:00-14:00'
     assert_includes clock.brf_filepath, '2014-3.txt'
   end

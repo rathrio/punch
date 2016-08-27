@@ -3,28 +3,9 @@ class Month
 
   NEWLINE = "\r\n".freeze
 
-  NAMES = {
-    1  => 'januar',
-    2  => 'februar',
-    3  => 'maerz',
-    4  => 'april',
-    5  => 'mai',
-    6  => 'juni',
-    7  => 'juli',
-    8  => 'august',
-    9  => 'september',
-    10 => 'oktober',
-    11 => 'november',
-    12 => 'dezember'
-  }.freeze
-
   attr_accessor :name, :days, :number, :year
 
   alias_method :month, :number
-
-  def self.name(month_nr)
-    NAMES[month_nr]
-  end
 
   def self.from(brf_str, month_nr, year)
     month        = BRFParser.new.parse(brf_str)
@@ -45,7 +26,7 @@ class Month
   def name
     return @name if year.nil? || number.nil?
 
-    name = "#{NAMES[number].capitalize} #{year}"
+    name = "#{MonthNames.name(number).capitalize} #{year}"
     name << " - #{Punch.config.name}" unless Punch.config.name.empty?
     name.prepend("#{Punch.config.title} - ") unless Punch.config.title.empty?
     name

@@ -122,6 +122,11 @@ class Punch
     "Title that appears in the BRF file.",
     ""
 
+  # @return [Symbol]
+  option :language,
+    "What language to display month names in. Use two char language codes.",
+    :en
+
   # @return [String]
   option :default_args,
     "Arguments to pass by default. e.g. '-y' to always punch yesterday.",

@@ -134,7 +134,7 @@ class PunchClockTest < PunchTest
   def test_punch_next_month_with_next_switch
     punch "-n 2-3"
 
-    assert_punched "Maerz 2015"
+    assert_punched "März 2015"
   end
 
   def test_option_order_shouldnt_matter

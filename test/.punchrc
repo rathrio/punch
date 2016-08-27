@@ -1,6 +1,8 @@
 Punch.configure do |config|
   config.name = 'Spongebob Squarepants'
 
+  config.language = :de
+
   config.cards = {
     :test => {
       :hours_folder => TEST_HOURS_FOLDER,

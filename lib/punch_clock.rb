@@ -272,14 +272,14 @@ class PunchClock
       month_year = MonthYear.new(:month => month_year.month, :year => year)
     end
 
-    @month_name = Month.name month_year.month
+    @month_name = MonthNames.name month_year.month
 
     switch "-m", "--merge" do
       puts Merger.new(@args, month_year).month
       exit
     end
 
-    @brf_filepath = generate_brf_filepath(month_year, month_name)
+    @brf_filepath = generate_brf_filepath(month_year)
 
     flag "-b", "--backup" do |path|
       system "cp #{brf_filepath} #{path}"
@@ -443,11 +443,12 @@ class PunchClock
     @now ||= Date.today
   end
 
-  def generate_brf_filepath(month_year, month_name)
+  def generate_brf_filepath(month_year)
     filepath = "#{hours_folder}/#{month_year.year}-#{month_year.month}.txt"
     return filepath if File.exist?(filepath)
 
-    legacy_filepath = "#{hours_folder}/#{month_name}_#{month_year.year}.txt"
+    german_month_name = MonthNames.name(month_year.month, :de)
+    legacy_filepath = "#{hours_folder}/#{german_month_name}_#{month_year.year}.txt"
     if File.exist?(legacy_filepath)
       FileUtils.mv(legacy_filepath, filepath)
       return filepath

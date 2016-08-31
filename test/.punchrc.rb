@@ -1,4 +1,3 @@
-# vi: ft=ruby
 Punch.configure do |config|
   config.name = 'Spongebob Squarepants'
 

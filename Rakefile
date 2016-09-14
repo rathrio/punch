@@ -36,3 +36,11 @@ task :console do
   require 'pry'
   Pry.start
 end
+
+desc 'Start a pry session with the current month loaded'
+task :debug_month do
+  require 'pry'
+  require_relative 'punch'
+
+  PunchClock.new(%w(--console)).punch
+end

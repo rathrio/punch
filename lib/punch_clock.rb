@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PunchClock
   include OptionParsing
 
@@ -34,6 +36,7 @@ class PunchClock
     --console
     --coverage
     --day
+    --debug
     --diagram
     --doc
     --dry-run
@@ -73,7 +76,7 @@ class PunchClock
 
   attr_reader :month, :month_name, :year, :brf_filepath
 
-  flag :dry_run, :print_full_month
+  flag :dry_run, :print_full_month, :debug
 
   def initialize(args)
     self.args = args
@@ -132,6 +135,10 @@ class PunchClock
 
     switch "--dry-run" do
       dry_run!
+    end
+
+    switch "--debug" do
+      debug!
     end
 
     switch "--options" do
@@ -406,15 +413,16 @@ class PunchClock
     end
 
   rescue BRFParser::ParserError => e
-    raise e if config.debug?
+    raise e if debug_mode?
     puts "Couldn't parse #{brf_filepath.highlighted}."
   rescue Interrupt
     puts "\nExiting...".highlighted
     exit
   rescue => e
-    raise e if config.debug?
-    puts "That's not a valid argument, dummy.\n"\
-      "Run #{"punch -h".highlighted} for help."
+    raise e if debug_mode?
+    puts "Unknown arguments.\n"\
+      "Pass #{"--help".highlighted} for a list of options or retry with"\
+      " #{"--debug".highlighted} to get a stacktrace."
   end
 
   def config
@@ -438,6 +446,10 @@ class PunchClock
   end
 
   private
+
+  def debug_mode?
+    debug? || config.debug?
+  end
 
   def now
     @now ||= Date.today

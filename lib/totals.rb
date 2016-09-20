@@ -11,8 +11,8 @@ module Totals
     include Formatter
 
     def format
-      hours   = seconds / 3600
-      rest    = seconds - (hours * 3600)
+      hours   = seconds / 3_600
+      rest    = seconds - (hours * 3_600)
       minutes = rest / 60
 
       "#{hours.left_pad}:#{minutes.left_pad}"
@@ -23,7 +23,7 @@ module Totals
     include Formatter
 
     def format
-      (seconds / 3600.0).round(1).left_pad(:with => ' ', :length => 4)
+      (seconds / 3_600.0).round(1).left_pad(:with => ' ', :length => 4)
     end
   end
 
@@ -42,8 +42,7 @@ module Totals
 
   module_function
 
-  def format(seconds)
-    totals_format = Punch.config.totals_format
+  def format(seconds, totals_format = Punch.config.totals_format)
     formatter_class = FORMATTERS.fetch(totals_format) do
       raise "Unknown totals format #{totals_format}"
     end

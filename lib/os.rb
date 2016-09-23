@@ -35,6 +35,11 @@ module OS
     end
   end
 
+  def pager
+    return nil if windows?
+    ENV['PAGER'] || 'less'
+  end
+
   def ruby_platform
     RUBY_PLATFORM
   end

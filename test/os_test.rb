@@ -57,4 +57,20 @@ class OSTest < MiniTest::Test
       end
     end
   end
+
+  def test_pager_is_nil_on_windows
+    %w(cygwin mswin mingw bccwin wince emx).each do |s|
+      OS.stub :ruby_platform, s do
+        assert_nil OS.pager
+      end
+    end
+  end
+
+  def test_pager_is_less_on_unix
+    %w(linux darwin).each do |s|
+      OS.stub :ruby_platform, s do
+        assert_equal 'less', OS.pager
+      end
+    end
+  end
 end

@@ -203,6 +203,11 @@ class Punch
     false
 
   # @return [Boolean]
+  option :pager,
+    "Whether to automatically open long output with pager.",
+    true
+
+  # @return [Boolean]
   option :debug,
     "Print stack trace instead of user friendly hint.",
     false
@@ -277,7 +282,7 @@ class Punch
 
     "# vi: ft=ruby\n"\
     "#\n"\
-    "# Punch settings file. Use valid Ruby syntax or you shall be punished!\n"\
+    "# Punch settings file.\n"\
     "#\n"\
     "# To reset all settings run\n"\
     "#\n"\

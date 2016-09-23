@@ -521,7 +521,11 @@ class PunchClock
       end.join
     )
     f.rewind
-    system "less -R #{f.path}"
+    if config.pager? && OS.pager
+      system "#{OS.pager} -R #{f.path}"
+    else
+      puts f.read
+    end
   ensure
     f.close
   end

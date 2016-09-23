@@ -1,3 +1,4 @@
+# Provides utility functions for determining OS and OS-specific system calls.
 module OS
   module_function
 

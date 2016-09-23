@@ -442,7 +442,7 @@ class PunchClock
   end
 
   def raw_brf
-    `cat #{brf_filepath}`
+    File.read(brf_filepath)
   end
 
   private

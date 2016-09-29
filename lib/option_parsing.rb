@@ -1,4 +1,11 @@
+# Provides DSL for parsing command line flags and switches.
 module OptionParsing
+  # Defines a switch, i.e. an option without an argument.
+  #
+  # @example Defining a "verbose" switch
+  #   switch '-v', '--verbose' do
+  #     # ...
+  #   end
   def switch(*names)
     names.each do |n|
       if args.delete(n)
@@ -8,6 +15,12 @@ module OptionParsing
     end
   end
 
+  # Defines a flag, i.e. an option with an optional argument.
+  #
+  # @example Defining a "day" flag
+  #   flag '-d', '--day' do |day|
+  #     # do something with day
+  #   end
   def flag(*names)
     names.each do |n|
       next unless (index = args.index(n))

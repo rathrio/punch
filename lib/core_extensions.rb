@@ -73,6 +73,8 @@ module Kernel
 
   # Open tempfile and read the content after allowing the
   # user to edit it (like a git commit message).
+  #
+  # @return [String] contents of the edited file.
   def gets_tmp(name, content = '')
     f = Tempfile.new name
     f.write content.to_s

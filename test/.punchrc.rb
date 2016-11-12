@@ -3,6 +3,8 @@ Punch.configure do |config|
 
   config.language = :de
 
+  config.hand_in_date = 20
+
   config.cards = {
     :test => {
       :hours_folder => TEST_HOURS_FOLDER,

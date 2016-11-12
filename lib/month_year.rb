@@ -28,6 +28,10 @@ class MonthYear
     year == y
   end
 
+  def number_of_days
+    @number_of_days ||= Date.new(*self, -1).day
+  end
+
   # Enables some fancy stuff.
   #
   # @example Extract year and month with parallel assignment

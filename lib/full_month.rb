@@ -25,7 +25,7 @@ class FullMonth
       month.days << day
     end
 
-    (((Punch.config.hand_in_date + 1)..days_in_month(prev_month_year)).
+    (((Punch.config.hand_in_date + 1)..prev_month_year.number_of_days).
       to_a - prev_month_days).each do |d|
 
       day = Day.new
@@ -37,11 +37,5 @@ class FullMonth
     month.days.sort!
 
     month
-  end
-
-  private
-
-  def days_in_month(month_year)
-    Date.new(*month_year, -1).day
   end
 end

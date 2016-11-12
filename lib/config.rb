@@ -144,8 +144,8 @@ class Punch
 
   # @return [Fixnum]
   option :hand_in_date,
-    "After which day punch should generate the next month's BRF file.",
-    20
+    "After which day to switch to next month file (1..31).",
+    31
 
   # @return [Fixnum]
   option :monthly_goal,
@@ -289,7 +289,7 @@ class Punch
     "#   $ punch --config-reset\n"\
     "#\n"\
     "# To update this file while keeping your modifications and adding\n"\
-    "# new options that might have been made available with an update run\n"\
+    "# new options from an update run\n"\
     "#\n"\
     "#   $ punch --config-update\n"\
     "#\n"\

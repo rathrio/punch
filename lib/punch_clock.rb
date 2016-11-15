@@ -459,7 +459,7 @@ class PunchClock
     filepath = "#{hours_folder}/#{month_year.year}-#{month_year.month}.txt"
     return filepath if File.exist?(filepath)
 
-    german_month_name = MonthNames.name(month_year.month, :de)
+    german_month_name = MonthNames.name(month_year.month, :de).sub("ä", "ae")
     legacy_filepath = "#{hours_folder}/#{german_month_name}_#{month_year.year}.txt"
     if File.exist?(legacy_filepath)
       FileUtils.mv(legacy_filepath, filepath)

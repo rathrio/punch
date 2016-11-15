@@ -34,4 +34,18 @@ class LegacyFilenameTest < PunchTest
 
     assert File.exist?(@legacy_filename), 'Deleted legacy file.'
   end
+
+  def test_renames_legacy_file_from_march
+    legacy_filename = "#{Punch.config.hours_folder}/maerz_2015.txt"
+    new_filename = "#{Punch.config.hours_folder}/2015-3.txt"
+
+    File.open(legacy_filename, 'w') do |f|
+      f.puts "Maerz 2013 - Spongebob\r\n\r\n"
+      f.puts '29.11.13   08:00-16:44   Total: 99:99'
+    end
+
+    punch '--month 3.15'
+    refute File.exist?(legacy_filename), 'Moving legacy file failed.'
+    assert File.exist?(new_filename), 'Moving legacy file failed.'
+  end
 end

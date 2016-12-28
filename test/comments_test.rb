@@ -14,7 +14,7 @@ class CommentsTest < PunchTest
 
     assert_equal '2crazy', month.days[0].comment
     assert_equal 'FERIEN, FOObar;;', month.days[1].comment
-    assert_equal nil, month.days[2].comment
+    assert_nil month.days[2].comment
   end
 
   def test_comment_flag_adds_comment

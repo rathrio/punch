@@ -166,6 +166,11 @@ $ punch --month [month]
 
     $ punch --month 2
 
+    The year can optionally be specified by appending ".<yy>". E.g. to punch
+    February 2015:
+
+    $ punch --month 2.15
+
 $ punch -n, --next
     Punch next month.
 

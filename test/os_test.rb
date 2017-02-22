@@ -67,6 +67,7 @@ class OSTest < MiniTest::Test
   end
 
   def test_pager_is_less_on_unix
+    ENV['PAGER'] = nil
     %w(linux darwin).each do |s|
       OS.stub :ruby_platform, s do
         assert_equal 'less', OS.pager

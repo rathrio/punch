@@ -232,7 +232,13 @@ class PunchClock
     end
 
     switch "--whoami" do
-      puts "You are the sunshine of my life, #{config.name}.".highlighted
+      msg = "You are the sunshine of my life"
+
+      unless config.name.empty?
+        msg = "#{msg}, #{config.name}"
+      end
+
+      puts "#{msg}.".highlighted
       exit
     end
 

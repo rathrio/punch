@@ -3,14 +3,7 @@ $ punch
 
 [![Build Status](https://travis-ci.org/rathrio/punch.svg?branch=master)](https://travis-ci.org/rathrio/punch) [![Coverage Status](https://coveralls.io/repos/rathrio/punch/badge.svg?branch=master&service=github)](https://coveralls.io/github/rathrio/punch?branch=master) [![Inline docs](http://inch-ci.org/github/rathrio/punch.svg?branch=master)](http://inch-ci.org/github/rathrio/punch)
 
-A CLI for file based time tracking.
-
-This came into existence because maintaining an Excel sheet with my working
-hours was a huge pain in the ass (mostly because I suck at Excel) and the
-accountant didn't care about the format as long as it's somewhat readable.
-
-Hence, I came up with a revolutionary format called BRF
-(Brigitte-Readable-Format):
+Punch is a CLI for tracking your monthly hours in plain text files, e.g.:
 
 ```
 November 2014
@@ -20,9 +13,6 @@ November 2014
 
 Total: 12:00
 ```
-
-Super easy to read for Brigitte, super easy to parse and generate, aaand super
-useless otherwise.
 
 Recommended Installation
 ------------------------
@@ -75,10 +65,9 @@ This will open them up in your default web browser.
 Usage
 -----
 
-Punch saves your working time in a BRF text file. Each file represents one month
-and new files will be automatically generated as time goes by. A month in Punch
-starts on the 21th of the previous month and ends on the 20th of the current
-one. To display the month, execute `punch` without any arguments:
+Punch saves your working hours in a plain text file. Each file represents one
+month and new files will be automatically generated as time goes by. To display
+the month, execute `punch` without any arguments:
 
 ```
 $ punch
@@ -90,9 +79,9 @@ Krusty Krab - Mai 2015 - Spongebob Squarepants
 Total: 00:00
 ```
 
-The first line is the header, which contains the title of the BRF file, the
-current month name and your full name. The following lines list the days you
-have worked on on a separate line each. The last line show the monthly total.
+The first line is the header, which contains a title, the current month name and
+your full name. The following lines list the days you have worked on on a
+separate line each. The last line shows the monthly total.
 
 The current day is always visible, even if you haven't added any blocks to it
 yet. That's why you only see the current date in an empty month. For the
@@ -100,8 +89,8 @@ following examples the current day will 10.05.15 (DD.MM.YY).
 
 ### Adding blocks
 
-What are blocks? A block is a time span with a start time and an end time (duh!)
-and you can add them to the current day like this:
+A block is a time span with a start and an end time and you can add them to the
+current day like this:
 
 ```
 $ punch 08:00-12:30
@@ -163,8 +152,8 @@ Total: 09:30
 
 #### `--edit` and `--format`
 
-Sometimes you mess up or you just want to manually edit the BRF file. For
-scenarios like these, the `--edit` (`-e`) switch will open up the current BRF
+Sometimes you mess up or you just want to manually edit the text file. For
+scenarios like these, the `--edit` (`-e`) switch will open up the current text
 file with your default text editor. You don't have to worry about the totals or
 indentation when manually editing the file. Punch will automatically format the
 file the next time you add some blocks. To trigger formatting by hand, use the
@@ -173,7 +162,8 @@ file the next time you add some blocks. To trigger formatting by hand, use the
 ### Overlaps
 
 Punch will automatically merge blocks together should you add one that overlaps
-with others on the same day. So running `punch 12-15` and `punch 13-18` results in `12-18`.
+with others on the same day. So running `punch 12-15` and `punch 13-18` results
+in `12-18`.
 
 ```
 $ punch 12-15
@@ -193,7 +183,7 @@ Krusty Krab - Mai 2015 - Spongebob Squarepants
 Total: 06:00
 ```
 
-This behaviour can be used to append, prepend and shadow blocks.
+This behaviour can be used to append, prepend and overwrite blocks.
 
 #### Caveats
 
@@ -255,7 +245,20 @@ edit that file.
 Updating
 --------
 
-Run `punch --update` to fetch the latest changes from master.
+Run `punch --update` to pull in the latest changes from the remote master.
 
 Run `punch --config-update` to update `.punchrc` from time to time, so that it
 always knows about all available options.
+
+Development
+-----------
+
+Run `bundle install` to install development dependencies.
+
+Run `punch --test` to run the test suite.
+
+Run `punch --review` to list code style violations of your changes against the
+current master.
+
+Punch tries to remain free of third party runtime dependencies so that it can be
+run on any system with just Ruby installed.

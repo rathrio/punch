@@ -1,7 +1,7 @@
 class Month
   include Totals
 
-  NEWLINE = "\r\n".freeze
+  NEWLINE = "\n".freeze
 
   attr_accessor :name, :days, :number, :year
 

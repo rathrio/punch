@@ -152,6 +152,16 @@ class Punch
     "How many hours you want to work per month.",
     68
 
+  # @return [Float]
+  option :daily_goal,
+    "How many hours you want to work per day.",
+    8.4
+
+  # @return [Symbol]
+  option :goal_type,
+         "Whether you want the stats do use the daily or monthly goal.",
+         :monthly
+
   # @return [Array]
   option :workdays,
     "Which days you work on. Used for stats.",

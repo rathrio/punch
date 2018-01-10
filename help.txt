@@ -134,6 +134,8 @@ $ punch -e, --edit [editor]
 
     $ punch -e "TextEdit"
 
+    You don't have to manually recalculate the totals. Use --format instead.
+
 $ punch -f, --format
     Reformat current BRF file. This will normalize whitespace, recalculate
     totals and remove ongoing blocks.

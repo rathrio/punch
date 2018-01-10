@@ -44,7 +44,7 @@ module Totals
 
   def format(seconds, totals_format = Punch.config.totals_format)
     formatter_class = FORMATTERS.fetch(totals_format) do
-      raise "Unknown totals format #{totals_format}"
+      raise "Unknown totals format #{totals_format.inspect}"
     end
 
     formatter_class.new(seconds).format

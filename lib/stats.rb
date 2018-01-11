@@ -86,7 +86,7 @@ class Stats
 
   def progress
     diff = Totals.format(remaining)
-    "#{percentage} % | #{Totals.format reached}/#{config.monthly_goal} | "\
+    "#{percentage} % | #{Totals.format reached}/#{Totals.format goal} | "\
       "Diff: #{diff}"
   end
 
@@ -122,7 +122,7 @@ class Stats
   end
 
   def percentage
-    (100.0 / monthly_goal * reached).round 2
+    (100.0 / goal * reached).round 2
   end
 
   def workdays
@@ -133,12 +133,20 @@ class Stats
     @monthly_goal ||= config.monthly_goal * 3600
   end
 
+  def goal
+    @goal ||= if config.goal_type == :monthly
+                config.monthly_goal
+              else
+                ((config.daily_goal * workdays.count ).round(2) * 3600).floor
+              end
+  end
+
   def reached
     @reached ||= month.total
   end
 
   def remaining
-    @remaining ||= monthly_goal - reached
+    @remaining ||= goal - reached
   end
 
   def hourly_pay

@@ -159,7 +159,7 @@ class Punch
 
   # @return [Symbol]
   option :goal_type,
-         "Whether you want the stats do use the daily or monthly goal.",
+         "Whether you want the stats to use the daily or monthly goal.",
          :monthly
 
   # @return [Array]

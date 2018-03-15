@@ -42,6 +42,11 @@ class Day
     @comment = new_comment.to_s.strip.tr("\n", " ")
   end
 
+  # @return [Boolean] whether the stats should ignore this day.
+  def ignore?
+    Punch.config.ignore_tags.any? { |tag| comment =~ /\b#{tag}\b/i }
+  end
+
   def date
     "#{day.left_pad}.#{month.left_pad}.#{short_year}"
   end

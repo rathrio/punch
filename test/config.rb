@@ -48,6 +48,27 @@ end
 # Load test configurations. See test/.punchrc.
 Punch.load_card :test
 
+# Call a given block with the config hash in args temporarily loaded.
+#
+# @example Temporarily changing rounding strategy
+#
+#  config :punch_now_rounder => :exact do
+#    punch "now"
+#    assert_punched "13:41"
+#  end
+def config(args)
+  old_config = Punch.config.clone
+
+  args.each do |k, v|
+    Punch.config.send "#{k}=", v
+  end
+
+  yield
+
+ensure
+  Punch.config = old_config
+end
+
 # Provides some helper methods for integration tests. Also sets the current
 # Time to 2pm on 28.01.2015 and automatically cleans up the test hours folder.
 # When overriding #setup and #teardown, don't forget to call super.
@@ -132,28 +153,6 @@ class PunchTest < MiniTest::Test
   def current_month
     clock.month
   end
-
-  # Call a given block with the config hash in args temporarily loaded.
-  #
-  # @example Temporarily changing rounding strategy
-  #
-  #  config :punch_now_rounder => :exact do
-  #    punch "now"
-  #    assert_punched "13:41"
-  #  end
-  def config(args)
-    old_config = Punch.config.clone
-
-    args.each do |k, v|
-      Punch.config.send "#{k}=", v
-    end
-
-    yield
-
-  ensure
-    Punch.config = old_config
-  end
-
 end
 
 MiniTest.after_run { PunchTest.clear_hours_folder }

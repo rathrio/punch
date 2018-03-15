@@ -159,13 +159,18 @@ class Punch
 
   # @return [Symbol]
   option :goal_type,
-         "Whether you want the stats to use the daily or monthly goal.",
-         :monthly
+    "Whether you want the stats to use the daily or monthly goal.",
+    :monthly
 
   # @return [Array]
   option :workdays,
     "Which days you work on. Used for stats.",
     [:monday, :tuesday, :wednesday, :thursday, :friday]
+
+  # @return [Array]
+  option :ignore_tags,
+    "Keywords in comments that the stats will use to ignore days.",
+    ["ignore", "sick", "vacation", "holiday"]
 
   # @return [Symbol]
   option :totals_format,

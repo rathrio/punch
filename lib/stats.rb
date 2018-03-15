@@ -126,7 +126,7 @@ class Stats
   end
 
   def workdays
-    @workdays ||= month.workdays
+    @workdays ||= month.workdays.reject(&:ignore?)
   end
 
   def monthly_goal

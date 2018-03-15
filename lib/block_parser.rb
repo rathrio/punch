@@ -16,6 +16,7 @@ class BlockParser
     @day = day
   end
 
+  # @return [Block]
   def parse
     prepare_block_str!
     Block.from(@block_str, @day)

@@ -139,4 +139,25 @@ class DayTest < MiniTest::Test
     day.comment = "doo\nbario\nsanchez"
     assert_equal 'doo bario sanchez', day.comment
   end
+
+  def test_ignore
+    day = Day.new
+    day.comment = "ignore me man"
+
+    config :ignore_tags => ['foo', 'bar']  do
+      refute day.ignore?
+    end
+
+    config :ignore_tags => ['ignore']  do
+      assert day.ignore?
+    end
+
+    config :ignore_tags => []  do
+      refute day.ignore?
+    end
+
+    config :ignore_tags => ['nore']  do
+      refute day.ignore?
+    end
+  end
 end

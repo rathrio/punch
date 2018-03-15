@@ -169,7 +169,7 @@ class Punch
 
   # @return [Array]
   option :ignore_tags,
-    "Keywords in comments that the stats will use to ignore days.",
+    "Keywords in comments that the stats will consider to ignore days.",
     ["ignore", "sick", "vacation", "holiday"]
 
   # @return [Symbol]

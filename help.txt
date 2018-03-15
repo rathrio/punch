@@ -188,6 +188,9 @@ $ punch -r, --remove HH:MM-HH:MM HH:MM-HH:MM ...
 $ punch -s, --stats
     Print some stats.
 
+    Days with comments that contain any of the keywords provided in the
+    "ignore_tags" config will be ignored.
+
 $ punch -t, --tag, --comment [comment]
     Add a comment to the end of the line. A comment may not contain any
     newlines.

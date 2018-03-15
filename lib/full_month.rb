@@ -18,7 +18,14 @@ class FullMonth
     prev_month_days =
       month.days.select { |d| prev_month_year.month_eq? d.month }.map(&:day)
 
-    ((1..Punch.config.hand_in_date).to_a - current_month_days).each do |d|
+    # This is necessary, so that we don't create days that do not exist in this
+    # month.
+    max_days = [
+      Punch.config.hand_in_date,
+      current_month_year.number_of_days
+    ].min
+
+    ((1..max_days).to_a - current_month_days).each do |d|
       day = Day.new
       day.day = d
       day.year, day.month = current_month_year

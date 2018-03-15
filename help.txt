@@ -156,14 +156,14 @@ $ punch -l, --log [entries]
 $ punch --mail
     Send an email with the current BRF file attached.
 
-$ punch -m, --merge [card1] [card2] ...
+$ punch --merge [card1] [card2] ...
     Merge cards with differents hours together and print an aggregated month.
 
     How much time have I spent on project1 and project2 this month?
 
     $ punch --merge project1 project2
 
-$ punch --month [month]
+$ punch -m, --month [month]
     Load specific month of current year. To punch February for instance:
 
     $ punch --month 2

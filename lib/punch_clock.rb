@@ -275,7 +275,7 @@ class PunchClock
       month_year = month_year.prev
     end
 
-    flag "--month" do |month|
+    flag "-m", "--month" do |month|
       month, year = month.split(".")
       year = month_year.year if year.nil?
       month_year = MonthYear.new(:month => month, :year => year)
@@ -287,7 +287,7 @@ class PunchClock
 
     @month_name = MonthNames.name month_year.month
 
-    switch "-m", "--merge" do
+    switch "--merge" do
       puts Merger.new(@args, month_year).month
       exit
     end

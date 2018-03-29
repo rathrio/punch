@@ -138,7 +138,7 @@ class Stats
   end
 
   def monthly_total
-    @monthly_total ||= workdays.sum(&:total)
+    @monthly_total ||= workdays.inject(0) { |sum, w| sum + w.total }
   end
 
   def goal

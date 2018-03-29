@@ -109,7 +109,7 @@ class Day
   end
 
   def empty?
-    blocks.empty?
+    blocks.empty? && comment.nil?
   end
 
   def blocks

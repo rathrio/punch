@@ -65,12 +65,12 @@ class Stats
 
   def average_hours_per_day
     return 0 if days.empty?
-    Totals.format(month.total / total_days)
+    Totals.format(monthly_total / total_days)
   end
 
   def average_hours_per_block
     return 0 if blocks.empty?
-    Totals.format(month.total / total_blocks)
+    Totals.format(monthly_total / total_blocks)
   end
 
   # Work days streak.
@@ -94,6 +94,10 @@ class Stats
     @worddays_left = workdays.count { |d| d > now }
   end
 
+  def workdays_left_progress
+    "#{workdays_left}/#{workdays.count}"
+  end
+
   def average_hours_per_workday_remaining
     if workdays_left.zero?
       Totals.format remaining
@@ -105,7 +109,7 @@ class Stats
   def to_s
     <<-EOS
 #{label "Progress"}#{progress}
-#{label "Workdays left"}#{workdays_left}
+#{label "Workdays left"}#{workdays_left_progress}
 #{label "Hours per workday remaining"}#{average_hours_per_workday_remaining}
 #{label "Money made"}#{total_money_made}
 #{label "Avg hours per day"}#{average_hours_per_day}
@@ -133,6 +137,10 @@ class Stats
     @monthly_goal ||= config.monthly_goal * 3600
   end
 
+  def monthly_total
+    @monthly_total ||= workdays.sum(&:total)
+  end
+
   def goal
     @goal ||= if config.goal_type == :monthly
                 config.monthly_goal
@@ -142,7 +150,7 @@ class Stats
   end
 
   def reached
-    @reached ||= month.total
+    monthly_total
   end
 
   def remaining

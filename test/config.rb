@@ -105,21 +105,20 @@ class PunchTest < MiniTest::Test
     @clock = PunchClock.new(args.split)
     @clock.punch
   rescue SystemExit
-    # Do nothing and move on like a baws. We don't wanna exit the test suite
-    # when punch calls Kernel#exit.
+    # We don't wanna exit the test suite when punch calls Kernel#exit.
   end
 
-  # Recent test output.
+  # @return [String] recent test output.
   def output
     TestOut.output
   end
 
-  # Content of current BRF file.
+  # @return [String] content of current BRF file.
   def brf_content
     clock.raw_brf
   end
 
-  # Current BRF file path.
+  # @return [String] current BRF file path.
   def brf_file
     clock.brf_filepath
   end
@@ -129,12 +128,12 @@ class PunchTest < MiniTest::Test
     File.open(brf_file, 'w') { |f| f.write str }
   end
 
-  # Assert that the brf file contains the str.
+  # Assert that the current BRF file contains the str.
   def assert_punched(str)
     assert_includes brf_content, str
   end
 
-  # Refute that the brf file contains the str.
+  # Refute that the current BRF file contains the str.
   def refute_punched(str)
     refute_includes brf_content, str
   end
@@ -144,12 +143,13 @@ class PunchTest < MiniTest::Test
     assert_includes output, str
   end
 
-  # Most recently created punch clock instance.
+  # @return [PunchClock] most recently created punch clock instance.
   def clock
     punch if @clock.nil?
     @clock
   end
 
+  # @return [Month]
   def current_month
     clock.month
   end

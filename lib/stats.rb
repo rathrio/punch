@@ -138,7 +138,7 @@ class Stats
   end
 
   def monthly_total
-    @monthly_total ||= workdays.inject(0) { |sum, w| sum + w.total }
+    @monthly_total ||= days.inject(0) { |sum, w| sum + w.total }
   end
 
   def goal
@@ -166,11 +166,11 @@ class Stats
   end
 
   def days
-    @days ||= month.days
+    @days ||= month.days.reject(&:ignore?)
   end
 
   def blocks
-    @blocks ||= month.blocks
+    @blocks ||= days.flat_map(&:blocks)
   end
 
   def money_made

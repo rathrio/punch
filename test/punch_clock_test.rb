@@ -125,6 +125,20 @@ class PunchClockTest < PunchTest
     refute_includes brf_content, '03.01.15'
   end
 
+  def test_format_keeps_emtpy_days_with_comments
+    brf_write %{
+      Februar 2015 - Rathesan Iyadurai
+
+      03.01.15   00:00-00:00                 Total: 00:00   Some comment
+
+      Total: 00:00
+    }
+
+    punch '-f'
+
+    assert_includes brf_content, '03.01.15'
+  end
+
   def test_punch_previous_month_with_previous_switch
     punch "-p 2-3"
 

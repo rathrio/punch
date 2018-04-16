@@ -1,8 +1,25 @@
 require_relative 'config'
 
 class StatsTest < PunchTest
-  def stats
-    Stats.new(current_month)
+  def test_progress
+    config :daily_goal => 8, :goal_type => :daily, :ignore_tags => ['ignore'] do
+      assert_equal '00:00', Totals.format(stats.reached)
+      assert_equal '184:00', Totals.format(stats.goal)
+
+      punch '8-13'
+      assert_equal '05:00', Totals.format(stats.reached)
+      assert_equal '184:00', Totals.format(stats.goal)
+
+      # Adding hours to a day that we want to ignore...
+      punch '8-13 -d 21 -t ignore'
+      # ... doesn't change the reached hours...
+      assert_equal '05:00', Totals.format(stats.reached)
+      # ... and reduces the goal, because this day is now no longer a workday.
+      assert_equal '176:00', Totals.format(stats.goal)
+
+      # But the month itself will answer the actual total
+      assert_equal '10:00', Totals.format(current_month.total)
+    end
   end
 
   def test_longest_day_and_block_stats
@@ -54,5 +71,11 @@ class StatsTest < PunchTest
 
     punch '6-12'
     assert_equal 1, stats.early_mornings
+  end
+
+  private
+
+  def stats
+    Stats.new(current_month)
   end
 end

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 class Punch
   Option = Struct.new(:name, :description)
 
   class << self
-    attr_accessor :options
     attr_writer :config
 
     def options

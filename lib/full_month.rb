@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Fills month up with the missing days from one day after the last hand in
 # date to the next hand in date. Used for interactive mode for instance.
 class FullMonth

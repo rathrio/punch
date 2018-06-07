@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 PUNCH_FILE = File.realpath(__FILE__)
 $LOAD_PATH.unshift File.expand_path('../lib', PUNCH_FILE)
@@ -28,4 +29,4 @@ autoload :Stats, 'stats'
 autoload :FullMonth, 'full_month'
 autoload :DateParser, 'date_parser'
 
-PunchClock.new(ARGV).punch if __FILE__ == $PROGRAM_NAME
+PunchClock.new(ARGV).punch if $PROGRAM_NAME == __FILE__

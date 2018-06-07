@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MonthYear
   attr_reader :month, :year, :date
 
@@ -20,10 +22,12 @@ class MonthYear
     MonthYear.new(:year => prev_month.year, :month => prev_month.month)
   end
 
+  # @param m [Integer]
   def month_eq?(m)
     month == m
   end
 
+  # @param y [Integer]
   def year_eq?(y)
     year == y
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Can translate various string representations of a date (e.g. 12.04.95) into
 # an instance of Day.
 class DateParser

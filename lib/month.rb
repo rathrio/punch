@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 class Month
   include Totals
 
-  NEWLINE = "\n".freeze
+  NEWLINE = "\n"
 
-  attr_accessor :name, :days, :number, :year
+  attr_accessor :days, :number, :year
+  attr_writer :name
 
   alias_method :month, :number
 
@@ -26,7 +29,7 @@ class Month
   def name
     return @name if year.nil? || number.nil?
 
-    name = "#{MonthNames.name(number).capitalize} #{year}"
+    name = +"#{MonthNames.name(number).capitalize} #{year}"
     name << " - #{Punch.config.name}" unless Punch.config.name.empty?
     name.prepend("#{Punch.config.title} - ") unless Punch.config.title.empty?
     name
@@ -47,7 +50,7 @@ class Month
     b_count = max_block_count
     day_options = options.merge :padding => b_count
     days_str = days.map do |d|
-      day_str = d.to_s(day_options)
+      day_str = +d.to_s(day_options)
 
       if (days.first != d) && options[:group_weeks] && d.monday?
         day_str.prepend("\n")

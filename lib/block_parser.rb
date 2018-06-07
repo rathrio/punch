@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rounded_time'
 
 # Can translate various string representations of a block (e.g. 12:40-18) into

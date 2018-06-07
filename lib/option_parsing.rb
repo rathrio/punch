@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Provides DSL for parsing command line flags and switches.
 module OptionParsing
   # Defines a switch, i.e. an option without an argument.

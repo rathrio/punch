@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Day
   include Attributes
   include Comparable
@@ -81,7 +83,7 @@ class Day
 
   def to_s(options = {})
     blocks.sort!
-    blocks_str = blocks.map { |b| b.to_s(options) }.join('   ')
+    blocks_str = +blocks.map { |b| b.to_s(options) }.join('   ')
 
     # Padding before "Total:"
     max_block_count = options.fetch :padding, 0
@@ -91,7 +93,7 @@ class Day
       end
     end
 
-    str = "#{date}   #{blocks_str}"
+    str = +"#{date}   #{blocks_str}"
     str << '   ' if blocks.any?
     str << "Total: #{total_str}"
     str << "   #{comment}" if comment

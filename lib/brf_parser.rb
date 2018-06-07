@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Parser for Brigitte-Readable-Format files.
 #
 # == BRF
@@ -91,7 +93,6 @@ class BRFParser
     end
 
     month
-
   rescue StandardError => e
     raise ParserError, "Couldn't parse string: #{e.message}"
   end

@@ -3,7 +3,7 @@
 class PunchClock
   include OptionParsing
 
-  VERSION_NAME = "The Baddest Man on the Planet".freeze
+  VERSION_NAME = "The Baddest Man on the Planet"
 
   MIDNIGHT_MADNESS_NOTES = [
     "Get some sleep!",
@@ -233,11 +233,7 @@ class PunchClock
 
     switch "--whoami" do
       msg = "You are the sunshine of my life"
-
-      unless config.name.empty?
-        msg = "#{msg}, #{config.name}"
-      end
-
+      msg = "#{msg}, #{config.name}" unless config.name.empty?
       puts "#{msg}.".highlighted
       exit
     end
@@ -417,7 +413,6 @@ class PunchClock
         puts month.fancy
       end
     end
-
   rescue BRFParser::ParserError => e
     raise e if debug_mode?
     puts "Couldn't parse #{brf_filepath.highlighted}."

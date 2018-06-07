@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Editor
   attr_accessor :month, :days_picked
 
@@ -68,7 +70,7 @@ class Editor
 
   def print_month
     system 'clear'
-    buffer = ''
+    buffer = +''
     buffer << title.highlighted
 
     month.days.each_with_index do |d, i|
@@ -77,7 +79,7 @@ class Editor
       index_str = index_str.highlighted unless days_picked?
       day_str   = "#{d.short_name}  #{d.to_s(:padding => max_block_count)}"
       day_str   = day_str.today_color if d.today? && !days_picked?
-      str       = index_str + "  #{day_str}"
+      str       = +(index_str + "  #{day_str}")
       if config.group_weeks_in_interactive_mode? && d.monday? && !i.zero?
         str.prepend("\n")
       end

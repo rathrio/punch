@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Provides utility functions for determining OS and OS-specific system calls.
 module OS
   module_function
@@ -24,12 +26,11 @@ module OS
   end
 
   def open_cmd
-    case
-    when mac?
+    if mac?
       'open'
-    when linux?
+    elsif linux?
       'xdg-open'
-    when windows?
+    elsif windows?
       'START ""'
     else
       raise "Unsupported OS"

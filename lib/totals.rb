@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Totals
   module Formatter
     attr_reader :seconds

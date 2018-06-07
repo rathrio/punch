@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Block
   include Attributes
   include Comparable
@@ -29,7 +31,7 @@ class Block
   end
 
   def to_s(options = {})
-    str = "#{format start}-"
+    str = +"#{format start}-"
     return str << '     ' if options[:fancy] && ongoing?
     str << format(finish)
   end

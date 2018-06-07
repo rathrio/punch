@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Provides ActiveModel-like initializer.
 #
 # @example Initializing a class with setters it responds to

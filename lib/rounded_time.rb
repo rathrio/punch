@@ -1,5 +1,6 @@
-class RoundedTime
+# frozen_string_literal: true
 
+class RoundedTime
   def self.now
     new(Time.now).time
   end
@@ -23,11 +24,7 @@ class RoundedTime
     @time -= diff
   end
 
-  def greedy
-  end
-
   def exact
     @time
   end
-
 end

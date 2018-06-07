@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Merger
   attr_reader :cards, :month_nr, :month_name, :year
 

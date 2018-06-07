@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # https://stackoverflow.com/questions/1489183/colorized-ruby-output
 class String
   def colorize(color_code)
@@ -46,7 +48,7 @@ module Kernel
     case object
     when Hash
       return "{}" if object.empty?
-      literal = "{\n"
+      literal = +"{\n"
       object.each do |k, v|
         literal << "#{indent + "  "}#{literal(k)} => "\
           "#{literal(v, (indent + "  "))},\n"

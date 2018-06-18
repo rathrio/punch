@@ -38,7 +38,7 @@ folder.
 
 ```bash
 # Example alias.
-alias punch=`./wherever/you/like/punch/punch.rb`
+alias punch='./wherever/you/like/punch/punch.rb'
 ```
 
 ### Tab completion

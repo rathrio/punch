@@ -195,7 +195,7 @@ class Punch
 
   # @return [Boolean]
   option :group_weeks_in_interactive_mode,
-    "Whether to add padding to group by week in the interactive editor.",
+    "Whether to group weeks in --full and --interactive mode",
     true
 
   # @return [Symbol]

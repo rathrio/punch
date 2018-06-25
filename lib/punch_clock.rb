@@ -56,6 +56,7 @@ class PunchClock
     --next
     --options
     --previous
+    --profile
     --raw
     --remove
     --reset-config
@@ -76,7 +77,7 @@ class PunchClock
 
   attr_reader :month, :month_name, :year, :brf_filepath
 
-  flag :dry_run, :print_full_month, :debug
+  flag :dry_run, :print_full_month, :debug, :profile
 
   def initialize(args)
     self.args = args
@@ -131,6 +132,15 @@ class PunchClock
     # Prepend default arguments.
     unless config.default_args.empty?
       @args.unshift(*config.default_args.split(' '))
+    end
+
+    switch "--profile" do
+      profile!
+    end
+
+    if profile?
+      require 'ruby-prof'
+      RubyProf.start
     end
 
     switch "--dry-run" do
@@ -424,6 +434,13 @@ class PunchClock
     puts "Unknown arguments.\n"\
       "Pass #{"--help".highlighted} for a list of options or retry with"\
       " #{"--debug".highlighted} to get a stacktrace."
+  ensure
+    if profile?
+      result = RubyProf.stop
+      printer = RubyProf::FlatPrinter.new(result)
+      puts "\nProfiler Results\n".highlighted
+      printer.print(STDOUT)
+    end
   end
 
   def config

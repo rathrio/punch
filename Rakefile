@@ -44,3 +44,16 @@ task :debug_month do
 
   PunchClock.new(%w(--console)).punch
 end
+
+desc 'Profile'
+task :profile do
+  require 'ruby-prof'
+  require_relative 'punch'
+
+  result = RubyProf.profile do
+    PunchClock.new([]).punch
+  end
+
+  printer = RubyProf::FlatPrinter.new(result)
+  printer.print(STDOUT)
+end

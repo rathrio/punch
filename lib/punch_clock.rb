@@ -393,10 +393,11 @@ class PunchClock
         switch "-r", "--remove" do
           action = :remove
         end
-        blocks = @args.map do |block_str|
-          BlockParser.parse block_str, day
+
+        @args.each do |block_str|
+          block = BlockParser.parse block_str, day
+          day.send(action, block)
         end
-        day.send action, *blocks
 
         # Cleanup in case we have empty days after a remove.
         month.cleanup! if action == :remove

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'config'
 
 class OngoingTest < PunchTest
@@ -73,21 +75,11 @@ class OngoingTest < PunchTest
     assert_punched '28.01.15   12:00-12:00   Total: 00:00'
   end
 
-  # This is not really a feature and is only here to make sure that the second
-  # half block doesn't complete the first one.
-  def test_start_multiple_ongoing_blocks_cant_complete_themselves
+  def test_multiple_ongoing_block_are_aware_of_previous_ongoing_blocks
+    punch '9'
+    assert_punched '28.01.15   09:00-09:00   Total: 00:00'
+
     punch '12 13'
-    assert_punched '12:00-12:00   13:00-13:00'
+    assert_punched '28.01.15   09:00-12:00   13:00-13:00   Total: 03:00'
   end
-
-  # Again, not really a feature, but here to test consistency. Punch is not
-  # intended to be used like this.
-  def test_multiple_complete_takes_last_complete
-    punch '0915'
-    assert_punched '09:15-09:15'
-
-    punch '13 1330'
-    assert_punched '09:15-13:30'
-  end
-
 end

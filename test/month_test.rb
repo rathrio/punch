@@ -49,4 +49,31 @@ class MonthTest < PunchTest
     assert_equal 1, month.number
     assert_equal 2014, month.year
   end
+
+  def test_comparable
+    m1 = Month.new('test month')
+    m1.year = 2015
+    m1.number = 2
+
+    m2 = Month.new('test month')
+    m2.year = 2015
+    m2.number = 3
+
+    assert m1 < m2
+
+    m2.number = 1
+    assert m1 > m2
+
+    m2.number = 2
+    assert m1 == m2
+
+    m1.year = 2016
+    assert m1 > m2
+  end
+
+  def test_empty
+    m = Month.new('foobar')
+    assert m.empty?
+    refute @month.empty?
+  end
 end

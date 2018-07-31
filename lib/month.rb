@@ -2,6 +2,7 @@
 
 class Month
   include Totals
+  include Comparable
 
   NEWLINE = "\n"
 
@@ -151,5 +152,13 @@ class Month
   def cleanup!(options = {})
     days.each(&:remove_ongoing_blocks!) if options[:remove_ongoing_blocks]
     days.reject!(&:empty?)
+  end
+
+  def <=>(other)
+    [year, number] <=> [other.year, other.number]
+  end
+
+  def empty?
+    days.all?(&:empty?)
   end
 end

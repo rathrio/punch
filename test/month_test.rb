@@ -1,4 +1,6 @@
-require_relative 'config'
+# frozen_string_literal: true
+
+require_relative "config"
 
 class MonthTest < PunchTest
   def setup
@@ -22,20 +24,29 @@ class MonthTest < PunchTest
   end
 
   def test_name_with_title_and_username_present
-    config :name => 'Spongebob', :title => 'Krosse Krabbe' do
-      assert_equal 'Krosse Krabbe - Januar 2014 - Spongebob', @month.name
+    config :name => "Spongebob", :title => "Krosse Krabbe" do
+      assert_equal "Krosse Krabbe - Januar 2014 - Spongebob", @month.name
     end
   end
 
   def test_name_with_title_missing
-    config :name => 'Spongebob', :title => '' do
-      assert_equal 'Januar 2014 - Spongebob', @month.name
+    config :name => "Spongebob", :title => "" do
+      assert_equal "Januar 2014 - Spongebob", @month.name
     end
   end
 
   def test_name_with_username_missing
-    config :name => '', :title => 'Krosse Krabbe' do
-      assert_equal 'Krosse Krabbe - Januar 2014', @month.name
+    config :name => "", :title => "Krosse Krabbe" do
+      assert_equal "Krosse Krabbe - Januar 2014", @month.name
     end
+  end
+
+  def test_from_file
+    punch '-m 1.2014 8-10'
+    file_path = "#{Punch.config.hours_folder}/2014-1.txt"
+
+    month = Month.from_file(file_path)
+    assert_equal 1, month.number
+    assert_equal 2014, month.year
   end
 end

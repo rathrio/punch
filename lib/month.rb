@@ -10,11 +10,25 @@ class Month
 
   alias_method :month, :number
 
+  # @param brf_str [String]
+  # @param month_nr [Integer]
+  # @param year [Integer]
+  # @return [Month]
   def self.from(brf_str, month_nr, year)
     month        = BRFParser.new.parse(brf_str)
     month.number = month_nr
     month.year   = year
     month
+  end
+
+  # Like .from, but will infer the month and year from the file name.
+  #
+  # @param file_path [String] absolute path to BRF file
+  # @return [Month]
+  def self.from_file(file_path)
+    basename = File.basename(file_path, '.txt')
+    brf_str = File.read(file_path)
+    from brf_str, *basename.split('-').map(&:to_i).reverse
   end
 
   def initialize(name)

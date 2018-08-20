@@ -21,8 +21,8 @@
 #
 # The first non-empty line in the file is the name. For now, the name does not
 # have any significant meaning, but when generating a new file, Punch will
-# generate a string consisting of the current month name in German followed by
-# the current year.
+# generate a string consisting of the current month name followed by the
+# current year.
 #
 #   month_name YYYY
 #

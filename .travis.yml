@@ -5,5 +5,5 @@ rvm:
   - 2.3.5
   - 2.4.2
   - 2.5.1
-  - truffleruby
+  - truffleruby-1.0.0-rc5
 script: rake test

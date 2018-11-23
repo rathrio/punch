@@ -122,6 +122,7 @@ class Stats
 #{label "Consecutive days"}#{consecutive_days}
 #{label "Total days"}#{total_days}
 #{label "Total blocks"}#{total_blocks}
+#{label "Quota"}#{quota}
     EOS
   end
 
@@ -145,7 +146,7 @@ class Stats
     @goal ||= if config.goal_type == :monthly
                 config.monthly_goal
               else
-                ((config.daily_goal * workdays.count ).round(2) * 3600).floor
+                ((config.daily_goal * workdays.count).round(2) * 3600).floor
               end
   end
 
@@ -183,6 +184,13 @@ class Stats
 
   def eight_am(day)
     Time.new(day.year, day.month, day.day, 8)
+  end
+
+  def quota
+    workdays_passed = workdays.count - workdays_left
+    target = ((config.daily_goal * workdays_passed).round(2) * 3600).floor
+
+    Totals.format((target - monthly_total))
   end
 
   def now

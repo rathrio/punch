@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Aggregates super useless stats given an instance of Month.
+# Aggregates stats given an instance of Month.
 #
 #   Stats.new(month).to_s
 #

@@ -73,6 +73,27 @@ class StatsTest < PunchTest
     assert_equal 1, stats.early_mornings
   end
 
+  def test_quota
+    config :daily_goal => 8, :goal_type => :daily, :hand_in_date => 31 do
+      Timecop.freeze(Time.new(2018, 1, 5)) do
+        punch '8-17 -d 1'
+        punch '8-17 -d 2'
+        punch '8-17 -d 3'
+        punch '8-17 -d 4'
+        punch '8-10'
+
+        # Not enough worked yet
+        assert_equal '02:00', stats.quota
+
+        punch '10-18'
+
+        # Worked too much
+        assert_equal '-6:00', stats.quota
+      end
+    end
+
+  end
+
   private
 
   def stats

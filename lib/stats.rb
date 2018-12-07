@@ -190,7 +190,7 @@ class Stats
     workdays_passed = workdays.count - workdays_left
     target = ((config.daily_goal * workdays_passed).round(2) * 3600).floor
 
-    Totals.format((target - monthly_total))
+    Totals.format(target - monthly_total)
   end
 
   def now

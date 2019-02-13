@@ -136,6 +136,9 @@ $ punch -e, --edit [editor]
 
     You don't have to manually recalculate the totals. Use --format instead.
 
+$ punch --edit-full [editor]
+    Like --edit, but fills the BRF file with all missing days.
+
 $ punch -f, --format
     Reformat current BRF file. This will normalize whitespace, recalculate
     totals and remove ongoing blocks.

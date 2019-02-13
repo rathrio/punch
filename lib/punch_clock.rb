@@ -41,6 +41,7 @@ class PunchClock
     --doc
     --dry-run
     --edit
+    --edit-full
     --engine
     --format
     --full
@@ -306,7 +307,7 @@ class PunchClock
     end
 
     flag "-e", "--edit" do |application|
-      edit_brf application
+      edit_brf(:application => application)
     end
 
     switch "--raw" do
@@ -325,8 +326,10 @@ class PunchClock
     File.open brf_filepath, 'r+' do |file|
       @month = Month.from(file.read, month_year.month, month_year.year)
 
-      switch "--undo" do
-        exit
+      flag "--edit-full" do |application|
+        @month = month.full_month
+        write! file
+        edit_brf(:application => application)
       end
 
       switch "-f", "--format" do
@@ -448,11 +451,14 @@ class PunchClock
     Punch.config
   end
 
-  # @param application [String] which application to open file with,
-  #   e.g. "TextEdit"
-  def edit_brf(application = nil)
-    open brf_filepath, application
-    exit
+  # @param options [Hash]
+  # @option options [String] :application which application to open the BRF
+  #   file with, e.g. "TextEdit"
+  # @option options [Boolean] :exit whether to exit after editing
+  def edit_brf(options = {})
+    open brf_filepath, options[:application]
+    exit_after_edit = options.fetch(:exit, true)
+    exit if exit_after_edit
   end
 
   def print_version

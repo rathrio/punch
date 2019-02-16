@@ -419,8 +419,6 @@ class PunchClock
         month.add today
       end
 
-      system "clear" if config.clear_buffer_before_punch?
-
       if print_full_month?
         puts month.full
       else

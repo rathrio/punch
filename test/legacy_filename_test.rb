@@ -5,7 +5,7 @@ class LegacyFilenameTest < PunchTest
     @legacy_filename = "#{Punch.config.hours_folder}/november_2013.txt"
     @new_filename = "#{Punch.config.hours_folder}/2013-11.txt"
 
-    File.open(@legacy_filename, 'w') do |f|
+    File.open(@legacy_filename, 'w:UTF-8') do |f|
       f.puts "November 2013 - Spongebob\r\n\r\n"
       f.puts '29.11.13   08:00-16:44   Total: 99:99'
     end
@@ -24,7 +24,7 @@ class LegacyFilenameTest < PunchTest
   end
 
   def test_ignores_legacy_file_if_new_file_present
-    File.open(@new_filename, 'w') do |f|
+    File.open(@new_filename, 'w:UTF-8') do |f|
       f.puts "November 2013 - Radi\r\n\r\n"
       f.puts '14.11.13   03:00-05:00   Total: 02:00'
     end
@@ -39,7 +39,7 @@ class LegacyFilenameTest < PunchTest
     legacy_filename = "#{Punch.config.hours_folder}/maerz_2015.txt"
     new_filename = "#{Punch.config.hours_folder}/2015-3.txt"
 
-    File.open(legacy_filename, 'w') do |f|
+    File.open(legacy_filename, 'w:UTF-8') do |f|
       f.puts "Maerz 2013 - Spongebob\r\n\r\n"
       f.puts '29.11.13   08:00-16:44   Total: 99:99'
     end

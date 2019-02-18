@@ -125,7 +125,7 @@ class PunchTest < MiniTest::Test
 
   # Write str to current BRF file.
   def brf_write(str)
-    File.open(brf_file, 'w') { |f| f.write str }
+    File.open(brf_file, 'w:UTF-8') { |f| f.write str }
   end
 
   # Assert that the current BRF file contains the str.

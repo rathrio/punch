@@ -278,7 +278,7 @@ class Punch
   end
 
   def generate_config_file
-    File.open(config_file, "w") { |f| f.write config_string }
+    File.open(config_file, "w:UTF-8") { |f| f.write config_string }
   end
 
   private

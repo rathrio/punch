@@ -500,7 +500,7 @@ class PunchClock
     end
 
     # Create empty BRF file for this month.
-    File.open(filepath, "w") do |f|
+    File.open(filepath, "w:UTF-8") do |f|
       f.write "#{month_name.capitalize} #{month_year.year}"
     end
 

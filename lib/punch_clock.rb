@@ -323,7 +323,7 @@ class PunchClock
       exit
     end
 
-    File.open brf_filepath, 'r+' do |file|
+    File.open brf_filepath, 'r+:UTF-8' do |file|
       @month = Month.from(file.read, month_year.month, month_year.year)
 
       flag "--edit-full" do |application|

@@ -13,6 +13,7 @@ if ENV['CI']
   Coveralls.wear!
 end
 
+require 'fileutils'
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'timecop'
@@ -86,7 +87,7 @@ class PunchTest < MiniTest::Test
 
   # Delete all BRF files in test hours folder.
   def self.clear_hours_folder
-    system "rm #{TEST_HOURS_FOLDER}/*" unless `ls #{TEST_HOURS_FOLDER}`.empty?
+    FileUtils.rm_rf(Dir["#{TEST_HOURS_FOLDER}/*"])
   end
 
   def clear_hours_folder

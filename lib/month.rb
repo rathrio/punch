@@ -74,11 +74,8 @@ class Month
       day_str
     end.join(newline)
 
-    str = "#{name}#{newline * 2}#{days_str}#{newline * 2}" \
+    "#{name}#{newline * 2}#{days_str}#{newline * 2}" \
       "Total: #{total_str}#{newline}"
-
-    str = "\e[H\e[2J#{str}" if Punch.config.clear_buffer_before_punch?
-    str
   end
 
   def find_or_create_day_by_date(date)

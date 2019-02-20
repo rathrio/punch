@@ -419,11 +419,12 @@ class PunchClock
         month.add today
       end
 
-      if print_full_month?
-        puts month.full
-      else
-        puts month.fancy
+      month_str = print_full_month? ? month.full : month.fancy
+      if config.clear_buffer_before_punch?
+        month_str = "\e[H\e[2J#{month_str}"
       end
+
+      puts month_str
     end
   rescue BRFParser::ParserError => e
     raise e if debug_mode?

@@ -130,7 +130,7 @@ class Punch
 
   # @return [String]
   option :default_args,
-    "Arguments to pass by default. e.g. '-y' to always punch yesterday.",
+    "Arguments to pass by default. e.g. '--full' to always display a full month.",
     ""
 
   # @return [Fixnum]

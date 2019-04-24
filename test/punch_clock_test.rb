@@ -48,6 +48,13 @@ class PunchClockTest < PunchTest
     assert_punched '02.02.15   14:00-15:45   Total: 01:45'
   end
 
+  def test_day_flag_with_multiple_comma_separated_days
+    punch '-d 2,3,5 14-15'
+    assert_punched '02.02.15   14:00-15:00   Total: 01:00'
+    assert_punched '03.02.15   14:00-15:00   Total: 01:00'
+    assert_punched '05.02.15   14:00-15:00   Total: 01:00'
+  end
+
   def test_yesterday_switch
     punch '-y 11-13'
     assert_punched '27.01.15   11:00-13:00   Total: 02:00'

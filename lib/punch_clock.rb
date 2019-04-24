@@ -5,21 +5,8 @@ class PunchClock
 
   VERSION_NAME = "The Baddest Man on the Planet"
 
-  MIDNIGHT_MADNESS_NOTES = [
-    "Get some sleep!",
-    "Don't you have any hobbies?",
-    "Get some rest, (wo)man...",
-    "You should go to bed.",
-    "That can't be healthy.",
-    "You might need therapy.",
-    "All work and no play makes Jack a dull boy.",
-    "You need to get your priorities straight.",
-    "Work-life balance. Ever heard of it?",
-    "Did you know that the average adult needs 7-8 hours of sleep?"
-  ].freeze
-
   # Card names are a restricted form of identifiers.
-  CARD_RGX = /^(?!now)([a-z_][a-zA-Z0-9_]*)$/
+  CARD_RGX = /^(?!now)([a-z_][a-zA-Z0-9_]*)$/.freeze
 
   # The options listed here can be tab completed.
   OPTIONS = %w(
@@ -110,6 +97,7 @@ class PunchClock
 
   def write!(file)
     return 0 if dry_run?
+
     file.rewind
     file.truncate 0
     file.write month
@@ -361,15 +349,15 @@ class PunchClock
       end
 
       unless @args.empty?
-        day = nil
+        days = []
 
         # The --day flag might set a day to edit.
         flag "-d", "--day" do |date|
-          day = month.find_or_create_day_by_date(date)
+          days << month.find_or_create_day_by_date(date)
         end
 
         # If not, auto-determine which day to edit.
-        if day.nil?
+        if days.empty?
           time_to_edit = now
           switch "-y", "--yesterday" do
             time_to_edit = now.prev_day
@@ -379,16 +367,17 @@ class PunchClock
             day = Day.new
             day.set time_to_edit
             month.add day
+            days << day
           end
         end
 
         flag "-t", "--tag", "--comment" do |comment|
           comment = gets_tmp('comment', day.comment) if comment.nil?
-          day.comment = comment
+          days.each { |day| day.comment = comment }
         end
 
         switch "--clear-tags", "--clear-comment" do
-          day.comment = nil
+          days.each { |day| day.comment = nil }
         end
 
         # Add or remove blocks.
@@ -397,17 +386,16 @@ class PunchClock
           action = :remove
         end
 
+        require 'pry'; binding.pry
+
         @args.each do |block_str|
-          block = BlockParser.parse block_str, day
-          day.send(action, block)
+          days.each do |day|
+            day.send(action, BlockParser.parse(block_str, day))
+          end
         end
 
         # Cleanup in case we have empty days after a remove.
         month.cleanup! if action == :remove
-
-        if day.unhealthy? && action == :add
-          puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n"
-        end
 
         write! file
       end
@@ -420,20 +408,20 @@ class PunchClock
       end
 
       month_str = print_full_month? ? month.full : month.fancy
-      if config.clear_buffer_before_punch?
-        month_str = "\e[H\e[2J#{month_str}"
-      end
+      month_str = "\e[H\e[2J#{month_str}" if config.clear_buffer_before_punch?
 
       puts month_str
     end
   rescue BRFParser::ParserError => e
     raise e if debug_mode?
+
     puts "Couldn't parse #{brf_filepath.highlighted}."
   rescue Interrupt
     puts "\nExiting...".highlighted
     exit
-  rescue => e
+  rescue StandardError => e
     raise e if debug_mode?
+
     puts "Unknown arguments.\n"\
       "Pass #{"--help".highlighted} for a list of options or retry with"\
       " #{"--debug".highlighted} to get a stacktrace."

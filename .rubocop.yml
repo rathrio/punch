@@ -1,5 +1,10 @@
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
 
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  TargetRubyVersion: 2.3
+
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 

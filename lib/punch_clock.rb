@@ -36,7 +36,6 @@ class PunchClock
     --hack
     --help
     --hours
-    --interactive
     --log
     --mail
     --merge
@@ -338,11 +337,6 @@ class PunchClock
         exit
       end
 
-      switch "-i", "--interactive" do
-        @month = Editor.new(@month).run
-        write! file
-      end
-
       switch "-s", "--stats" do
         puts Stats.new(month)
         exit
@@ -351,12 +345,13 @@ class PunchClock
       unless @args.empty?
         days = []
 
-        # The --day flag might set a day to edit.
-        flag "-d", "--day" do |date|
-          days << month.find_or_create_day_by_date(date)
+        # The --day flag might set one or multiple days to edit.
+        flag "-d", "--day" do |date_args|
+          days = month.find_or_create_days_from_dates(date_args)
         end
 
-        # If not, auto-determine which day to edit.
+        # If not, infer which day to edit from the current time or other
+        # provided flags.
         if days.empty?
           time_to_edit = now
           switch "-y", "--yesterday" do
@@ -369,15 +364,20 @@ class PunchClock
             month.add day
             days << day
           end
+          days << day
         end
 
         flag "-t", "--tag", "--comment" do |comment|
-          comment = gets_tmp('comment', day.comment) if comment.nil?
-          days.each { |day| day.comment = comment }
+          if comment.nil?
+            default_comment = days.count == 1 ? days.first.comment : ''
+            comment = gets_tmp('comment', default_comment)
+          end
+
+          days.each { |d| d.add_comment(comment) }
         end
 
         switch "--clear-tags", "--clear-comment" do
-          days.each { |day| day.comment = nil }
+          days.each(&:clear_comment)
         end
 
         # Add or remove blocks.
@@ -386,12 +386,8 @@ class PunchClock
           action = :remove
         end
 
-        require 'pry'; binding.pry
-
         @args.each do |block_str|
-          days.each do |day|
-            day.send(action, BlockParser.parse(block_str, day))
-          end
+          days.each { |d| d.send(action, BlockParser.parse(block_str, d)) }
         end
 
         # Cleanup in case we have empty days after a remove.
@@ -529,7 +525,7 @@ class PunchClock
     f = Tempfile.new 'help'
     f.write(
       File.readlines(help_file).map do |l|
-        l.start_with?('$') ? l.highlighted : l
+        l =~ /^\s*\$/ ? l.highlighted : l
       end.join
     )
     f.rewind

@@ -40,6 +40,16 @@ class Day
     @short_year = yyyy.to_s[-2..-1].to_i
   end
 
+  def clear_comment
+    highlight!
+    self.comment = nil
+  end
+
+  def add_comment(new_comment)
+    highlight!
+    self.comment = new_comment
+  end
+
   def comment=(new_comment)
     @comment = new_comment.to_s.strip.tr("\n", " ")
   end

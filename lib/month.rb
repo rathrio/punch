@@ -85,8 +85,8 @@ class Month
     dates = date_args.split(',') if date_args.include?(',')
     dates = dates.inject([]) do |new_dates, date|
       if date.include?('-')
-        range = Range.new(*date.split('-').map(&:to_i))
-        new_dates.push(*range.to_a.map(&:to_s))
+        range = Range.new(*date.split('-'))
+        new_dates.push(*range.to_a)
       else
         new_dates.push(date)
       end

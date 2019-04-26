@@ -78,23 +78,38 @@ class Month
       "Total: #{total_str}#{newline}"
   end
 
-  def find_or_create_day_by_date(date)
-    day_nr, month_nr, year_nr = date.split('.')
-
-    day = days.find do |d|
-      (day_nr   ? d.day?(day_nr)     : true) &&
-      (month_nr ? d.month?(month_nr) : true) &&
-      (year_nr  ? d.year?(year_nr)   : true)
+  # @param date_args [String]
+  # @return [Array<Day>]
+  def find_or_create_days_from_dates(date_args)
+    dates = [date_args]
+    dates = date_args.split(',') if date_args.include?(',')
+    dates = dates.inject([]) do |new_dates, date|
+      if date.include?('-')
+        range = Range.new(*date.split('-'))
+        new_dates.push(*range.to_a)
+      else
+        new_dates.push(date)
+      end
     end
 
-    if day.nil?
-      day = DateParser.parse(date, self)
-      add day
-    else
+    dates.map do |date|
+      day_nr, month_nr, year_nr = date.split('.')
+
+      day = days.find do |d|
+        (day_nr   ? d.day?(day_nr)     : true) &&
+        (month_nr ? d.month?(month_nr) : true) &&
+        (year_nr  ? d.year?(year_nr)   : true)
+      end
+
+      if day.nil?
+        day = DateParser.parse(date, self)
+        add day
+      else
+        day
+      end
+
       day
     end
-
-    day
   end
 
   def month_year

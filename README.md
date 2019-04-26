@@ -211,31 +211,6 @@ Krusty Krab - Mai 2015 - Spongebob Squarepants
 Total: 06:00
 ```
 
-### Experimental Interactive Editor
-
-The `--interactive` (`-i`) mode comes in very handy when `--day` and
-`--yesterday` just won't do. It provides a simple interface to select one or
-more days and even allows you to add hours to multiple days with one punch.
-
-![Demo](https://i.imgur.com/6x4y6Pc.gif)
-
-#### Modes
-
-There are basically two modes, the **command** and **punch** mode.
-
-In command mode, indicated by the `>>` prompt, you can select days with a comma
-or space separated list of numbers that correspond to the numbers on the very
-left side in the braces. Once you hit return you will enter punch mode,
-indicated by the `Add blocks:` prompt, where you can use the Punch syntax you're
-used to from the default CLI. You can abort punch mode anytime by hitting return
-with an empty prompt. This will return you to command mode.
-
-In command mode, you can save and quit the interactive session with `x` and quit it
-without saving with `q`.
-
-Once you have exited the session with `x`, Punch will print the edited month
-with the days updated highlighted in pink by default.
-
 Configuration
 -------------
 

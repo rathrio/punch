@@ -122,8 +122,28 @@ $ punch -d, --day dd.mm.yy
     * dd.mm
     * dd
 
-    Leading zeros may be omitted. Punch tries to be smart about missing month
-    or year information.
+    Leading zeros may be omitted. Punch infers the month and year from the
+    current time and the hand_in_date setting when they are omitted.
+
+    Multiple days can be punched by passing a comma (",") separated list or
+    hyphen ("-") separated range of the aforementioned formats.
+
+    $ punch -d 1,3 -t Holiday
+    01.12.14   Total: 00:00   Holiday
+    03.12.14   Total: 00:00   Holiday
+
+    $ punch -d 1-3 -t Holiday
+    01.12.14   Total: 00:00   Holiday
+    02.12.14   Total: 00:00   Holiday
+    03.12.14   Total: 00:00   Holiday
+
+    They can be combined as well.
+
+    $ punch -d 1-3,6 -t Holiday
+    01.12.14   Total: 00:00   Holiday
+    02.12.14   Total: 00:00   Holiday
+    03.12.14   Total: 00:00   Holiday
+    06.12.14   Total: 00:00   Holiday
 
 $ punch --dry-run
     Run commands without writing to file.
@@ -148,10 +168,6 @@ $ punch --full
 
 $ punch -h , --help
     Print this message.
-
-$ punch -i, --interactive
-    Start an interactive punch session. Save and quit it with 'x'. Quit without
-    saving with 'q'.
 
 $ punch -l, --log [entries]
     List the last 10 commit messages. Optionally pass a number to list more.

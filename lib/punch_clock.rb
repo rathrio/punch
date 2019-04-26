@@ -62,6 +62,19 @@ class PunchClock
     --yesterday
   ).freeze
 
+  MIDNIGHT_MADNESS_NOTES = [
+    "Get some sleep!",
+    "Don't you have any hobbies?",
+    "Get some rest, (wo)man...",
+    "You should go to bed.",
+    "That can't be healthy.",
+    "You might need therapy.",
+    "All work and no play makes Jack a dull boy.",
+    "You need to get your priorities straight.",
+    "Work-life balance. Ever heard of it?",
+    "Did you know that the average adult needs 7-8 hours of sleep?"
+  ].freeze
+
   attr_reader :month, :month_name, :year, :brf_filepath
 
   flag :dry_run, :print_full_month, :debug, :profile
@@ -392,6 +405,10 @@ class PunchClock
 
         # Cleanup in case we have empty days after a remove.
         month.cleanup! if action == :remove
+
+        if action == :add && days.any?(&:unhealthy?)
+          puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n"
+        end
 
         write! file
       end

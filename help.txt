@@ -111,7 +111,7 @@ $ punch --config-update
     available settings in.
 
 $ punch -d, --day dd.mm.yy
-    Pass a date to add blocks for that day. Defaults to today.
+    Pass a date to add blocks for that day.
 
     $ punch -d 03.12.14 22-23
 

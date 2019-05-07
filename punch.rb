@@ -21,7 +21,6 @@ require 'date'
 require 'punch_clock'
 
 autoload :Tempfile, 'tempfile'
-autoload :Merger, 'merger'
 autoload :FileUtils, 'fileutils'
 autoload :BRFMailer, 'brf_mailer'
 autoload :Stats, 'stats'

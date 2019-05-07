@@ -38,7 +38,6 @@ class PunchClock
     --hours
     --log
     --mail
-    --merge
     --month
     --next
     --options
@@ -293,12 +292,6 @@ class PunchClock
     end
 
     @month_name = MonthNames.name month_year.month
-
-    switch "--merge" do
-      puts Merger.new(@args, month_year).month
-      exit
-    end
-
     @brf_filepath = generate_brf_filepath(month_year)
 
     flag "-b", "--backup" do |path|

@@ -1,39 +1,6 @@
 # frozen_string_literal: true
 
 module Totals
-  module Formatter
-    attr_reader :seconds
-
-    def initialize(seconds)
-      @seconds = seconds.to_i
-    end
-  end
-
-  class DigitalFormatter
-    include Formatter
-
-    def format
-      hours   = seconds / 3_600
-      rest    = seconds - (hours * 3_600)
-      minutes = rest / 60
-
-      "#{hours.left_pad}:#{minutes.left_pad}"
-    end
-  end
-
-  class DecimalFormatter
-    include Formatter
-
-    def format
-      (seconds / 3_600.0).round(1).left_pad(:with => ' ', :length => 4)
-    end
-  end
-
-  FORMATTERS = {
-    :digital => DigitalFormatter,
-    :decimal => DecimalFormatter
-  }.freeze
-
   def total
     children.inject(0) { |sum, c| sum + c.total }
   end
@@ -45,10 +12,25 @@ module Totals
   module_function
 
   def format(seconds, totals_format = Punch.config.totals_format)
-    formatter_class = FORMATTERS.fetch(totals_format) do
+    case totals_format
+    when :digital
+      digital_format(seconds.to_i)
+    when :decimal
+      decimal_format(seconds.to_i)
+    else
       raise "Unknown totals format #{totals_format.inspect}"
     end
+  end
 
-    formatter_class.new(seconds).format
+  def digital_format(seconds)
+    hours   = seconds / 3_600
+    rest    = seconds - (hours * 3_600)
+    minutes = rest / 60
+
+    "#{hours.left_pad}:#{minutes.left_pad}"
+  end
+
+  def decimal_format(seconds)
+    (seconds / 3_600.0).round(1).left_pad(:with => ' ', :length => 4)
   end
 end

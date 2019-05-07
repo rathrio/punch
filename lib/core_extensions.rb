@@ -24,8 +24,8 @@ end
 class Numeric
   # @return [String]
   def left_pad(args = {})
-    char = args.fetch(:with, '0')
-    length = args.fetch(:length, 2)
+    char = args[:with] || '0'
+    length = args[:length] || 2
     to_s.rjust length, char
   end
 end

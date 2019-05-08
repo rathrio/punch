@@ -343,9 +343,14 @@ class PunchClock
         exit
       end
 
-      switch "-s", "--stats" do
-        puts Stats.new(month)
-        exit
+      flag "-s", "--stats" do |arg|
+        if arg.nil?
+          puts month.stats
+          exit
+        end
+
+        s = YearStats.new
+        require 'pry'; binding.pry
       end
 
       unless @args.empty?

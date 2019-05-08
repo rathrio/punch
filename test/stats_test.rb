@@ -22,6 +22,41 @@ class StatsTest < PunchTest
     end
   end
 
+  def test_average_hours
+    assert_equal '00:00', stats.average_hours_per_day
+    assert_equal '00:00', stats.average_hours_per_block
+
+    punch '-d 1 8-10'
+    assert_equal '02:00', stats.average_hours_per_day
+    assert_equal '02:00', stats.average_hours_per_block
+
+    punch '-d 2 8-9 12-13'
+    assert_equal '02:00', stats.average_hours_per_day
+    assert_equal '01:20', stats.average_hours_per_block
+
+    punch '-d 3 8-9'
+    assert_equal '01:40', stats.average_hours_per_day
+    assert_equal '01:15', stats.average_hours_per_block
+
+    config :totals_format => :decimal do
+      assert_equal '1.7', stats.average_hours_per_day.strip
+      assert_equal '1.3', stats.average_hours_per_block.strip
+    end
+  end
+
+  def test_consecutive_days
+    assert_equal 0, stats.consecutive_days
+
+    punch '-d 1 8-10'
+    assert_equal 1, stats.consecutive_days
+
+    punch '-d 3 8-10'
+    assert_equal 1, stats.consecutive_days
+
+    punch '-d 2 -t Hi'
+    assert_equal 3, stats.consecutive_days
+  end
+
   def test_longest_day_and_block_stats
     assert_equal '00:00', stats.longest_day
     assert_equal '00:00', stats.longest_block
@@ -91,7 +126,21 @@ class StatsTest < PunchTest
         assert_equal '-6:00', stats.quota
       end
     end
+  end
 
+  def test_tag_count
+    punch '-d 1 -t Sick'
+    punch '-d 2 -t Sick'
+    punch '-d 3 -t Vacation'
+    punch '-d 4 -t Holiday'
+
+    expected = {
+      'Sick' => 2,
+      'Vacation' => 1,
+      'Holiday' => 1
+    }
+
+    assert_equal expected, stats.tag_counts
   end
 
   private

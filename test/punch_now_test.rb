@@ -95,4 +95,14 @@ class PunchNowTest < PunchTest
     end
   end
 
+  def test_now_falls_back_to_fair_rounding_on_unknown_config
+    config(:punch_now_rounder => :foobar) do
+      Timecop.freeze(Time.new(2015, 01, 28, 14, 58)) do
+        punch '10-now'
+      end
+      assert_punched(
+        '28.01.15   10:00-15:00   Total: 05:00'
+      )
+    end
+  end
 end

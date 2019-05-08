@@ -37,7 +37,7 @@ class Day
 
   def year=(yyyy)
     @year = yyyy
-    @short_year = yyyy.to_s[-2..-1].to_i
+    @short_year = yyyy % 100
   end
 
   def clear_comment

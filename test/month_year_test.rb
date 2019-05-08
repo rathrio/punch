@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'config'
 
 class MonthYearTest < MiniTest::Test
@@ -13,5 +15,11 @@ class MonthYearTest < MiniTest::Test
 
     month_year = MonthYear.new(:month => 2, :year => 2017)
     assert_equal 28, month_year.number_of_days
+  end
+
+  def test_year_eq
+    month_year = MonthYear.new(:month => 2, :year => 2017)
+    assert month_year.year_eq?(2017)
+    refute month_year.year_eq?(2018)
   end
 end

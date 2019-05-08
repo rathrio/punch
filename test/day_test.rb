@@ -140,6 +140,19 @@ class DayTest < MiniTest::Test
     assert_equal 'doo bario sanchez', day.comment
   end
 
+  def test_workday
+    config :workdays => [] do
+      monday = Day.from '06.05.19'
+      assert monday.workday?
+
+      satuday = Day.from '11.05.19'
+      refute satuday.workday?
+
+      sunday = Day.from '12.05.19'
+      refute sunday.workday?
+    end
+  end
+
   def test_ignore
     day = Day.new
     day.comment = "ignore me man"

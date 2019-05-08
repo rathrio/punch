@@ -64,12 +64,14 @@ class Stats
   end
 
   def average_hours_per_day
-    return 0 if days.empty?
+    return Totals.format(0) if days.empty?
+
     Totals.format(monthly_total / total_days)
   end
 
   def average_hours_per_block
-    return 0 if blocks.empty?
+    return Totals.format(0) if blocks.empty?
+
     Totals.format(monthly_total / total_blocks)
   end
 
@@ -107,23 +109,28 @@ class Stats
   end
 
   def to_s
-    <<-EOS
-#{label "Progress"}#{progress}
-#{label "Workdays left"}#{workdays_left_progress}
-#{label "Hours per workday remaining"}#{average_hours_per_workday_remaining}
-#{label "Money made"}#{total_money_made}
-#{label "Avg hours per day"}#{average_hours_per_day}
-#{label "Avg hours per block"}#{average_hours_per_block}
-#{label "Longest day"}#{longest_day}
-#{label "Longest block"}#{longest_block}
-#{label "Most blocks in day"}#{most_blocks}
-#{label "Late nights"}#{late_nights}
-#{label "Early mornings"}#{early_mornings}
-#{label "Consecutive days"}#{consecutive_days}
-#{label "Total days"}#{total_days}
-#{label "Total blocks"}#{total_blocks}
-#{label "Quota"}#{quota}
-    EOS
+    <<~STATS
+      #{label "Progress"}#{progress}
+      #{label "Workdays left"}#{workdays_left_progress}
+      #{label "Hours per workday remaining"}#{average_hours_per_workday_remaining}
+      #{label "Money made"}#{total_money_made}
+      #{label "Avg hours per day"}#{average_hours_per_day}
+      #{label "Avg hours per block"}#{average_hours_per_block}
+      #{label "Longest day"}#{longest_day}
+      #{label "Longest block"}#{longest_block}
+      #{label "Most blocks in day"}#{most_blocks}
+      #{label "Late nights"}#{late_nights}
+      #{label "Early mornings"}#{early_mornings}
+      #{label "Consecutive days"}#{consecutive_days}
+      #{label "Total days"}#{total_days}
+      #{label "Total blocks"}#{total_blocks}
+      #{label "Quota"}#{quota}
+      #{label "Tags"}#{tag_counts_line}
+    STATS
+  end
+
+  def tag_counts_line
+    tag_counts.map { |tag, count| "#{tag}: #{count}" }.join(" | ")
   end
 
   def percentage
@@ -166,8 +173,24 @@ class Stats
     Punch.config
   end
 
+  # @return [Hash<String, Integer>],
+  #   e.g. { "Holiday" => 5, "Sickday" => 1, ... }
+  def tag_counts
+    @tag_counts = tags.uniq.map { |t| [t, tags.count(t)] }.to_h
+  end
+
+  def tags
+    @tags ||= all_days.
+      reject { |d| d.comment.nil? }.
+      flat_map { |d| d.comment.split }
+  end
+
+  def all_days
+    @all_days ||= month.days.reject(&:empty?)
+  end
+
   def days
-    @days ||= month.days.reject(&:ignore?)
+    @days ||= all_days.reject(&:ignore?)
   end
 
   def blocks

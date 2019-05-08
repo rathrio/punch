@@ -55,6 +55,12 @@ class PunchClockTest < PunchTest
     assert_punched '27.01.15   11:00-13:00   Total: 02:00'
   end
 
+  def test_full_switch_lists_all_days
+    punch '--full'
+    assert_outputted '21.01.15'
+    assert_outputted '20.02.15'
+  end
+
   def test_format_switch_normalizes_whitespace
     brf_write %{
       Februar 2015
@@ -185,6 +191,50 @@ class PunchClockTest < PunchTest
     Timecop.freeze(2015, 11, 22) do
       punch
       assert_equal 12, current_month.number
+    end
+  end
+
+  def test_options_switch
+    punch '--options'
+
+    PunchClock::OPTIONS.each do |option|
+      assert_outputted option
+    end
+  end
+
+  def test_cards_switch
+    punch '--cards'
+    assert_outputted 'test' # The only card configured in test/.punchrc.rb
+  end
+
+  def test_cards
+    config :cards => { :foo => { :title => 'Foo' } } do
+      punch 'foo'
+      assert_outputted 'Foo'
+
+      punch 'bar'
+      assert_outputted %{The card "bar" doesn't exist}
+
+      punch 'foo bar'
+      assert_outputted %{The card "bar" doesn't exist}
+    end
+  end
+
+  def test_version
+    refute_empty clock.version
+  end
+
+  def test_last_release
+    refute_empty clock.last_release
+  end
+
+  def test_all_punchrc_options_have_name_and_description
+    refute_empty Punch.options
+
+    Punch.options.each do |option|
+      assert_kind_of Symbol, option.name
+      assert_kind_of String, option.description
+      refute_empty option.description
     end
   end
 

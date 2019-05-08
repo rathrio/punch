@@ -8,6 +8,9 @@ AllCops:
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 Layout/DotPosition:
   EnforcedStyle: trailing
 

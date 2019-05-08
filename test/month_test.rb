@@ -4,14 +4,14 @@ require_relative "config"
 
 class MonthTest < PunchTest
   def setup
-    @month = Month.from(<<-EOS, 1, 2014)
+    @month = Month.from(<<-BRF, 1, 2014)
       Januar 2014
 
       28.11.14   18:00-19:00   Total: 01:00
       30.12.14   08:00-13:00   Total: 05:00
 
       Total: 21:00
-    EOS
+    BRF
   end
 
   def test_sorting
@@ -21,6 +21,10 @@ class MonthTest < PunchTest
     @month.days.sort!
 
     assert_equal day, @month.days.last
+  end
+
+  def test_blocks
+    assert_equal 2, @month.blocks.count
   end
 
   def test_name_with_title_and_username_present
@@ -75,5 +79,23 @@ class MonthTest < PunchTest
     m = Month.new('foobar')
     assert m.empty?
     refute @month.empty?
+  end
+
+  def test_short_year
+    m1919 = Month.new('1919')
+    m1919.year = 1919
+    assert_equal 19, m1919.short_year
+
+    m2019 = Month.new('2019')
+    m2019.year = 2019
+    assert_equal 19, m2019.short_year
+
+    m3019 = Month.new('3019')
+    m3019.year = 3019
+    assert_equal 19, m3019.short_year
+  end
+
+  def test_stats
+    assert_kind_of Stats, @month.stats
   end
 end

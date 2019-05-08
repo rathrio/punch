@@ -4,7 +4,7 @@ class Month
   include Totals
   include Comparable
 
-  NEWLINE = "\n"
+  NEWLINE = OS.windows? ? "\r\n" : "\n"
 
   attr_accessor :days, :number, :year
   attr_writer :name
@@ -144,6 +144,11 @@ class Month
     @full_month ||= FullMonth.new(self).full_month
   end
 
+  # @return [Stats]
+  def stats
+    @stats ||= Stats.new(self)
+  end
+
   def workdays
     full_month.days.select(&:workday?)
   end
@@ -161,7 +166,7 @@ class Month
   end
 
   def short_year
-    year - 2000
+    year % 100
   end
 
   def cleanup!(options = {})

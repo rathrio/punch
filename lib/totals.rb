@@ -23,11 +23,14 @@ module Totals
   end
 
   def digital_format(seconds)
+    negative = seconds.negative?
+    seconds = seconds.abs
+
     hours   = seconds / 3_600
     rest    = seconds - (hours * 3_600)
     minutes = rest / 60
 
-    "#{hours.left_pad}:#{minutes.left_pad}"
+    "#{negative ? "-" : ""}#{hours.left_pad}:#{minutes.left_pad}"
   end
 
   def decimal_format(seconds)

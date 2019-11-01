@@ -115,15 +115,15 @@ class StatsTest < PunchTest
         punch '8-17 -d 2'
         punch '8-17 -d 3'
         punch '8-17 -d 4'
-        punch '8-10'
+        punch '8-1030'
 
         # Not enough worked yet
-        assert_equal '02:00', stats.quota
+        assert_equal '01:30', stats.quota
 
-        punch '10-18'
+        punch '10-1820'
 
         # Worked too much
-        assert_equal '-6:00', stats.quota
+        assert_equal '-06:20', stats.quota
       end
     end
   end

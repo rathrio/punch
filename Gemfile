@@ -11,4 +11,5 @@ gem 'pronto-rubocop'
 gem 'pronto-fasterer'
 gem 'pronto-poper'
 gem 'simplecov'
+gem 'solargraph'
 gem 'coveralls', :require => false

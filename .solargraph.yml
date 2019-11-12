@@ -1,0 +1,18 @@
+---
+include:
+- "**/*.rb"
+exclude:
+- coverage/**/*
+- hours/**/*
+- doc/**/*
+- .yardoc/**/*
+- .vscode/**/*
+- .git/**/*
+- ".bundle/**/*"
+require: []
+domains: []
+reporters:
+- rubocop
+- typecheck
+require_paths: []
+max_files: 100

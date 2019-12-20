@@ -61,7 +61,7 @@ module Kernel
   end
 
   def yes?(prompt)
-    puts "#{prompt} (y|n)"
+    print "#{prompt} (y|n) "
     Punch.config.in.gets.chomp == 'y'
   end
 
@@ -71,6 +71,10 @@ module Kernel
 
   def puts(str = "")
     Punch.config.out.puts str
+  end
+
+  def print(str = "")
+    Punch.config.out.print str
   end
 
   # Open tempfile and read the content after allowing the

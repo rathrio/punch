@@ -26,7 +26,13 @@ TEST_HOURS_FOLDER = File.expand_path('hours', File.dirname(__FILE__))
 module TestOut
   class << self
     attr_accessor :output
+
     def puts(str)
+      STDOUT.puts(str) if ENV['PUNCH_VERBOSE_TESTS']
+      self.output = str.to_s
+    end
+
+    def print(str)
       STDOUT.puts(str) if ENV['PUNCH_VERBOSE_TESTS']
       self.output = str.to_s
     end

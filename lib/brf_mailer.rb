@@ -1,12 +1,15 @@
+# frozen_string_literal: true
+
 require 'net/smtp'
 require 'erb'
 require 'tempfile'
 
 # Delivers a mail to Brigitte with the current BRF file attached.
 class BRFMailer
-
   attr_accessor :smtp_domain, :smtp_server, :smtp_port, :smtp_user, :smtp_pw,
-    :receiver, :cc, :bcc, :brf_filepath, :month_name, :body
+                :receiver, :bcc, :brf_filepath
+
+  attr_reader :body
 
   def initialize(brf_filepath, month_name)
     @brf_filepath = brf_filepath
@@ -17,22 +20,29 @@ class BRFMailer
       send("#{k}=", v) if respond_to? k
     end
 
-    @body = gets_tmp 'body', body
+    @body = gets_tmp('body', body)
   end
 
+  # @return [String]
   def cc
     return smtp_user if @cc.nil? || @cc.empty?
+
     @cc
   end
 
+  # @param new_body [String]
+  # @return [String]
   def body=(new_body)
     @body = ERB.new(new_body).result(binding)
   end
 
+  # @return [String]
   def month_name
     @month_name.capitalize
   end
 
+  # @param encode_attachment [Boolean]
+  # @return [String]
   def message(encode_attachment = true)
     boundary = "superUniqueIdentifier567"
     filename = File.basename brf_filepath
@@ -69,10 +79,11 @@ EOM
     smtp.start(smtp_domain, smtp_user, smtp_pw, :plain) do |sender|
       sender.send_message(message, smtp_user, receiver, cc)
     end
+  rescue Net::SMTPAuthenticationError
+    puts 'Username and Password not accepted'
   end
 
   def config
     Punch.config
   end
-
 end

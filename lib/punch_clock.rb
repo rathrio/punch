@@ -312,7 +312,19 @@ class PunchClock
       mailer = BRFMailer.new(brf_filepath, month_name)
       # Print non-encoded version for confirmation.
       puts mailer.message false
-      mailer.deliver if yes?("Do you want to send this mail?".highlighted)
+
+      if yes?("Do you want to send this mail?".highlighted)
+        begin
+          mailer.deliver
+        rescue Net::SMTPAuthenticationError => e
+          puts 'Username and Password not accepted'
+          raise e if debug_mode?
+        rescue SocketError => e
+          puts "Cannot reach SMTP Server: #{e.message}"
+          raise e if debug_mode?
+        end
+      end
+
       exit
     end
 

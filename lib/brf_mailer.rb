@@ -79,8 +79,6 @@ EOM
     smtp.start(smtp_domain, smtp_user, smtp_pw, :plain) do |sender|
       sender.send_message(message, smtp_user, receiver, cc)
     end
-  rescue Net::SMTPAuthenticationError
-    puts 'Username and Password not accepted'
   end
 
   def config

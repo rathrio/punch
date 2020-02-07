@@ -87,7 +87,7 @@ class Stats
   end
 
   def progress
-    diff = Totals.format(remaining)
+    diff = Totals.format(remaining * -1)
     "#{percentage} % | #{Totals.format reached}/#{Totals.format goal} | "\
       "Diff: #{diff}"
   end

@@ -105,7 +105,7 @@ class PunchClockTest < PunchTest
     refute_includes brf_content, '24.03.15'
   end
 
-  def test_format_gets_rid_of_empty_blocks
+  def test_format_gets_rid_of_ongoing_blocks_if_enabled
     brf_write %{
       Februar 2015 - Rathesan Iyadurai
 
@@ -115,11 +115,15 @@ class PunchClockTest < PunchTest
     }
 
     punch '-f'
+    assert_includes brf_content, '00:00-00:00'
 
-    refute_includes brf_content, '00:00-00:00'
+    config :remove_ongoing_blocks_on_format => true do
+      punch '-f'
+      refute_includes brf_content, '00:00-00:00'
+    end
   end
 
-  def test_format_gets_rid_of_days_with_only_empty_blocks
+  def test_format_gets_rid_of_days_with_ongoing_blocks_if_enabled
     brf_write %{
       Februar 2015 - Rathesan Iyadurai
 
@@ -128,7 +132,9 @@ class PunchClockTest < PunchTest
       Total: 00:00
     }
 
-    punch '-f'
+    config :remove_ongoing_blocks_on_format => true do
+      punch '-f'
+    end
 
     refute_includes brf_content, '03.01.15'
   end

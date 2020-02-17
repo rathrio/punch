@@ -57,10 +57,16 @@ class OngoingTest < PunchTest
     refute_punched '28.01.15   12:00-12:00   Total: 00:00'
   end
 
-  def test_format_removes_ongoing_blocks
+  def test_format_removes_ongoing_blocks_if_enabled
     punch '12'
     punch '--format'
-    refute_punched '28.01.15   12:00-12:00   Total: 00:00'
+    assert_punched '28.01.15   12:00-12:00   Total: 00:00'
+
+    config :remove_ongoing_blocks_on_format => true do
+      punch '12'
+      punch '--format'
+      refute_punched '28.01.15   12:00-12:00   Total: 00:00'
+    end
   end
 
   def test_raw_switch_doesnt_remove_ongoing_blocks

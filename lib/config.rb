@@ -195,7 +195,7 @@ class Punch
 
   # @return [Boolean]
   option :group_weeks_in_interactive_mode,
-    "Whether to group weeks in --full and --interactive mode",
+    "Whether to group weeks in --full and --interactive mode.",
     true
 
   # @return [Symbol]
@@ -216,6 +216,11 @@ class Punch
   # @return [Boolean]
   option :clear_buffer_before_punch,
     "Clear terminal buffer before printing month.",
+    false
+
+  # @return [Boolean]
+  option :remove_ongoing_blocks_on_format,
+    "Whether to remove ongoing (incomplete) blocks with punch --format.",
     false
 
   # @return [Boolean]

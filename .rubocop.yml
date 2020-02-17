@@ -3,7 +3,10 @@
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.5
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
 
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
@@ -14,7 +17,7 @@ Layout/MultilineMethodCallIndentation:
 Layout/DotPosition:
   EnforcedStyle: trailing
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
 Layout/EndAlignment:
@@ -81,11 +84,10 @@ Metrics/BlockLength:
   Enabled: false
 
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Enabled: false
 
 Metrics/PerceivedComplexity:
-  Max: 10
+  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false
-

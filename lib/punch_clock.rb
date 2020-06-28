@@ -539,9 +539,9 @@ class PunchClock
 
   def open(file, application = nil)
     if application.nil?
-      system "#{config.text_editor} #{file}"
+      system %{#{config.text_editor} "#{file}"}
     else
-      system %{#{OS.open_cmd} -a "#{application}" #{file}}
+      system %{#{OS.open_cmd} -a "#{application}" "#{file}"}
     end
   end
 

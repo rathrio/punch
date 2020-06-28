@@ -27,7 +27,7 @@ git clone git@github.com:rathrio/punch.git ~/wherever/you/like/punch
 cd ~/wherever/you/like/punch
 
 # Create the symlink.
-rake install
+sudo rake install
 ```
 
 You should now be able to run `punch` from anywhere.

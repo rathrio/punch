@@ -226,18 +226,8 @@ class PunchClock
       exit
     end
 
-    switch "--review" do
-      system "cd #{punch_folder} && pronto run"
-      exit
-    end
-
     switch "--travis" do
       OS.open "https://travis-ci.org/rathrio/punch"
-      exit
-    end
-
-    switch "--trello" do
-      OS.open "https://trello.com/b/xfN8alsq/punch"
       exit
     end
 

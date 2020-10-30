@@ -260,11 +260,5 @@ $ punch --hack
 $ punch --profile
     Profile and print results.
 
-$ punch --review
-    Display review of your code and commit messages.
-
 $ punch --test
     Run tests.
-
-$ punch --trello
-    Open Trello board.

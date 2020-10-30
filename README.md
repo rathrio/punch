@@ -254,10 +254,12 @@ Development
 
 Run `bundle install` to install development dependencies.
 
-Run `punch --test` to run the test suite.
+Run `rake test` to run the test suite.
 
-Run `punch --review` to list code style violations of your changes against the
-current master.
+Please setup and configure [Rubocop](https://github.com/rubocop-hq/rubocop) to
+respect the rules in `.rubocop.yml` in this repository's root and lint your
+changes.
 
-Punch tries to remain free of third party runtime dependencies so that it can be
-run on any system with just Ruby installed.
+Punch tries to remain free of third party runtime dependencies so that it can
+run on any system with just Ruby installed. The gems listed in `Gemfile` are
+loaded for development purposes only.

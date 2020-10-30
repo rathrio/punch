@@ -5,16 +5,6 @@ class Block
   include Comparable
   include Totals
 
-  class BlockFormatError < StandardError
-    def initialize(input)
-      @input = input
-    end
-
-    def message
-      %{"#{@input}" is not a valid block}
-    end
-  end
-
   attr_accessor :start, :finish, :day
   flag :over_midnight
 
@@ -25,8 +15,6 @@ class Block
     start_str, finish_str = str.split '-'
     start_ary = start_str.split ':'
     finish_ary = finish_str.split ':'
-
-    raise BlockFormatError, str if start_ary.empty? && finish_ary.empty?
 
     block.start  = Time.new(day.year, day.month, day.day, *start_ary)
     block.finish = Time.new(day.year, day.month, day.day, *finish_ary)

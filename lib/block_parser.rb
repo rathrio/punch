@@ -5,12 +5,24 @@ require 'rounded_time'
 # Can translate various string representations of a block (e.g. 12:40-18) into
 # an instance of Block.
 class BlockParser
+  class ParserError < ExposableError
+    def initialize(input)
+      @input = input
+    end
+
+    def message
+      %{"#{@input}" is not a valid block}
+    end
+  end
+
   # What the start or finish part of a block may look like,
   # e.g. "09:00", "09", "9", etc
   HALF_BLOCK_RGX = /^\d{1,2}:?\d{0,2}$/
 
   def self.parse(block_str, day)
     new(block_str, day).parse
+  rescue StandardError => e
+    raise ParserError, block_str
   end
 
   def initialize(block_str, day)
@@ -37,6 +49,8 @@ class BlockParser
   #   * start and complete ongoing blocks by typing only a half block
   #
   def prepare_block_str!
+    raise ParserError, @block_str if @block_str.start_with? '-'
+
     @block_str = @block_str.
       gsub(/(\d{4})/) { "#{$1[0..1]}:#{$1[2..3]}" }.    # 4 digits
       gsub(/(\d{3})/) { "0#{$1[0]}:#{$1[1..2]}" }.      # 3 digits

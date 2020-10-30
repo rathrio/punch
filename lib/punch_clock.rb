@@ -3,10 +3,6 @@
 class PunchClock
   include OptionParsing
 
-  # Errors with messages than can be exposed to users in non-debug mode.
-  class ExposableError < StandardError
-  end
-
   class CannotRemoveHalfBlockError < ExposableError
     def message
       %{Please provide a full block for removal, e.g., #{"punch -r 12-13".highlighted}}

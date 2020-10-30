@@ -1,7 +1,6 @@
 require_relative 'config'
 
 class BlockParserTest < MiniTest::Test
-
   def setup
     Timecop.freeze Time.new(2015, 10, 8, 14)
     @day = Day.new
@@ -59,4 +58,17 @@ class BlockParserTest < MiniTest::Test
     assert_equal '11:00-14:00', block.to_s
   end
 
+  def test_error_handling
+    [
+      '',
+      '98-99',
+      '-12',
+      'foobar',
+      '9000'
+    ].each do |invalid_block|
+      assert_raises(BlockParser::ParserError) do
+        BlockParser.parse(invalid_block, @day)
+      end
+    end
+  end
 end

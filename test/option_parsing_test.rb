@@ -5,7 +5,7 @@ class OptionParsingTest < MiniTest::Test
   class CLI
     include OptionParsing
 
-    attr_reader :age, :weight
+    attr_reader :age, :weight, :id
 
     def initialize(args)
       self.args = args
@@ -34,6 +34,10 @@ class OptionParsingTest < MiniTest::Test
 
       flag "-a", "--age" do |arg|
         @age = arg.to_i
+      end
+
+      flag "-i", "--id", required: true do |id|
+        @id = id.to_i
       end
     end
   end
@@ -95,4 +99,15 @@ class OptionParsingTest < MiniTest::Test
     assert cli.yesterday?, 'wrongly consumed switch as optional flag argument'
   end
 
+  def test_required_flag
+    assert_raises(OptionParsing::MissingRequiredFlagError) do
+      cli = CLI.new(["-i"])
+      cli.run
+    end
+
+    cli = CLI.new(["-i", "42"])
+    cli.run
+
+    assert_equal 42, cli.id
+  end
 end

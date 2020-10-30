@@ -286,20 +286,20 @@ class PunchClock
       month_year = month_year.prev
     end
 
-    flag "-m", "--month" do |month|
+    flag "-m", "--month", required: true do |month|
       month, year = month.split(".")
       year = month_year.year if year.nil?
       month_year = MonthYear.new(:month => month, :year => year)
     end
 
-    flag "--year" do |year|
+    flag "--year", required: true do |year|
       month_year = MonthYear.new(:month => month_year.month, :year => year)
     end
 
     @month_name = MonthNames.name month_year.month
     @brf_filepath = generate_brf_filepath(month_year)
 
-    flag "-b", "--backup" do |path|
+    flag "-b", "--backup", required: true do |path|
       system "cp #{brf_filepath} #{path}"
       exit
     end
@@ -364,21 +364,16 @@ class PunchClock
         exit
       end
 
-      flag "-s", "--stats" do |arg|
-        if arg.nil?
-          puts month.stats
-          exit
-        end
-
-        s = YearStats.new
-        require 'pry'; binding.pry
+      switch "-s", "--stats" do
+        puts month.stats
+        exit
       end
 
       unless @args.empty?
         days = []
 
         # The --day flag might set one or multiple days to edit.
-        flag "-d", "--day" do |date_args|
+        flag "-d", "--day", required: true do |date_args|
           days = month.find_or_create_days_from_dates(date_args)
         end
 

@@ -51,12 +51,6 @@ class OngoingTest < PunchTest
     refute_punched '28.01.15   12:00-12:00   Total: 00:00'
   end
 
-  def test_remove_with_ongoing_block_arg
-    punch '12'
-    punch '-r 12'
-    refute_punched '28.01.15   12:00-12:00   Total: 00:00'
-  end
-
   def test_format_removes_ongoing_blocks_if_enabled
     punch '12'
     punch '--format'

@@ -194,8 +194,9 @@ $ punch -p, --previous
 $ punch --raw
     Print current BRF file without fancy highlighting and auto-formatting.
 
-$ punch -r, --remove HH:MM-HH:MM HH:MM-HH:MM ...
-    Remove blocks.
+$ punch -r, --remove HH:MM-HH:MM
+    Remove the given block. Requires a full block and can be used to cut holes
+    into existing blocks.
 
 $ punch -s, --stats
     Print some stats.

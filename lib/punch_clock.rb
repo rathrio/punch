@@ -3,6 +3,16 @@
 class PunchClock
   include OptionParsing
 
+  # Errors with messages than can be exposed to users in non-debug mode.
+  class ExposableError < StandardError
+  end
+
+  class CannotRemoveHalfBlockError < ExposableError
+    def message
+      'Please provide a full block for removal, e.g., "punch -r 12-13"'
+    end
+  end
+
   VERSION_NAME = "The Baddest Man on the Planet"
 
   # Card names are a restricted form of identifiers.
@@ -64,7 +74,6 @@ class PunchClock
   MIDNIGHT_MADNESS_NOTES = [
     "Get some sleep!",
     "Don't you have any hobbies?",
-    "Get some rest, (wo)man...",
     "You should go to bed.",
     "That can't be healthy.",
     "You might need therapy.",
@@ -407,20 +416,30 @@ class PunchClock
           days.each(&:clear_comment)
         end
 
-        # Add or remove blocks.
-        action = :add
-        switch "-r", "--remove" do
-          action = :remove
+        block_str_to_remove = nil
+        flag "-r", "--remove" do |block_str|
+          block_str_to_remove = block_str
         end
 
+        added_blocks = false
         @args.each do |block_str|
-          days.each { |d| d.send(action, BlockParser.parse(block_str, d)) }
+          added_blocks ||= true
+          days.each { |d| d.add(BlockParser.parse(block_str, d)) }
         end
 
-        # Cleanup in case we have empty days after a remove.
-        month.cleanup! if action == :remove
+        unless block_str_to_remove.nil?
+          days.each do |d|
+            block_to_remove = BlockParser.parse(block_str_to_remove, d)
+            raise CannotRemoveHalfBlockError if block_to_remove.ongoing?
 
-        if action == :add && days.any?(&:unhealthy?)
+            d.remove(block_to_remove)
+          end
+
+          # Cleanup in case we have empty days after a remove.
+          month.cleanup!
+        end
+
+        if added_blocks && days.any?(&:unhealthy?)
           puts "#{MIDNIGHT_MADNESS_NOTES.sample.highlighted}\n"
         end
 
@@ -445,6 +464,11 @@ class PunchClock
     puts "Couldn't parse #{brf_filepath.highlighted}."
   rescue Interrupt
     puts "\nExiting...".highlighted
+    exit
+  rescue ExposableError => e
+    puts e.message
+    raise e if debug_mode?
+
     exit
   rescue StandardError => e
     raise e if debug_mode?

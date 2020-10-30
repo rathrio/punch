@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Punch config object.
+#
+# "punch --config[-update|-reset]" will use the configuration here to generate
+# the Ruby code in ~/.punchrc.
 class Punch
   Option = Struct.new(:name, :description)
 

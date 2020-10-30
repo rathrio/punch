@@ -1,5 +1,7 @@
 # rubocop:disable Lint/HandleExceptions:
 
+# Test setup and utilities
+
 if ENV['PUNCH_COVERAGE']
   require 'simplecov'
   SimpleCov.start do

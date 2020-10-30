@@ -211,6 +211,30 @@ Krusty Krab - Mai 2015 - Spongebob Squarepants
 Total: 06:00
 ```
 
+### Removing blocks
+
+To remove blocks, use `punch --remove` (`-r`). It can also be used to "cut
+holes" into existing blocks, e.g. a lunch break:
+
+```
+$ punch 8-17
+
+Krusty Krab - Mai 2015 - Spongebob Squarepants
+
+30.10.20   08:00-17:00   Total: 09:00
+
+Total: 09:00
+
+$ punch -r 12-13
+
+Krusty Krab - Mai 2015 - Spongebob Squarepants
+
+30.10.20   08:00-12:00   13:00-17:00   Total: 08:00
+
+Total: 08:00
+```
+
+
 Configuration
 -------------
 

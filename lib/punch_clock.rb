@@ -9,7 +9,7 @@ class PunchClock
 
   class CannotRemoveHalfBlockError < ExposableError
     def message
-      'Please provide a full block for removal, e.g., "punch -r 12-13"'
+      %{Please provide a full block for removal, e.g., #{"punch -r 12-13".highlighted}}
     end
   end
 
@@ -461,7 +461,12 @@ class PunchClock
   rescue BRFParser::ParserError => e
     raise e if debug_mode?
 
-    puts "Couldn't parse #{brf_filepath.highlighted}."
+    msg = <<~MSG
+      Couldn't read #{brf_filepath.highlighted}.
+
+      Run #{"punch --edit".highlighted} to open the file with your default editor.
+    MSG
+    puts msg
   rescue Interrupt
     puts "\nExiting...".highlighted
     exit

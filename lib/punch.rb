@@ -278,6 +278,10 @@ class Punch
     STDIN,
     :hidden => true
 
+  def method_missing(name, args)
+    puts "Unkown option #{name}"
+  end
+
   def config_file
     self.class.config_file
   end

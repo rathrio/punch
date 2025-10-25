@@ -2,7 +2,7 @@
 
 require_relative 'config'
 
-class BRFParserTest < MiniTest::Test
+class BRFParserTest < Minitest::Test
   def setup
     @month = BRFParser.new.parse(<<-BRF)
       Januar 2014

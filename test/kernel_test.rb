@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class KernelTest < MiniTest::Test
+class KernelTest < Minitest::Test
   class YesInput
     def self.gets
       'y'

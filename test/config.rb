@@ -5,7 +5,7 @@
 if ENV['PUNCH_COVERAGE']
   require 'simplecov'
   SimpleCov.start do
-    command_name 'MiniTest'
+    command_name 'Minitest'
     add_filter '/test/'
   end
 end
@@ -81,7 +81,7 @@ end
 # Provides some helper methods for integration tests. Also sets the current
 # Time to 2pm on 28.01.2015 and automatically cleans up the test hours folder.
 # When overriding #setup and #teardown, don't forget to call super.
-class PunchTest < MiniTest::Test
+class PunchTest < Minitest::Test
 
   # Travel to 28.01.2015 2pm. So the current BRF month is February.
   def setup
@@ -164,4 +164,4 @@ class PunchTest < MiniTest::Test
   end
 end
 
-MiniTest.after_run { PunchTest.clear_hours_folder }
+Minitest.after_run { PunchTest.clear_hours_folder }

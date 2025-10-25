@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class OptionParsingTest < MiniTest::Test
+class OptionParsingTest < Minitest::Test
 
   class CLI
     include OptionParsing

@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class NumericTest < MiniTest::Test
+class NumericTest < Minitest::Test
   def test_left_pad
     assert_equal '03', 3.left_pad
     assert_equal '3.0', 3.0.left_pad

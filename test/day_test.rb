@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class DayTest < MiniTest::Test
+class DayTest < Minitest::Test
   def test_from_parses_ddmmyy
     day = Day.from '27.11.14'
     assert_equal 27, day.day

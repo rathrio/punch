@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class OSTest < MiniTest::Test
+class OSTest < Minitest::Test
   def test_windows_when_ruby_platform_windows
     %w(cygwin mswin mingw bccwin wince emx).each do |s|
       OS.stub :ruby_platform, s do

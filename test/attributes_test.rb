@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class AttributesTest < MiniTest::Test
+class AttributesTest < Minitest::Test
 
   class Dog
     include Attributes

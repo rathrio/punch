@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class StringTest < MiniTest::Test
+class StringTest < Minitest::Test
   def test_abolute_path_returns_abolute_file_path
     Dir.stub :home, '/Users/spongebob' do
       assert_equal 'foobar', 'foobar'.absolute_path

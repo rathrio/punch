@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class BlockParserTest < MiniTest::Test
+class BlockParserTest < Minitest::Test
   def setup
     Timecop.freeze Time.new(2015, 10, 8, 14)
     @day = Day.new

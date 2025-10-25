@@ -1,6 +1,6 @@
 require_relative 'config'
 
-class TimeTest < MiniTest::Test
+class TimeTest < Minitest::Test
   def test_short_year
     assert_equal 16, Time.new(2016).short_year
     assert_equal 99, Time.new(1999).short_year
